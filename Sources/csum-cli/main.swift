@@ -4,10 +4,10 @@ import Foundation
 
 extension ChecksumAlgorithm: ExpressibleByArgument {}
 
-struct SwiftCSUM: ParsableCommand {
+struct CsumCLI: ParsableCommand {
     static var configuration: CommandConfiguration {
         CommandConfiguration(
-            commandName: "swift-csum",
+            commandName: "csum-cli",
             abstract: "Compute the checksum of a file."
         )
     }
@@ -27,4 +27,4 @@ struct SwiftCSUM: ParsableCommand {
     }
 }
 
-SwiftCSUM.main()
+CsumCLI.main()

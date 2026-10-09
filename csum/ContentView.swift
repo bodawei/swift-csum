@@ -101,7 +101,7 @@ struct ContentView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.background.secondary, in: RoundedRectangle(cornerRadius: 12))
+        .background(Color.secondary.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
     }
 
     private func labeledRow(_ title: String, value: String, monospaced: Bool) -> some View {

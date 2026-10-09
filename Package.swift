@@ -9,7 +9,7 @@ let package = Package(
     ],
     products: [
         .library(name: "ChecksumCore", targets: ["ChecksumCore"]),
-        .executable(name: "swift-csum", targets: ["SwiftCSUM"])
+        .executable(name: "csum-cli", targets: ["csum-cli"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0")
@@ -17,7 +17,7 @@ let package = Package(
     targets: [
         .target(name: "ChecksumCore"),
         .executableTarget(
-            name: "SwiftCSUM",
+            name: "csum-cli",
             dependencies: [
                 "ChecksumCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
