@@ -16,6 +16,8 @@ struct FileChecksumResult: Sendable {
 }
 
 struct ContentView: View {
+    private let columnTitles = ["Filename", "Checksum", "Algorithm", "Size", "Created", "Modified", "Path"]
+
     @State private var algorithm: ChecksumAlgorithm = .sha256
     @State private var isImporting = false
     @State private var isComputing = false
@@ -75,24 +77,32 @@ struct ContentView: View {
     @ViewBuilder
     private func resultCard(_ item: FileChecksumResult) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            labeledRow("File", value: item.name, monospaced: false)
-            labeledRow("Path", value: item.path, monospaced: true)
-            labeledRow("Size", value: ByteCountFormatter.string(fromByteCount: item.size, countStyle: .file), monospaced: false)
-            if let creationDate = item.creationDate {
-                labeledRow("Created", value: creationDate.formatted(date: .abbreviated, time: .shortened), monospaced: false)
+            ScrollView(.horizontal) {
+                Grid(alignment: .leading, horizontalSpacing: 0, verticalSpacing: 0) {
+                    GridRow {
+                        ForEach(columnTitles, id: \.self) { title in
+                            tableCell(Text(title).font(.caption.bold()))
+                        }
+                    }
+                    GridRow {
+                        tableCell(Text(item.name).font(.caption))
+                        tableCell(Text(item.digest).font(.system(.caption, design: .monospaced)))
+                        tableCell(Text(item.algorithm.rawValue).font(.caption))
+                        tableCell(Text(String(item.size)).font(.caption))
+                        tableCell(Text(timestampString(item.creationDate)).font(.system(.caption, design: .monospaced)))
+                        tableCell(Text(timestampString(item.modificationDate)).font(.system(.caption, design: .monospaced)))
+                        tableCell(Text(item.path).font(.system(.caption, design: .monospaced)))
+                    }
+                }
+                .fixedSize(horizontal: true, vertical: false)
             }
-            if let modificationDate = item.modificationDate {
-                labeledRow("Modified", value: modificationDate.formatted(date: .abbreviated, time: .shortened), monospaced: false)
-            }
-            labeledRow("Algorithm", value: item.algorithm.displayName, monospaced: false)
-            labeledRow("Checksum", value: item.digest, monospaced: true)
             HStack {
-                Button("Copy Checksum") {
+                Button("Copy Row") {
                     #if os(iOS)
-                    UIPasteboard.general.string = item.digest
+                    UIPasteboard.general.string = tsvLine(for: item)
                     #else
                     NSPasteboard.general.clearContents()
-                    NSPasteboard.general.setString(item.digest, forType: .string)
+                    NSPasteboard.general.setString(tsvLine(for: item), forType: .string)
                     #endif
                 }
                 .buttonStyle(.bordered)
@@ -104,15 +114,29 @@ struct ContentView: View {
         .background(Color.secondary.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
     }
 
-    private func labeledRow(_ title: String, value: String, monospaced: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(title)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Text(value)
-                .font(monospaced ? .system(.body, design: .monospaced) : .body)
-                .textSelection(.enabled)
-        }
+    private func tableCell<Content: View>(_ content: Content) -> some View {
+        content
+            .padding(6)
+            .frame(minWidth: 70, alignment: .leading)
+            .lineLimit(1)
+            .textSelection(.enabled)
+            .overlay(Rectangle().stroke(Color.secondary.opacity(0.4)))
+    }
+
+    private func timestampString(_ date: Date?) -> String {
+        date.map { String(Int64($0.timeIntervalSince1970)) } ?? ""
+    }
+
+    private func tsvLine(for item: FileChecksumResult) -> String {
+        [
+            item.name,
+            item.digest,
+            item.algorithm.rawValue,
+            String(item.size),
+            timestampString(item.creationDate),
+            timestampString(item.modificationDate),
+            item.path
+        ].joined(separator: "\t")
     }
 
     private func computeChecksum(of url: URL) {
