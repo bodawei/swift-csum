@@ -18,24 +18,27 @@ struct FileChecksumResult: Sendable {
 struct ContentView: View {
     private let columnTitles = ["Filename", "Checksum", "Algorithm", "Size", "Created", "Modified", "Path"]
 
-    @State private var algorithm: ChecksumAlgorithm = .sha256
+    @AppStorage("checksumAlgorithm") private var algorithmRawValue = ChecksumAlgorithm.sha256.rawValue
     @State private var isImporting = false
     @State private var isComputing = false
     @State private var result: FileChecksumResult?
     @State private var errorMessage: String?
     @State private var showError = false
 
+    private var algorithm: ChecksumAlgorithm {
+        ChecksumAlgorithm(rawValue: algorithmRawValue) ?? .sha256
+    }
+
+    private var algorithmBinding: Binding<ChecksumAlgorithm> {
+        Binding(
+            get: { ChecksumAlgorithm(rawValue: algorithmRawValue) ?? .sha256 },
+            set: { algorithmRawValue = $0.rawValue }
+        )
+    }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                Picker("Algorithm", selection: $algorithm) {
-                    ForEach(ChecksumAlgorithm.allCases, id: \.self) { item in
-                        Text(item.displayName).tag(item)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .disabled(isComputing)
-
                 Spacer()
 
                 if isComputing {
@@ -50,14 +53,31 @@ struct ContentView: View {
 
                 Spacer()
 
-                Button(result == nil ? "Choose File…" : "Choose Another File…") {
-                    isImporting = true
+                HStack(spacing: 16) {
+                    #if os(iOS)
+                    Picker("Algorithm", selection: algorithmBinding) {
+                        ForEach(ChecksumAlgorithm.allCases, id: \.self) { item in
+                            Text(item.displayName).tag(item)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .disabled(isComputing)
+                    #endif
+
+                    Button(result == nil ? "Choose File…" : "Choose Another File…") {
+                        #if os(macOS)
+                        presentOpenPanel()
+                        #else
+                        isImporting = true
+                        #endif
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(isComputing)
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(isComputing)
             }
             .padding()
             .navigationTitle("Checksum")
+            #if os(iOS)
             .fileImporter(isPresented: $isImporting, allowedContentTypes: [.data]) { picked in
                 switch picked {
                 case .success(let url):
@@ -66,6 +86,7 @@ struct ContentView: View {
                     presentError(error)
                 }
             }
+            #endif
             .alert("Error", isPresented: $showError) {
                 Button("OK", role: .cancel) {}
             } message: {
@@ -73,6 +94,33 @@ struct ContentView: View {
             }
         }
     }
+
+    #if os(macOS)
+    private func presentOpenPanel() {
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        let algorithms = ChecksumAlgorithm.allCases
+        let popup = NSPopUpButton(frame: .zero, pullsDown: false)
+        popup.addItems(withTitles: algorithms.map(\.displayName))
+        popup.selectItem(at: max(0, algorithms.firstIndex(of: algorithm) ?? 0))
+        let label = NSTextField(labelWithString: "Algorithm:")
+        let accessory = NSStackView(views: [label, popup])
+        accessory.frame = NSRect(x: 0, y: 0, width: accessory.fittingSize.width, height: 28)
+        panel.accessoryView = accessory
+        guard let window = NSApplication.shared.mainWindow ?? NSApplication.shared.windows.first else {
+            return
+        }
+        panel.beginSheetModal(for: window) { [popup] response in
+            guard response == .OK, let url = panel.url else {
+                return
+            }
+            let index = max(0, min(popup.indexOfSelectedItem, algorithms.count - 1))
+            algorithmRawValue = algorithms[index].rawValue
+            computeChecksum(of: url)
+        }
+    }
+    #endif
 
     @ViewBuilder
     private func resultCard(_ item: FileChecksumResult) -> some View {
