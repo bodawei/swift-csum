@@ -9,9 +9,14 @@ Mac, or from the command line. Both front-ends share one hashing implementation
 Open `csum.xcodeproj` in Xcode and run the `csum` scheme. Selecting the "Mac"
 destination runs the same app on your Mac — no separate macOS target needed.
 
-Tap "Choose File…", pick a file, and the app shows the result in a table with
-column headings and visible cell boundaries — one header row, one data row — plus a
-Copy Row button that copies the data row as a tab-separated line (paste-ready for a
+Pick the algorithm from the dropdown — on Mac it sits inside the file-open dialog; on
+iPhone/iPad it's the dropdown by the button and remembers your last choice. Choose
+files with **Choose Files…** or a folder with **Choose Folder…** (the system picker
+can't mix the two in one dialog). Folders are checksummed recursively — every file at
+every depth gets a row (hidden files included), sorted by path; a file that can't be
+read gets `Error: <details>` in its checksum cell instead of a digest. The result is a
+table with column headings and visible cell boundaries, scrolled as needed, plus a
+Copy Rows button that copies every row as a tab-separated line (paste-ready for a
 spreadsheet):
 
 | Filename | Checksum | Algorithm | Size | Created | Modified | Path |
