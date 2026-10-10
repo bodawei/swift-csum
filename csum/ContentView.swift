@@ -16,6 +16,29 @@ struct FileChecksumResult: Sendable {
     let errorMessage: String?
 }
 
+struct CSVDocument: FileDocument {
+    static var readableContentTypes: [UTType] {
+        [.commaSeparatedText]
+    }
+
+    let text: String
+
+    init(text: String) {
+        self.text = text
+    }
+
+    init(configuration: ReadConfiguration) throws {
+        guard let data = configuration.file.regularFileContents else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+        self.text = String(decoding: data, as: UTF8.self)
+    }
+
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        FileWrapper(regularFileWithContents: Data(("\u{FEFF}" + text).utf8))
+    }
+}
+
 struct ContentView: View {
     private let columnTitles = ["Filename", "Checksum", "Algorithm", "Size", "Created", "Modified", "Path"]
     private let columnWidths: [CGFloat] = [170, 470, 90, 110, 100, 100, 340]
@@ -27,6 +50,8 @@ struct ContentView: View {
     @State private var processedFiles = 0
     @State private var totalFiles = 0
     @State private var result: [FileChecksumResult]?
+    @State private var exportDocument: CSVDocument?
+    @State private var isExporting = false
     @State private var errorMessage: String?
     @State private var showError = false
 
@@ -117,6 +142,16 @@ struct ContentView: View {
                 handlePicked(picked)
             }
             #endif
+            .fileExporter(
+                isPresented: $isExporting,
+                document: exportDocument,
+                contentType: .commaSeparatedText,
+                defaultFilename: "checksums.csum"
+            ) { exportResult in
+                if case .failure(let error) = exportResult {
+                    presentError(error)
+                }
+            }
             .alert("Error", isPresented: $showError) {
                 Button("OK", role: .cancel) {}
             } message: {
@@ -200,6 +235,11 @@ struct ContentView: View {
                     #endif
                 }
                 .buttonStyle(.bordered)
+                Button("Save CSV…") {
+                    exportDocument = CSVDocument(text: csvText(for: items))
+                    isExporting = true
+                }
+                .buttonStyle(.bordered)
                 Spacer()
             }
         }
@@ -230,7 +270,7 @@ struct ContentView: View {
         date.map { String(Int64($0.timeIntervalSince1970)) } ?? ""
     }
 
-    private func tsvLine(for item: FileChecksumResult) -> String {
+    private func fieldValues(for item: FileChecksumResult) -> [String] {
         let checksum = item.errorMessage.map { "Error: \($0)" } ?? item.digest
         return [
             item.name,
@@ -240,7 +280,27 @@ struct ContentView: View {
             timestampString(item.creationDate),
             timestampString(item.modificationDate),
             item.path
-        ].joined(separator: "\t")
+        ]
+    }
+
+    private func tsvLine(for item: FileChecksumResult) -> String {
+        fieldValues(for: item).joined(separator: "\t")
+    }
+
+    private func csvField(_ value: String) -> String {
+        if value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r") {
+            return "\"" + value.replacingOccurrences(of: "\"", with: "\"\"") + "\""
+        }
+        return value
+    }
+
+    private func csvLine(for item: FileChecksumResult) -> String {
+        fieldValues(for: item).map(csvField).joined(separator: ",")
+    }
+
+    private func csvText(for items: [FileChecksumResult]) -> String {
+        let header = columnTitles.map(csvField).joined(separator: ",")
+        return ([header] + items.map(csvLine)).joined(separator: "\r\n")
     }
 
     private func computeChecksums(of urls: [URL]) {

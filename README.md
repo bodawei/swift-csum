@@ -30,7 +30,10 @@ spreadsheet):
   (long integers); empty if the file has no such date.
 - `Path` — the file's full path.
 
-If the checksum or path is wider than the window, the table scrolls horizontally.
+If the checksum or path is wider than the window, the table scrolls horizontally. Copy
+Rows puts every row on the clipboard as tab-separated lines; **Save CSV…** writes the
+same data as an Excel-ready comma-separated file (`checksums.csum.csv` — RFC 4180
+quoting, CRLF line endings, UTF-8 BOM).
 
 Notes:
 
