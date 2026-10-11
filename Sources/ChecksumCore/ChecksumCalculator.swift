@@ -22,11 +22,13 @@ public enum ChecksumCalculator {
 
     public static func checksum(of url: URL, algorithm: ChecksumAlgorithm) throws -> String {
         let handle: FileHandle
+        
         do {
             handle = try FileHandle(forReadingFrom: url)
         } catch {
             throw ChecksumError.cannotOpen(path: url.path, underlying: error)
         }
+        
         defer {
             try? handle.close()
         }
