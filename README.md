@@ -9,16 +9,18 @@ Mac, or from the command line. Both front-ends share one hashing implementation
 Open `csum.xcodeproj` in Xcode and run the `csum` scheme. Selecting the "Mac"
 destination runs the same app on your Mac — no separate macOS target needed.
 
-Pick the algorithm from the dropdown — on Mac it sits inside the file-open dialog; on
-iPhone/iPad it's the dropdown by the button and remembers your last choice. Choose
-files with **Choose Files…** or a folder with **Choose Folder…** (the system picker
-can't mix the two in one dialog). Folders are checksummed recursively — every file at
-every depth gets a row (hidden files included), sorted by path, with paths shown
-relative to the picked folder as `./…`; a file that can't be
-read gets `Error: <details>` in its checksum cell instead of a digest. The result is a
-table with column headings and visible cell boundaries, scrolled as needed, plus a
-Copy Rows button that copies every row as a tab-separated line (paste-ready for a
-spreadsheet):
+The start screen has **Checksum File** and **Checksum Folder** buttons — pick the
+algorithm from the dropdown (on Mac it sits inside the open dialog; on iPhone/iPad it's
+the dropdown by the buttons and remembers your last choice). Folders are checksummed
+recursively — every file at every depth gets a row (hidden files included), sorted by
+path, with paths shown relative to the picked folder as `./…`; a file that can't be read
+gets `Error: <details>` in its checksum cell instead of a digest.
+
+The result is a table with column headings and visible cell boundaries, scrolled as
+needed, plus **Copy Rows** (tab-separated lines, paste-ready for a spreadsheet) and
+**Save CSV…** (an Excel-ready `checksums.csum.csv` — RFC 4180 quoting, CRLF line
+endings, UTF-8 BOM — starting with two `#` comment lines recording the app/version, the
+source path(s), and the ISO-8601 date):
 
 | Filename | Checksum | Algorithm | Size | Created | Modified | Path |
 |----------|----------|-----------|------|---------|----------|------|
@@ -29,21 +31,19 @@ spreadsheet):
 - `Size` — size in bytes.
 - `Created` / `Modified` — creation and modification dates as Unix epoch seconds
   (long integers); empty if the file has no such date.
-- `Path` — the file's full path.
+- `Path` — the file's path (`./…` relative for folder picks).
 
-If the checksum or path is wider than the window, the table scrolls horizontally. Copy
-Rows puts every row on the clipboard as tab-separated lines; **Save CSV…** writes the
-same data as an Excel-ready comma-separated file (`checksums.csum.csv` — RFC 4180
-quoting, CRLF line endings, UTF-8 BOM), starting with two `#` comment lines recording
-the writing app/version, the source path(s), and the ISO-8601 date.
+### Comparing
 
 The compare form has two rows; each row takes either a saved `.csum.csv`
 (**Choose .csum.csv**) or a folder (**Choose Folder** — its checksums are computed on
 the spot, with the current algorithm). Once both rows show their pick, **Compare**
-enables and groups every entry into color-labeled sections: **Unchanged** (same path, hash, and size), **Added** (only in
-the second file), **Removed** (only in the first), **Moved** (same hash and size at a
-different path, shown as from → to), and **Changed** (same path, different hash or
-size, showing old and new values side by side).
+enables and groups every entry into color-labeled sections: **Unchanged** (same path,
+hash, and size), **Added** (only in the second source), **Removed** (only in the
+first), **Moved** (same hash and size at a different path, shown from → to), and
+**Changed** (same path, different hash or size, old and new side by side).
+Double-clicking a `.csum.csv` file in Finder drops it into the first row, ready for a
+second source.
 
 Notes:
 
@@ -55,21 +55,22 @@ Notes:
 ## Command line
 
 ```
-swift run csum-cli <path> [--algorithm <algorithm>]
+swift run csum-cli <path> [<path>] [--algorithm <algorithm>] [-u] [-d] [-a] [-m]
 ```
 
-- `<path>` — full path to the file (required positional argument).
-- `-a, --algorithm` — `sha256` (default), `sha1`, or `md5`.
+- **One path** — a file or directory: computes checksums and writes the complete
+  checksum file (comments, header, rows) to stdout; redirect to save:
+  `swift run csum-cli ~/Documents > docs.csum.csv`. Section flags are ignored here.
+- **Two paths** — compares them. Each side may be a `.csum.csv` file or a
+  file/directory (computed on the spot).
+- Output is grouped into sections, each led by a `#` comment title with the standard
+  CSV header: `# Added`, `# Deleted`, `# Modified` (in that order). Unchanged entries
+  are omitted by default.
+- `-u`, `-d`, `-a`, `-m` select exactly which sections print (if any is given);
+  without them, Added/Deleted/Modified print.
+- `--algorithm` — `sha256` (default), `sha1`, or `md5`, used when computing.
 
-The tool prints only the lowercase hex digest to stdout. Errors are written to stderr
-with a non-zero exit code.
-
-Examples:
-
-```
-swift run csum-cli ~/Downloads/archive.zip
-swift run csum-cli -a md5 ~/Downloads/archive.zip
-```
+Errors are written to stderr with a non-zero exit code.
 
 ## Building
 
@@ -96,7 +97,7 @@ It runs on macOS 13 or newer.
 ```
 swift build -c release
 sudo cp .build/release/csum-cli /usr/local/bin/    # or: mkdir -p ~/bin && cp .build/release/csum-cli ~/bin/
-csum-cli ~/Downloads/archive.zip
+csum-cli ~/Downloads/archive.zip > archive.csum.csv
 ```
 
 For a universal binary (Apple silicon and Intel):
@@ -118,27 +119,10 @@ An unsigned, locally built `.app` runs fine on your own Mac — Gatekeeper only
 scrutinizes downloaded (quarantined) files. For anyone else's Mac, either let Xcode
 sign it with your Development Team, or share the repo and have them build it.
 
-Using these from Finder:
-
-- Double-clicking the raw `csum-cli` executable opens a Terminal window, but with no
-  arguments it just prints usage and exits — it wants arguments, so the CLI is a
-  Terminal tool.
-- The Finder-facing tool is the GUI app: pick a file and it reports name, path, and
-  checksum.
-- To get "drop a file, get a checksum," make a droplet with Automator: New →
-  Application → add a Run Shell Script action, set "Pass input: as arguments", body:
-  ```
-  for f in "$@"; do
-    /usr/local/bin/csum-cli "$f"
-  done
-  ```
-  Save as `csum-drop.app` and drop files onto it (pipe through `pbcopy` or show an
-  `osascript` dialog if you want the result captured instead of printed).
-
 ## Layout
 
 ```
-Sources/ChecksumCore/    shared hashing library (CryptoKit)
+Sources/ChecksumCore/    shared hashing library + CSV model/compare (CryptoKit)
 Sources/csum-cli/        command-line tool (swift-argument-parser)
 csum.xcodeproj/          SwiftUI app project (iPhone, iPad, Mac)
 csum/                    app sources

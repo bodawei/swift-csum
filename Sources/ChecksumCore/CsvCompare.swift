@@ -1,85 +1,109 @@
 import Foundation
 
-struct CsvRow: Sendable {
-    var filename = ""
-    var checksum = ""
-    var algorithm = ""
-    var size = ""
-    var created = ""
-    var modified = ""
-    var path = ""
+public struct CsvRow: Sendable {
+    public var filename = ""
+    public var checksum = ""
+    public var algorithm = ""
+    public var size = ""
+    public var created = ""
+    public var modified = ""
+    public var path = ""
+
+    public init(
+        filename: String = "",
+        checksum: String = "",
+        algorithm: String = "",
+        size: String = "",
+        created: String = "",
+        modified: String = "",
+        path: String = ""
+    ) {
+        self.filename = filename
+        self.checksum = checksum
+        self.algorithm = algorithm
+        self.size = size
+        self.created = created
+        self.modified = modified
+        self.path = path
+    }
 }
 
-struct MovedPair: Sendable {
-    let from: CsvRow
-    let to: CsvRow
+public struct MovedPair: Sendable {
+    public let from: CsvRow
+    public let to: CsvRow
 }
 
-struct ChangedPair: Sendable {
-    let old: CsvRow
-    let new: CsvRow
+public struct ChangedPair: Sendable {
+    public let old: CsvRow
+    public let new: CsvRow
 }
 
-struct ComparisonReport: Sendable {
-    var unchanged: [CsvRow] = []
-    var added: [CsvRow] = []
-    var removed: [CsvRow] = []
-    var moved: [MovedPair] = []
-    var changed: [ChangedPair] = []
+public struct ComparisonReport: Sendable {
+    public var unchanged: [CsvRow] = []
+    public var added: [CsvRow] = []
+    public var removed: [CsvRow] = []
+    public var moved: [MovedPair] = []
+    public var changed: [ChangedPair] = []
 
-    var isEmpty: Bool {
+    public var isEmpty: Bool {
         unchanged.isEmpty && added.isEmpty && removed.isEmpty && moved.isEmpty && changed.isEmpty
     }
 }
 
-enum CsvCompare {
-    static func parse(_ text: String) -> [[String]] {
-        var characters = text
-        if characters.hasPrefix("\u{FEFF}") {
-            characters.removeFirst()
+public enum CsvCompare {
+    public static func parse(_ text: String) -> [[String]] {
+        var scalars = text.unicodeScalars
+        if scalars.first == "\u{FEFF}" {
+            scalars.removeFirst()
         }
         var rows: [[String]] = []
         var row: [String] = []
-        var field = ""
+        var field = String.UnicodeScalarView()
         var inQuotes = false
-        var index = characters.startIndex
-        while index < characters.endIndex {
-            let character = characters[index]
+        var index = scalars.startIndex
+        while index < scalars.endIndex {
+            let scalar = scalars[index]
             if inQuotes {
-                if character == "\"" {
-                    let next = characters.index(after: index)
-                    if next < characters.endIndex && characters[next] == "\"" {
-                        field.append("\"")
+                if scalar == "\"" {
+                    let next = scalars.index(after: index)
+                    if next < scalars.endIndex && scalars[next] == "\"" {
+                        field.append(scalar)
                         index = next
                     } else {
                         inQuotes = false
                     }
                 } else {
-                    field.append(character)
+                    field.append(scalar)
                 }
-            } else if character == "\"" {
+            } else if scalar == "\"" {
                 inQuotes = true
-            } else if character == "," {
-                row.append(field)
-                field = ""
-            } else if character == "\n" {
-                row.append(field)
-                field = ""
+            } else if scalar == "," {
+                row.append(String(field))
+                field = String.UnicodeScalarView()
+            } else if scalar == "\n" || scalar == "\r" {
+                row.append(String(field))
+                field = String.UnicodeScalarView()
                 rows.append(row)
                 row = []
-            } else if character != "\r" {
-                field.append(character)
+                if scalar == "\r" {
+                    let next = scalars.index(after: index)
+                    if next < scalars.endIndex && scalars[next] == "\n" {
+                        index = next
+                    }
+                }
+            } else {
+                field.append(scalar)
             }
-            index = characters.index(after: index)
+            index = scalars.index(after: index)
         }
         if !field.isEmpty || !row.isEmpty {
-            row.append(field)
+            row.append(String(field))
             rows.append(row)
         }
         return rows
     }
 
-    static func rows(from text: String) -> [CsvRow] {
+    public static func rows(from text: String) -> [CsvRow] {
         let fields = parse(text).filter { !$0.isEmpty && !($0.count == 1 && $0[0].isEmpty) }
         let cleaned = fields.filter { !($0.first?.hasPrefix("#") ?? false) }
         let dataRows = cleaned.first?.first == "Filename" ? Array(cleaned.dropFirst()) : cleaned
@@ -96,7 +120,7 @@ enum CsvCompare {
         }
     }
 
-    static func compare(first: [CsvRow], second: [CsvRow]) -> ComparisonReport {
+    public static func compare(first: [CsvRow], second: [CsvRow]) -> ComparisonReport {
         var report = ComparisonReport()
         var byPath = Dictionary(grouping: second, by: { $0.path })
         var movePool = Dictionary(grouping: second, by: { "\($0.checksum)\u{1F}\($0.size)" })
