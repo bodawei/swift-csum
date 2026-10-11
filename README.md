@@ -13,7 +13,8 @@ Pick the algorithm from the dropdown — on Mac it sits inside the file-open dia
 iPhone/iPad it's the dropdown by the button and remembers your last choice. Choose
 files with **Choose Files…** or a folder with **Choose Folder…** (the system picker
 can't mix the two in one dialog). Folders are checksummed recursively — every file at
-every depth gets a row (hidden files included), sorted by path; a file that can't be
+every depth gets a row (hidden files included), sorted by path, with paths shown
+relative to the picked folder as `./…`; a file that can't be
 read gets `Error: <details>` in its checksum cell instead of a digest. The result is a
 table with column headings and visible cell boundaries, scrolled as needed, plus a
 Copy Rows button that copies every row as a tab-separated line (paste-ready for a
@@ -33,7 +34,8 @@ spreadsheet):
 If the checksum or path is wider than the window, the table scrolls horizontally. Copy
 Rows puts every row on the clipboard as tab-separated lines; **Save CSV…** writes the
 same data as an Excel-ready comma-separated file (`checksums.csum.csv` — RFC 4180
-quoting, CRLF line endings, UTF-8 BOM).
+quoting, CRLF line endings, UTF-8 BOM), starting with two `#` comment lines recording
+the writing app/version, the source path(s), and the ISO-8601 date.
 
 **Compare CSVs…** asks you to pick two saved `.csum.csv` files in sequence — the older
 one first, then the newer — and groups every entry into color-labeled sections: **Unchanged** (same path, hash, and size), **Added** (only in
