@@ -8,6 +8,7 @@ import ChecksumCore
 struct FileChecksumResult: Sendable {
     let name: String
     let path: String
+    let fullPath: String
     let size: Int64
     let creationDate: Date?
     let modificationDate: Date?
@@ -62,6 +63,7 @@ struct ContentView: View {
     @State private var totalFiles = 0
     @State private var result: [FileChecksumResult]?
     @State private var comparison: CsvComparison?
+    @State private var sourcePaths = ""
     @State private var exportDocument: CSVDocument?
     @State private var isExporting = false
     @State private var errorMessage: String?
@@ -279,7 +281,6 @@ struct ContentView: View {
         let panel = NSOpenPanel()
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
-        panel.allowsMultipleSelection = false
         panel.allowedContentTypes = [.commaSeparatedText]
         panel.message = message
         guard let window = NSApplication.shared.mainWindow ?? NSApplication.shared.windows.first else {
@@ -316,7 +317,7 @@ struct ContentView: View {
                             tableCell(Text(title).font(.caption.bold()), width: columnWidths[index])
                         }
                     }
-                    ForEach(items, id: \.path) { item in
+                    ForEach(items, id: \.fullPath) { item in
                         HStack(spacing: 0) {
                             tableCell(Text(item.name).font(.caption), width: columnWidths[0])
                             checksumCell(item, width: columnWidths[1])
@@ -516,8 +517,14 @@ struct ContentView: View {
     }
 
     private func csvText(for items: [FileChecksumResult]) -> String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+        let date = Date.now.formatted(.iso8601)
+        let comments = [
+            "# written by csum v\(version).",
+            "# Checksums of files at \(sourcePaths) done on \(date)"
+        ]
         let header = columnTitles.map(csvField).joined(separator: ",")
-        return ([header] + items.map(csvLine)).joined(separator: "\r\n")
+        return (comments + [header] + items.map(csvLine)).joined(separator: "\r\n")
     }
 
     private func compareCsv(at first: URL, second: URL) {
@@ -565,13 +572,14 @@ struct ContentView: View {
         isComputing = true
         processedFiles = 0
         totalFiles = 0
+        sourcePaths = urls.map(\.path).joined(separator: ", ")
         let selectedAlgorithm = algorithm
         Task.detached(priority: .userInitiated) {
             var accessed: [URL] = []
             var rows: [FileChecksumResult] = []
             var failure: Error?
             do {
-                var files: [URL] = []
+                var files: [(url: URL, base: String?)] = []
                 for url in urls {
                     if url.startAccessingSecurityScopedResource() {
                         accessed.append(url)
@@ -581,17 +589,23 @@ struct ContentView: View {
                         continue
                     }
                     if values.isDirectory == true {
-                        files.append(contentsOf: Self.enumerateFiles(in: url))
+                        var base = url.path
+                        if base.hasSuffix("/") && base.count > 1 {
+                            base.removeLast()
+                        }
+                        for file in Self.enumerateFiles(in: url) {
+                            files.append((file, base))
+                        }
                     } else {
-                        files.append(url)
+                        files.append((url, nil))
                     }
                 }
-                let sorted = files.sorted { $0.path < $1.path }
+                let sorted = files.sorted { $0.url.path < $1.url.path }
                 await MainActor.run {
                     totalFiles = sorted.count
                 }
                 for index in sorted.indices {
-                    rows.append(Self.row(for: sorted[index], algorithm: selectedAlgorithm))
+                    rows.append(Self.row(for: sorted[index].url, algorithm: selectedAlgorithm, base: sorted[index].base))
                     if index % 37 == 0 {
                         let count = index + 1
                         await MainActor.run {
@@ -642,13 +656,15 @@ struct ContentView: View {
         return files
     }
 
-    private nonisolated static func row(for url: URL, algorithm: ChecksumAlgorithm) -> FileChecksumResult {
+    private nonisolated static func row(for url: URL, algorithm: ChecksumAlgorithm, base: String?) -> FileChecksumResult {
         let values = try? url.resourceValues(forKeys: [.fileSizeKey, .creationDateKey, .contentModificationDateKey])
+        let path = displayPath(for: url.path, base: base)
         do {
             let digest = try ChecksumCalculator.checksum(of: url, algorithm: algorithm)
             return FileChecksumResult(
                 name: url.lastPathComponent,
-                path: url.path,
+                path: path,
+                fullPath: url.path,
                 size: Int64(values?.fileSize ?? 0),
                 creationDate: values?.creationDate,
                 modificationDate: values?.contentModificationDate,
@@ -659,7 +675,8 @@ struct ContentView: View {
         } catch {
             return FileChecksumResult(
                 name: url.lastPathComponent,
-                path: url.path,
+                path: path,
+                fullPath: url.path,
                 size: Int64(values?.fileSize ?? 0),
                 creationDate: values?.creationDate,
                 modificationDate: values?.contentModificationDate,
@@ -668,6 +685,17 @@ struct ContentView: View {
                 errorMessage: error.localizedDescription
             )
         }
+    }
+
+    private nonisolated static func displayPath(for path: String, base: String?) -> String {
+        guard let base else {
+            return path
+        }
+        let prefix = base.hasSuffix("/") ? base : base + "/"
+        if path.hasPrefix(prefix) {
+            return "./" + String(path.dropFirst(prefix.count))
+        }
+        return path
     }
 
     private func presentMessage(_ message: String) {

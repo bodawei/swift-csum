@@ -81,7 +81,8 @@ enum CsvCompare {
 
     static func rows(from text: String) -> [CsvRow] {
         let fields = parse(text).filter { !$0.isEmpty && !($0.count == 1 && $0[0].isEmpty) }
-        let dataRows = fields.first?.first == "Filename" ? Array(fields.dropFirst()) : fields
+        let cleaned = fields.filter { !($0.first?.hasPrefix("#") ?? false) }
+        let dataRows = cleaned.first?.first == "Filename" ? Array(cleaned.dropFirst()) : cleaned
         return dataRows.map { columns in
             var row = CsvRow()
             if columns.count > 0 { row.filename = columns[0] }
