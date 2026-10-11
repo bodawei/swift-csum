@@ -11,7 +11,10 @@ destination runs the same app on your Mac — no separate macOS target needed.
 
 The start screen has **Checksum File** and **Checksum Folder** buttons — pick the
 algorithm from the dropdown (on Mac it sits inside the open dialog; on iPhone/iPad it's
-the dropdown by the buttons and remembers your last choice). Folders are checksummed
+the dropdown by the buttons and remembers your last choice). You can also drag files
+and folders from Finder and drop them straight onto these buttons (or onto the compare
+form's buttons — the `.csum.csv` buttons accept only `.csum.csv` files); dropped items
+are handled exactly as if picked in the file dialog. Folders are checksummed
 recursively — every file at every depth gets a row (hidden files included), sorted by
 path, with paths shown relative to the picked folder as `./…`; a file that can't be read
 gets `Error: <details>` in its checksum cell instead of a digest.

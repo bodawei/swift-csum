@@ -70,6 +70,10 @@ struct ContentView: View {
     @State private var pendingCsvSlot: Int?
     @State private var pendingFolderSlot: Int?
     @State private var compareSources: [CompareSource?] = [nil, nil]
+    @State private var checksumDropTargeted = false
+    @State private var folderChecksumDropTargeted = false
+    @State private var csvSlotTargeted = [false, false]
+    @State private var folderSlotTargeted = [false, false]
     @State private var isComputing = false
     @State private var isComparing = false
     @State private var processedFiles = 0
@@ -148,6 +152,13 @@ struct ContentView: View {
                         }
                         .buttonStyle(.borderedProminent)
                         .disabled(isComputing || isComparing)
+                        .dropDestination(for: URL.self) { urls, _ in
+                            computeChecksums(of: urls)
+                            return true
+                        } isTargeted: {
+                            checksumDropTargeted = $0
+                        }
+                        .dropHighlight(checksumDropTargeted)
 
                         Button("Checksum Folder") {
                             #if os(macOS)
@@ -158,6 +169,13 @@ struct ContentView: View {
                         }
                         .buttonStyle(.borderedProminent)
                         .disabled(isComputing || isComparing)
+                        .dropDestination(for: URL.self) { urls, _ in
+                            computeChecksums(of: urls)
+                            return true
+                        } isTargeted: {
+                            folderChecksumDropTargeted = $0
+                        }
+                        .dropHighlight(folderChecksumDropTargeted)
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
@@ -248,6 +266,21 @@ struct ContentView: View {
             }
             .buttonStyle(.bordered)
             .disabled(isComputing || isComparing)
+            .dropDestination(for: URL.self) { urls, _ in
+                guard let url = urls.first, url.path.lowercased().hasSuffix(".csum.csv") else {
+                    return false
+                }
+                compareSources[index] = CompareSource(
+                    name: url.lastPathComponent,
+                    path: url.path,
+                    url: url,
+                    isFolder: false
+                )
+                return true
+            } isTargeted: {
+                csvSlotTargeted[index] = $0
+            }
+            .dropHighlight(csvSlotTargeted[index])
 
             Button("Choose Folder") {
                 #if os(macOS)
@@ -259,6 +292,22 @@ struct ContentView: View {
             }
             .buttonStyle(.bordered)
             .disabled(isComputing || isComparing)
+            .dropDestination(for: URL.self) { urls, _ in
+                guard let url = urls.first else {
+                    return false
+                }
+                let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+                compareSources[index] = CompareSource(
+                    name: url.lastPathComponent,
+                    path: url.path,
+                    url: url,
+                    isFolder: isDirectory
+                )
+                return true
+            } isTargeted: {
+                folderSlotTargeted[index] = $0
+            }
+            .dropHighlight(folderSlotTargeted[index])
 
             if let source = compareSources[index] {
                 Text(source.summary)
@@ -793,5 +842,16 @@ struct ContentView: View {
 
     private func presentError(_ error: Error) {
         presentMessage(error.localizedDescription)
+    }
+}
+
+extension View {
+    func dropHighlight(_ targeted: Bool) -> some View {
+        overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.accentColor, lineWidth: 3)
+                .opacity(targeted ? 1 : 0)
+                .animation(.easeInOut(duration: 0.15), value: targeted)
+        )
     }
 }
