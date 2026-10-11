@@ -14,9 +14,11 @@ public enum ChecksumCollector {
     public static func collect(url: URL, algorithm: ChecksumAlgorithm) -> [CsvRow] {
         let resolved = url.resolvingSymlinksInPath()
         let isDirectory = (try? resolved.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+        
         if !isDirectory {
             return [row(for: resolved, base: nil, algorithm: algorithm)]
         }
+        
         var base = canonicalPath(for: resolved.path)
         if base.hasSuffix("/") && base.count > 1 {
             base.removeLast()
