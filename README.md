@@ -37,8 +37,10 @@ same data as an Excel-ready comma-separated file (`checksums.csum.csv` — RFC 4
 quoting, CRLF line endings, UTF-8 BOM), starting with two `#` comment lines recording
 the writing app/version, the source path(s), and the ISO-8601 date.
 
-**Compare CSVs…** asks you to pick two saved `.csum.csv` files in sequence — the older
-one first, then the newer — and groups every entry into color-labeled sections: **Unchanged** (same path, hash, and size), **Added** (only in
+The compare form has two rows; each row takes either a saved `.csum.csv`
+(**Choose .csum.csv**) or a folder (**Choose Folder** — its checksums are computed on
+the spot, with the current algorithm). Once both rows show their pick, **Compare**
+enables and groups every entry into color-labeled sections: **Unchanged** (same path, hash, and size), **Added** (only in
 the second file), **Removed** (only in the first), **Moved** (same hash and size at a
 different path, shown as from → to), and **Changed** (same path, different hash or
 size, showing old and new values side by side).
