@@ -11,6 +11,13 @@
 		C50000000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000012 /* ContentView.swift */; };
 		C50000000000000000000003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000013 /* Assets.xcassets */; };
 		C50000000000000000000004 /* ChecksumCore in Frameworks */ = {isa = PBXBuildFile; productRef = C50000000000000000000030 /* ChecksumCore */; };
+		C50000000000000000000006 /* CompareSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000017 /* CompareSource.swift */; };
+		C50000000000000000000007 /* CSVDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000018 /* CSVDocument.swift */; };
+		C50000000000000000000008 /* ResultTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000019 /* ResultTableView.swift */; };
+		C50000000000000000000009 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5000000000000000000001A /* ReportView.swift */; };
+		C5000000000000000000000A /* CompareFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5000000000000000000001B /* CompareFormView.swift */; };
+		C5000000000000000000000B /* TableCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5000000000000000000001C /* TableCells.swift */; };
+		C5000000000000000000000C /* FileDialogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5000000000000000000001D /* FileDialogs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +27,13 @@
 		C50000000000000000000014 /* csum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "csum.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C50000000000000000000015 /* CsvCompare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvCompare.swift; sourceTree = "<group>"; };
 		C50000000000000000000016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C50000000000000000000017 /* CompareSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareSource.swift; sourceTree = "<group>"; };
+		C50000000000000000000018 /* CSVDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVDocument.swift; sourceTree = "<group>"; };
+		C50000000000000000000019 /* ResultTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableView.swift; sourceTree = "<group>"; };
+		C5000000000000000000001A /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
+		C5000000000000000000001B /* CompareFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareFormView.swift; sourceTree = "<group>"; };
+		C5000000000000000000001C /* TableCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCells.swift; sourceTree = "<group>"; };
+		C5000000000000000000001D /* FileDialogs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDialogs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +62,13 @@
 				C50000000000000000000011 /* ChecksumApp.swift */,
 				C50000000000000000000012 /* ContentView.swift */,
 				C50000000000000000000016 /* Info.plist */,
+				C50000000000000000000017 /* CompareSource.swift */,
+				C50000000000000000000018 /* CSVDocument.swift */,
+				C50000000000000000000019 /* ResultTableView.swift */,
+				C5000000000000000000001A /* ReportView.swift */,
+				C5000000000000000000001B /* CompareFormView.swift */,
+				C5000000000000000000001C /* TableCells.swift */,
+				C5000000000000000000001D /* FileDialogs.swift */,
 				C50000000000000000000013 /* Assets.xcassets */,
 			);
 			path = "csum";
@@ -138,6 +159,13 @@
 			files = (
 				C50000000000000000000001 /* ChecksumApp.swift in Sources */,
 				C50000000000000000000002 /* ContentView.swift in Sources */,
+				C50000000000000000000006 /* CompareSource.swift in Sources */,
+				C50000000000000000000007 /* CSVDocument.swift in Sources */,
+				C50000000000000000000008 /* ResultTableView.swift in Sources */,
+				C50000000000000000000009 /* ReportView.swift in Sources */,
+				C5000000000000000000000A /* CompareFormView.swift in Sources */,
+				C5000000000000000000000B /* TableCells.swift in Sources */,
+				C5000000000000000000000C /* FileDialogs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
