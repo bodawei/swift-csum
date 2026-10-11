@@ -17,6 +17,17 @@ struct FileChecksumResult: Sendable {
     let errorMessage: String?
 }
 
+struct CompareSource: Sendable {
+    let name: String
+    let path: String
+    let url: URL
+    let isFolder: Bool
+
+    var summary: String {
+        "\(name) — \(path)"
+    }
+}
+
 struct CsvComparison: Sendable {
     let firstName: String
     let secondName: String
@@ -54,9 +65,11 @@ struct ContentView: View {
     @AppStorage("checksumAlgorithm") private var algorithmRawValue = ChecksumAlgorithm.sha256.rawValue
     @State private var isImportingFiles = false
     @State private var isImportingFolder = false
-    @State private var isImportingFirstCsv = false
-    @State private var isImportingSecondCsv = false
-    @State private var stagedFirstCsv: URL?
+    @State private var isImportingCsvSlot = false
+    @State private var isImportingFolderSlot = false
+    @State private var pendingCsvSlot: Int?
+    @State private var pendingFolderSlot: Int?
+    @State private var compareSources: [CompareSource?] = [nil, nil]
     @State private var isComputing = false
     @State private var isComparing = false
     @State private var processedFiles = 0
@@ -96,7 +109,7 @@ struct ContentView: View {
                 if isComputing {
                     ProgressView("Computing checksum \(processedFiles) of \(totalFiles)…")
                 } else if isComparing {
-                    ProgressView("Comparing CSVs…")
+                    ProgressView("Comparing…")
                 } else if let comparison {
                     reportView(comparison)
                 } else if let rows = result {
@@ -107,7 +120,7 @@ struct ContentView: View {
                         resultCard(rows)
                     }
                 } else {
-                    Text("Choose files or a folder to compute checksums.")
+                    Text("Checksum a file or folder, or fill in two sources below and compare.")
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                 }
@@ -126,7 +139,7 @@ struct ContentView: View {
                         .disabled(isComputing || isComparing)
                         #endif
 
-                        Button("Choose Files…") {
+                        Button("Checksum File") {
                             #if os(macOS)
                             presentOpenPanel(selectFolders: false)
                             #else
@@ -136,26 +149,29 @@ struct ContentView: View {
                         .buttonStyle(.borderedProminent)
                         .disabled(isComputing || isComparing)
 
-                        Button("Choose Folder…") {
+                        Button("Checksum Folder") {
                             #if os(macOS)
                             presentOpenPanel(selectFolders: true)
                             #else
                             isImportingFolder = true
                             #endif
                         }
-                        .buttonStyle(.bordered)
+                        .buttonStyle(.borderedProminent)
                         .disabled(isComputing || isComparing)
                     }
 
-                    Button("Compare CSVs…") {
-                        #if os(macOS)
-                        presentCompareFlow()
-                        #else
-                        isImportingFirstCsv = true
-                        #endif
+                    VStack(alignment: .leading, spacing: 8) {
+                        compareRow(0)
+                        compareRow(1)
+                        Button("Compare") {
+                            runComparison()
+                        }
+                        .buttonStyle(.bordered)
+                        .disabled(compareSources[0] == nil || compareSources[1] == nil || isComputing || isComparing)
+                        .frame(maxWidth: .infinity, alignment: .center)
                     }
-                    .buttonStyle(.bordered)
-                    .disabled(isComputing || isComparing)
+                    .padding(10)
+                    .background(Color.secondary.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
                 }
             }
             .padding()
@@ -176,18 +192,18 @@ struct ContentView: View {
                 handlePicked(picked)
             }
             .fileImporter(
-                isPresented: $isImportingFirstCsv,
+                isPresented: $isImportingCsvSlot,
                 allowedContentTypes: [.commaSeparatedText],
                 allowsMultipleSelection: false
             ) { picked in
-                handleFirstCsvPicked(picked)
+                handleCsvSlotPicked(picked)
             }
             .fileImporter(
-                isPresented: $isImportingSecondCsv,
-                allowedContentTypes: [.commaSeparatedText],
+                isPresented: $isImportingFolderSlot,
+                allowedContentTypes: [.folder],
                 allowsMultipleSelection: false
             ) { picked in
-                handleSecondCsvPicked(picked)
+                handleFolderSlotPicked(picked)
             }
             #endif
             .fileExporter(
@@ -208,6 +224,43 @@ struct ContentView: View {
         }
     }
 
+    @ViewBuilder
+    private func compareRow(_ index: Int) -> some View {
+        HStack(spacing: 10) {
+            Button("Choose .csum.csv") {
+                #if os(macOS)
+                presentSlotPicker(slot: index, foldersOnly: false)
+                #else
+                pendingCsvSlot = index
+                isImportingCsvSlot = true
+                #endif
+            }
+            .buttonStyle(.bordered)
+            .disabled(isComputing || isComparing)
+
+            Button("Choose Folder") {
+                #if os(macOS)
+                presentSlotPicker(slot: index, foldersOnly: true)
+                #else
+                pendingFolderSlot = index
+                isImportingFolderSlot = true
+                #endif
+            }
+            .buttonStyle(.bordered)
+            .disabled(isComputing || isComparing)
+
+            if let source = compareSources[index] {
+                Text(source.summary)
+                    .font(.caption)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                    .textSelection(.enabled)
+            }
+
+            Spacer()
+        }
+    }
+
     #if os(iOS)
     private func handlePicked(_ picked: Result<[URL], Error>) {
         switch picked {
@@ -220,29 +273,30 @@ struct ContentView: View {
         }
     }
 
-    private func handleFirstCsvPicked(_ picked: Result<[URL], Error>) {
+    private func handleCsvSlotPicked(_ picked: Result<[URL], Error>) {
+        guard let slot = pendingCsvSlot else {
+            return
+        }
         guard case .success(let urls) = picked, let url = urls.first else {
             if case .failure(let error) = picked, !isUserCancelled(error) {
                 presentError(error)
             }
             return
         }
-        stagedFirstCsv = url
-        isImportingSecondCsv = true
+        compareSources[slot] = CompareSource(name: url.lastPathComponent, path: url.path, url: url, isFolder: false)
     }
 
-    private func handleSecondCsvPicked(_ picked: Result<[URL], Error>) {
+    private func handleFolderSlotPicked(_ picked: Result<[URL], Error>) {
+        guard let slot = pendingFolderSlot else {
+            return
+        }
         guard case .success(let urls) = picked, let url = urls.first else {
-            stagedFirstCsv = nil
             if case .failure(let error) = picked, !isUserCancelled(error) {
                 presentError(error)
             }
             return
         }
-        if let first = stagedFirstCsv {
-            stagedFirstCsv = nil
-            compareCsv(at: first, second: url)
-        }
+        compareSources[slot] = CompareSource(name: url.lastPathComponent, path: url.path, url: url, isFolder: true)
     }
     #endif
 
@@ -277,32 +331,30 @@ struct ContentView: View {
         }
     }
 
-    private func presentCsvPicker(message: String, completion: @escaping (URL?) -> Void) {
+    private func presentSlotPicker(slot: Int, foldersOnly: Bool) {
         let panel = NSOpenPanel()
-        panel.canChooseFiles = true
-        panel.canChooseDirectories = false
-        panel.allowedContentTypes = [.commaSeparatedText]
-        panel.message = message
+        panel.canChooseFiles = !foldersOnly
+        panel.canChooseDirectories = foldersOnly
+        panel.allowsMultipleSelection = false
+        if foldersOnly {
+            panel.message = "Choose a folder"
+        } else {
+            panel.allowedContentTypes = [.commaSeparatedText]
+            panel.message = "Choose a .csum.csv file"
+        }
         guard let window = NSApplication.shared.mainWindow ?? NSApplication.shared.windows.first else {
-            completion(nil)
             return
         }
         panel.beginSheetModal(for: window) { response in
-            completion(response == .OK ? panel.url : nil)
-        }
-    }
-
-    private func presentCompareFlow() {
-        presentCsvPicker(message: "Choose the OLDER .csum.csv file") { first in
-            guard let first else {
+            guard response == .OK, let url = panel.url else {
                 return
             }
-            presentCsvPicker(message: "Choose the NEWER .csum.csv file") { second in
-                guard let second else {
-                    return
-                }
-                compareCsv(at: first, second: second)
-            }
+            compareSources[slot] = CompareSource(
+                name: url.lastPathComponent,
+                path: url.path,
+                url: url,
+                isFolder: foldersOnly
+            )
         }
     }
     #endif
@@ -362,7 +414,7 @@ struct ContentView: View {
         ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Older: \(comparison.firstName) · Newer: \(comparison.secondName)")
+                    Text("First: \(comparison.firstName) · Second: \(comparison.secondName)")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .textSelection(.enabled)
@@ -527,17 +579,21 @@ struct ContentView: View {
         return (comments + [header] + items.map(csvLine)).joined(separator: "\r\n")
     }
 
-    private func compareCsv(at first: URL, second: URL) {
+    private func runComparison() {
+        guard let first = compareSources[0], let second = compareSources[1] else {
+            return
+        }
         isComparing = true
+        let selectedAlgorithm = algorithm
         Task.detached(priority: .userInitiated) {
             var built: CsvComparison?
             var failure: Error?
             do {
-                let firstRows = try Self.readCsv(at: first)
-                let secondRows = try Self.readCsv(at: second)
+                let firstRows = try Self.resolveRows(for: first, algorithm: selectedAlgorithm)
+                let secondRows = try Self.resolveRows(for: second, algorithm: selectedAlgorithm)
                 built = CsvComparison(
-                    firstName: first.lastPathComponent,
-                    secondName: second.lastPathComponent,
+                    firstName: first.name,
+                    secondName: second.name,
                     report: CsvCompare.compare(first: firstRows, second: secondRows)
                 )
             } catch {
@@ -554,6 +610,39 @@ struct ContentView: View {
                     comparison = finalBuilt
                 }
             }
+        }
+    }
+
+    private nonisolated static func resolveRows(for source: CompareSource, algorithm: ChecksumAlgorithm) throws -> [CsvRow] {
+        if source.isFolder {
+            return csvRows(forFolder: source.url, algorithm: algorithm)
+        }
+        return try readCsv(at: source.url)
+    }
+
+    private nonisolated static func csvRows(forFolder folder: URL, algorithm: ChecksumAlgorithm) -> [CsvRow] {
+        let accessing = folder.startAccessingSecurityScopedResource()
+        defer {
+            if accessing {
+                folder.stopAccessingSecurityScopedResource()
+            }
+        }
+        var base = folder.path
+        if base.hasSuffix("/") && base.count > 1 {
+            base.removeLast()
+        }
+        let files = enumerateFiles(in: folder).sorted { $0.path < $1.path }
+        return files.map { file in
+            let item = row(for: file, algorithm: algorithm, base: base)
+            return CsvRow(
+                filename: item.name,
+                checksum: item.errorMessage.map { "Error: \($0)" } ?? item.digest,
+                algorithm: item.algorithm.rawValue,
+                size: String(item.size),
+                created: item.creationDate.map { String(Int64($0.timeIntervalSince1970)) } ?? "",
+                modified: item.modificationDate.map { String(Int64($0.timeIntervalSince1970)) } ?? "",
+                path: item.path
+            )
         }
     }
 
