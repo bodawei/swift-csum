@@ -16,6 +16,12 @@ struct FileChecksumResult: Sendable {
     let errorMessage: String?
 }
 
+struct CsvComparison: Sendable {
+    let firstName: String
+    let secondName: String
+    let report: ComparisonReport
+}
+
 struct CSVDocument: FileDocument {
     static var readableContentTypes: [UTType] {
         [.commaSeparatedText]
@@ -42,18 +48,28 @@ struct CSVDocument: FileDocument {
 struct ContentView: View {
     private let columnTitles = ["Filename", "Checksum", "Algorithm", "Size", "Created", "Modified", "Path"]
     private let columnWidths: [CGFloat] = [170, 470, 90, 110, 100, 100, 340]
+    private let standardColumns: [(title: String, width: CGFloat)]
 
     @AppStorage("checksumAlgorithm") private var algorithmRawValue = ChecksumAlgorithm.sha256.rawValue
     @State private var isImportingFiles = false
     @State private var isImportingFolder = false
+    @State private var isImportingFirstCsv = false
+    @State private var isImportingSecondCsv = false
+    @State private var stagedFirstCsv: URL?
     @State private var isComputing = false
+    @State private var isComparing = false
     @State private var processedFiles = 0
     @State private var totalFiles = 0
     @State private var result: [FileChecksumResult]?
+    @State private var comparison: CsvComparison?
     @State private var exportDocument: CSVDocument?
     @State private var isExporting = false
     @State private var errorMessage: String?
     @State private var showError = false
+
+    init() {
+        standardColumns = Array(zip(columnTitles, columnWidths))
+    }
 
     private var tableWidth: CGFloat {
         columnWidths.reduce(0, +)
@@ -77,6 +93,10 @@ struct ContentView: View {
 
                 if isComputing {
                     ProgressView("Computing checksum \(processedFiles) of \(totalFiles)…")
+                } else if isComparing {
+                    ProgressView("Comparing CSVs…")
+                } else if let comparison {
+                    reportView(comparison)
                 } else if let rows = result {
                     if rows.isEmpty {
                         Text("No files found.")
@@ -92,36 +112,48 @@ struct ContentView: View {
 
                 Spacer()
 
-                HStack(spacing: 16) {
-                    #if os(iOS)
-                    Picker("Algorithm", selection: algorithmBinding) {
-                        ForEach(ChecksumAlgorithm.allCases, id: \.self) { item in
-                            Text(item.displayName).tag(item)
+                VStack(spacing: 12) {
+                    HStack(spacing: 16) {
+                        #if os(iOS)
+                        Picker("Algorithm", selection: algorithmBinding) {
+                            ForEach(ChecksumAlgorithm.allCases, id: \.self) { item in
+                                Text(item.displayName).tag(item)
+                            }
                         }
-                    }
-                    .pickerStyle(.menu)
-                    .disabled(isComputing)
-                    #endif
-
-                    Button("Choose Files…") {
-                        #if os(macOS)
-                        presentOpenPanel(selectFolders: false)
-                        #else
-                        isImportingFiles = true
+                        .pickerStyle(.menu)
+                        .disabled(isComputing || isComparing)
                         #endif
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(isComputing)
 
-                    Button("Choose Folder…") {
+                        Button("Choose Files…") {
+                            #if os(macOS)
+                            presentOpenPanel(selectFolders: false)
+                            #else
+                            isImportingFiles = true
+                            #endif
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .disabled(isComputing || isComparing)
+
+                        Button("Choose Folder…") {
+                            #if os(macOS)
+                            presentOpenPanel(selectFolders: true)
+                            #else
+                            isImportingFolder = true
+                            #endif
+                        }
+                        .buttonStyle(.bordered)
+                        .disabled(isComputing || isComparing)
+                    }
+
+                    Button("Compare CSVs…") {
                         #if os(macOS)
-                        presentOpenPanel(selectFolders: true)
+                        presentCompareFlow()
                         #else
-                        isImportingFolder = true
+                        isImportingFirstCsv = true
                         #endif
                     }
                     .buttonStyle(.bordered)
-                    .disabled(isComputing)
+                    .disabled(isComputing || isComparing)
                 }
             }
             .padding()
@@ -140,6 +172,20 @@ struct ContentView: View {
                 allowsMultipleSelection: true
             ) { picked in
                 handlePicked(picked)
+            }
+            .fileImporter(
+                isPresented: $isImportingFirstCsv,
+                allowedContentTypes: [.commaSeparatedText],
+                allowsMultipleSelection: false
+            ) { picked in
+                handleFirstCsvPicked(picked)
+            }
+            .fileImporter(
+                isPresented: $isImportingSecondCsv,
+                allowedContentTypes: [.commaSeparatedText],
+                allowsMultipleSelection: false
+            ) { picked in
+                handleSecondCsvPicked(picked)
             }
             #endif
             .fileExporter(
@@ -166,10 +212,41 @@ struct ContentView: View {
         case .success(let urls):
             computeChecksums(of: urls)
         case .failure(let error):
-            presentError(error)
+            if !isUserCancelled(error) {
+                presentError(error)
+            }
+        }
+    }
+
+    private func handleFirstCsvPicked(_ picked: Result<[URL], Error>) {
+        guard case .success(let urls) = picked, let url = urls.first else {
+            if case .failure(let error) = picked, !isUserCancelled(error) {
+                presentError(error)
+            }
+            return
+        }
+        stagedFirstCsv = url
+        isImportingSecondCsv = true
+    }
+
+    private func handleSecondCsvPicked(_ picked: Result<[URL], Error>) {
+        guard case .success(let urls) = picked, let url = urls.first else {
+            stagedFirstCsv = nil
+            if case .failure(let error) = picked, !isUserCancelled(error) {
+                presentError(error)
+            }
+            return
+        }
+        if let first = stagedFirstCsv {
+            stagedFirstCsv = nil
+            compareCsv(at: first, second: url)
         }
     }
     #endif
+
+    private func isUserCancelled(_ error: Error) -> Bool {
+        (error as NSError).code == NSUserCancelledError
+    }
 
     #if os(macOS)
     private func presentOpenPanel(selectFolders: Bool) {
@@ -195,6 +272,36 @@ struct ContentView: View {
             let index = max(0, min(popup.indexOfSelectedItem, algorithms.count - 1))
             algorithmRawValue = algorithms[index].rawValue
             computeChecksums(of: panel.urls)
+        }
+    }
+
+    private func presentCsvPicker(message: String, completion: @escaping (URL?) -> Void) {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.commaSeparatedText]
+        panel.message = message
+        guard let window = NSApplication.shared.mainWindow ?? NSApplication.shared.windows.first else {
+            completion(nil)
+            return
+        }
+        panel.beginSheetModal(for: window) { response in
+            completion(response == .OK ? panel.url : nil)
+        }
+    }
+
+    private func presentCompareFlow() {
+        presentCsvPicker(message: "Choose the OLDER .csum.csv file") { first in
+            guard let first else {
+                return
+            }
+            presentCsvPicker(message: "Choose the NEWER .csum.csv file") { second in
+                guard let second else {
+                    return
+                }
+                compareCsv(at: first, second: second)
+            }
         }
     }
     #endif
@@ -246,6 +353,116 @@ struct ContentView: View {
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.secondary.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    @ViewBuilder
+    private func reportView(_ comparison: CsvComparison) -> some View {
+        let report = comparison.report
+        ScrollView(.vertical) {
+            VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Older: \(comparison.firstName) · Newer: \(comparison.secondName)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
+                    Text("Unchanged \(report.unchanged.count) · Added \(report.added.count) · Removed \(report.removed.count) · Moved \(report.moved.count) · Changed \(report.changed.count)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                if report.isEmpty {
+                    Text("Nothing to compare.")
+                        .foregroundStyle(.secondary)
+                }
+                if !report.unchanged.isEmpty {
+                    groupSection("Unchanged", .green, report.unchanged.count) {
+                        matrixTable(columns: standardColumns, rows: report.unchanged.map(standardMatrixRow))
+                    }
+                }
+                if !report.added.isEmpty {
+                    groupSection("Added", .blue, report.added.count) {
+                        matrixTable(columns: standardColumns, rows: report.added.map(standardMatrixRow))
+                    }
+                }
+                if !report.removed.isEmpty {
+                    groupSection("Removed", .red, report.removed.count) {
+                        matrixTable(columns: standardColumns, rows: report.removed.map(standardMatrixRow))
+                    }
+                }
+                if !report.moved.isEmpty {
+                    let columns: [(title: String, width: CGFloat)] = [
+                        ("Filename", 170), ("Checksum", 470), ("Size", 110), ("From", 340), ("To", 340)
+                    ]
+                    groupSection("Moved", .orange, report.moved.count) {
+                        matrixTable(columns: columns, rows: report.moved.map {
+                            [$0.to.filename, $0.to.checksum, $0.to.size, $0.from.path, $0.to.path]
+                        })
+                    }
+                }
+                if !report.changed.isEmpty {
+                    let columns: [(title: String, width: CGFloat)] = [
+                        ("Filename", 170), ("Path", 340), ("Old Size", 110), ("New Size", 110),
+                        ("Old Checksum", 470), ("New Checksum", 470)
+                    ]
+                    groupSection("Changed", .purple, report.changed.count) {
+                        matrixTable(columns: columns, rows: report.changed.map {
+                            [$0.new.filename, $0.new.path, $0.old.size, $0.new.size, $0.old.checksum, $0.new.checksum]
+                        })
+                    }
+                }
+            }
+        }
+        .frame(maxHeight: 420)
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.secondary.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func groupSection<Content: View>(
+        _ title: String,
+        _ color: Color,
+        _ count: Int,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("\(title) (\(count))")
+                .font(.headline)
+                .foregroundStyle(color)
+            content()
+        }
+    }
+
+    private func matrixTable(columns: [(title: String, width: CGFloat)], rows: [[String]]) -> some View {
+        let total = columns.reduce(0) { $0 + $1.width }
+        return ScrollView(.horizontal) {
+            LazyVStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    ForEach(Array(columns.enumerated()), id: \.offset) { index, column in
+                        tableCell(Text(column.title).font(.caption.bold()), width: column.width)
+                    }
+                }
+                ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
+                    HStack(spacing: 0) {
+                        ForEach(Array(row.enumerated()), id: \.offset) { cellIndex, value in
+                            tableCell(Text(value).font(cellFont(columns[cellIndex].title)), width: columns[cellIndex].width)
+                        }
+                    }
+                }
+            }
+            .frame(width: total)
+        }
+    }
+
+    private func cellFont(_ title: String) -> Font {
+        switch title {
+        case "Checksum", "Path", "From", "To", "Old Checksum", "New Checksum", "Created", "Modified":
+            return .system(.caption, design: .monospaced)
+        default:
+            return .caption
+        }
+    }
+
+    private func standardMatrixRow(_ row: CsvRow) -> [String] {
+        [row.filename, row.checksum, row.algorithm, row.size, row.created, row.modified, row.path]
     }
 
     @ViewBuilder
@@ -303,6 +520,47 @@ struct ContentView: View {
         return ([header] + items.map(csvLine)).joined(separator: "\r\n")
     }
 
+    private func compareCsv(at first: URL, second: URL) {
+        isComparing = true
+        Task.detached(priority: .userInitiated) {
+            var built: CsvComparison?
+            var failure: Error?
+            do {
+                let firstRows = try Self.readCsv(at: first)
+                let secondRows = try Self.readCsv(at: second)
+                built = CsvComparison(
+                    firstName: first.lastPathComponent,
+                    secondName: second.lastPathComponent,
+                    report: CsvCompare.compare(first: firstRows, second: secondRows)
+                )
+            } catch {
+                failure = error
+            }
+            let finalBuilt = built
+            let finalFailure = failure
+            await MainActor.run {
+                isComparing = false
+                if let finalFailure {
+                    presentError(finalFailure)
+                } else if let finalBuilt {
+                    result = nil
+                    comparison = finalBuilt
+                }
+            }
+        }
+    }
+
+    private nonisolated static func readCsv(at url: URL) throws -> [CsvRow] {
+        let accessing = url.startAccessingSecurityScopedResource()
+        defer {
+            if accessing {
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
+        let data = try Data(contentsOf: url)
+        return CsvCompare.rows(from: String(decoding: data, as: UTF8.self))
+    }
+
     private func computeChecksums(of urls: [URL]) {
         isComputing = true
         processedFiles = 0
@@ -355,6 +613,7 @@ struct ContentView: View {
             let finalFailure = failure
             await MainActor.run {
                 isComputing = false
+                comparison = nil
                 if let finalFailure {
                     presentError(finalFailure)
                 } else {
@@ -411,8 +670,12 @@ struct ContentView: View {
         }
     }
 
-    private func presentError(_ error: Error) {
-        errorMessage = error.localizedDescription
+    private func presentMessage(_ message: String) {
+        errorMessage = message
         showError = true
+    }
+
+    private func presentError(_ error: Error) {
+        presentMessage(error.localizedDescription)
     }
 }

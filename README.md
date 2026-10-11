@@ -35,6 +35,12 @@ Rows puts every row on the clipboard as tab-separated lines; **Save CSV…** wri
 same data as an Excel-ready comma-separated file (`checksums.csum.csv` — RFC 4180
 quoting, CRLF line endings, UTF-8 BOM).
 
+**Compare CSVs…** asks you to pick two saved `.csum.csv` files in sequence — the older
+one first, then the newer — and groups every entry into color-labeled sections: **Unchanged** (same path, hash, and size), **Added** (only in
+the second file), **Removed** (only in the first), **Moved** (same hash and size at a
+different path, shown as from → to), and **Changed** (same path, different hash or
+size, showing old and new values side by side).
+
 Notes:
 
 - To run on a real device or distribute the Mac build, set a Development Team under
