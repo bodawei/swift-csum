@@ -11,6 +11,7 @@ public enum CsvFormatter {
         if value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r") {
             return "\"" + value.replacingOccurrences(of: "\"", with: "\"\"") + "\""
         }
+
         return value
     }
 
@@ -24,6 +25,7 @@ public enum CsvFormatter {
 
     public static func section(title: String, rows: [CsvRow]) -> String {
         let body = rows.map { line(rowValues($0)) }.joined(separator: "\r\n")
+
         return "# \(title)\r\n\(header)\r\n\(body)\r\n"
     }
 
@@ -40,6 +42,7 @@ public enum CsvFormatter {
             "# Checksums of files at \(sourcePaths) done on \(stamp)"
         ]
         let body = rows.map { line(rowValues($0)) }.joined(separator: "\r\n")
+
         return (comments + [header, body]).joined(separator: "\r\n") + "\r\n"
     }
 }

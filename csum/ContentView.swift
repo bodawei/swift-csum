@@ -65,6 +65,7 @@ struct ContentView: View {
                 guard url.path.lowercased().hasSuffix(".csum.csv") else {
                     return
                 }
+
                 compareSources[0] = CompareSource(
                     name: url.lastPathComponent,
                     path: url.path,
@@ -170,6 +171,7 @@ struct ContentView: View {
             .disabled(isComputing || isComparing)
             .dropDestination(for: URL.self) { urls, _ in
                 computeChecksums(of: urls)
+
                 return true
             } isTargeted: {
                 fileDropTargeted = $0
@@ -192,6 +194,7 @@ struct ContentView: View {
             .disabled(isComputing || isComparing)
             .dropDestination(for: URL.self) { urls, _ in
                 computeChecksums(of: urls)
+
                 return true
             } isTargeted: {
                 folderDropTargeted = $0
@@ -206,6 +209,7 @@ struct ContentView: View {
             guard let url else {
                 return
             }
+
             compareSources[index] = CompareSource(
                 name: url.lastPathComponent,
                 path: url.path,
@@ -225,7 +229,9 @@ struct ContentView: View {
             guard let url else {
                 return
             }
+
             let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+
             compareSources[index] = CompareSource(
                 name: url.lastPathComponent,
                 path: url.path,
@@ -255,12 +261,15 @@ struct ContentView: View {
         guard let slot = pendingCsvSlot else {
             return
         }
+
         guard case .success(let urls) = picked, let url = urls.first else {
             if case .failure(let error) = picked, !isUserCancelled(error) {
                 presentError(error)
             }
+
             return
         }
+
         compareSources[slot] = CompareSource(name: url.lastPathComponent, path: url.path, url: url, isFolder: false)
     }
 
@@ -268,12 +277,15 @@ struct ContentView: View {
         guard let slot = pendingFolderSlot else {
             return
         }
+
         guard case .success(let urls) = picked, let url = urls.first else {
             if case .failure(let error) = picked, !isUserCancelled(error) {
                 presentError(error)
             }
+
             return
         }
+
         compareSources[slot] = CompareSource(name: url.lastPathComponent, path: url.path, url: url, isFolder: true)
     }
     #endif
@@ -283,15 +295,19 @@ struct ContentView: View {
         processedFiles = 0
         totalFiles = 0
         sourcePaths = urls.map(\.path).joined(separator: ", ")
+
         let selectedAlgorithm = algorithm
+
         Task.detached(priority: .userInitiated) {
             var rows: [CsvRow] = []
             var failure: Error?
+
             do {
                 rows = try ChecksumCollector.collectAll(urls: urls, algorithm: selectedAlgorithm) { done, total in
                     guard done == total || done % 37 == 1 else {
                         return
                     }
+
                     Task { @MainActor in
                         processedFiles = done
                         totalFiles = total
@@ -300,11 +316,14 @@ struct ContentView: View {
             } catch {
                 failure = error
             }
+
             let finalRows = rows
             let finalFailure = failure
+
             await MainActor.run {
                 isComputing = false
                 comparison = nil
+
                 if let finalFailure {
                     presentError(finalFailure)
                 } else {
@@ -318,14 +337,19 @@ struct ContentView: View {
         guard let first = compareSources[0], let second = compareSources[1] else {
             return
         }
+
         isComparing = true
+
         let selectedAlgorithm = algorithm
+
         Task.detached(priority: .userInitiated) {
             var built: CsvComparison?
             var failure: Error?
+
             do {
                 let firstRows = try CsvCompare.resolve(url: first.url, algorithm: selectedAlgorithm)
                 let secondRows = try CsvCompare.resolve(url: second.url, algorithm: selectedAlgorithm)
+
                 built = CsvComparison(
                     firstName: first.name,
                     secondName: second.name,
@@ -334,10 +358,13 @@ struct ContentView: View {
             } catch {
                 failure = error
             }
+
             let finalBuilt = built
             let finalFailure = failure
+
             await MainActor.run {
                 isComparing = false
+
                 if let finalFailure {
                     presentError(finalFailure)
                 } else if let finalBuilt {
@@ -352,7 +379,9 @@ struct ContentView: View {
         guard let result else {
             return
         }
+
         let text = result.map { CsvFormatter.tsvLine(CsvFormatter.rowValues($0)) }.joined(separator: "\n")
+
         #if os(iOS)
         UIPasteboard.general.string = text
         #else
@@ -365,7 +394,9 @@ struct ContentView: View {
         guard let result else {
             return
         }
+
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+
         exportDocument = CSVDocument(
             text: CsvFormatter.fileText(
                 rows: result,
