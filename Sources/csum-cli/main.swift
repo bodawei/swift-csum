@@ -4,8 +4,6 @@ import Foundation
 
 extension ChecksumAlgorithm: ExpressibleByArgument {}
 
-let csvHeader = "Filename,Checksum,Algorithm,Size,Created,Modified,Path"
-
 struct CsumCLI: ParsableCommand {
     static var configuration: CommandConfiguration {
         CommandConfiguration(
@@ -38,7 +36,12 @@ struct CsumCLI: ParsableCommand {
         }
         if paths.count == 1 {
             let rows = try computeRows(for: paths[0])
-            let text = csvFileText(rows: rows, source: paths[0])
+            let text = CsvFormatter.fileText(
+                rows: rows,
+                sourcePaths: paths[0],
+                writer: "csum-cli",
+                version: "1.0"
+            )
             FileHandle.standardOutput.write(Data(text.utf8))
             return
         }
@@ -49,36 +52,28 @@ struct CsumCLI: ParsableCommand {
         let showAdded = explicit ? added : true
         let showModified = explicit ? modified : true
 
-        let first = try resolve(paths[0])
-        let second = try resolve(paths[1])
+        let first = try CsvCompare.resolve(url: URL(fileURLWithPath: paths[0]), algorithm: algorithm)
+        let second = try CsvCompare.resolve(url: URL(fileURLWithPath: paths[1]), algorithm: algorithm)
         let report = CsvCompare.compare(first: first, second: second)
 
         var sections: [String] = []
         if showAdded {
-            var rows = report.added.map(csvRowValues)
-            rows += report.moved.map { csvRowValues($0.to) }
-            sections.append(sectionText(title: "Added", rows: rows))
+            var rows = report.added
+            rows += report.moved.map { $0.to }
+            sections.append(CsvFormatter.section(title: "Added", rows: rows))
         }
         if showDeleted {
-            var rows = report.removed.map(csvRowValues)
-            rows += report.moved.map { csvRowValues($0.from) }
-            sections.append(sectionText(title: "Deleted", rows: rows))
+            var rows = report.removed
+            rows += report.moved.map { $0.from }
+            sections.append(CsvFormatter.section(title: "Deleted", rows: rows))
         }
         if showModified {
-            sections.append(sectionText(title: "Modified", rows: report.changed.map { csvRowValues($0.new) }))
+            sections.append(CsvFormatter.section(title: "Modified", rows: report.changed.map { $0.new }))
         }
         if showUnchanged {
-            sections.append(sectionText(title: "Unchanged", rows: report.unchanged.map(csvRowValues)))
+            sections.append(CsvFormatter.section(title: "Unchanged", rows: report.unchanged))
         }
         FileHandle.standardOutput.write(Data(sections.joined(separator: "").utf8))
-    }
-
-    private func resolve(_ path: String) throws -> [CsvRow] {
-        if path.lowercased().hasSuffix(".csum.csv") {
-            let data = try Data(contentsOf: URL(fileURLWithPath: path))
-            return CsvCompare.rows(from: String(decoding: data, as: UTF8.self))
-        }
-        return try computeRows(for: path)
     }
 
     private func computeRows(for path: String) throws -> [CsvRow] {
@@ -86,36 +81,6 @@ struct CsumCLI: ParsableCommand {
             throw ValidationError("No such file or directory: \(path)")
         }
         return ChecksumCollector.collect(url: URL(fileURLWithPath: path), algorithm: algorithm)
-    }
-
-    private func csvRowValues(_ row: CsvRow) -> [String] {
-        [row.filename, row.checksum, row.algorithm, row.size, row.created, row.modified, row.path]
-    }
-
-    private func csvField(_ value: String) -> String {
-        if value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r") {
-            return "\"" + value.replacingOccurrences(of: "\"", with: "\"\"") + "\""
-        }
-        return value
-    }
-
-    private func csvLine(_ values: [String]) -> String {
-        values.map(csvField).joined(separator: ",")
-    }
-
-    private func sectionText(title: String, rows: [[String]]) -> String {
-        let body = rows.map(csvLine).joined(separator: "\r\n")
-        return "# \(title)\r\n\(csvHeader)\r\n\(body)\r\n"
-    }
-
-    private func csvFileText(rows: [CsvRow], source: String) -> String {
-        let date = ISO8601DateFormatter().string(from: Date())
-        let comments = [
-            "# written by csum-cli v1.0.",
-            "# Checksums of files at \(source) done on \(date)"
-        ]
-        let body = rows.map { csvLine(csvRowValues($0)) }.joined(separator: "\r\n")
-        return (comments + [csvHeader, body]).joined(separator: "\r\n") + "\r\n"
     }
 }
 

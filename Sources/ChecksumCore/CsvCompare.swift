@@ -51,6 +51,14 @@ public struct ComparisonReport: Sendable {
 }
 
 public enum CsvCompare {
+    public static func resolve(url: URL, algorithm: ChecksumAlgorithm) throws -> [CsvRow] {
+        if url.path.lowercased().hasSuffix(".csum.csv") {
+            let data = try Data(contentsOf: url)
+            return rows(from: String(decoding: data, as: UTF8.self))
+        }
+        return ChecksumCollector.collect(url: url, algorithm: algorithm)
+    }
+
     public static func parse(_ text: String) -> [[String]] {
         var scalars = text.unicodeScalars
         if scalars.first == "\u{FEFF}" {

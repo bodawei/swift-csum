@@ -28,6 +28,53 @@ public enum ChecksumCollector {
             .map { row(for: $0, base: base, algorithm: algorithm) }
     }
 
+    public static func collectAll(
+        urls: [URL],
+        algorithm: ChecksumAlgorithm,
+        progress: ((Int, Int) -> Void)? = nil
+    ) throws -> [CsvRow] {
+        var accessed: [URL] = []
+        do {
+            var files: [(url: URL, base: String?)] = []
+            for url in urls {
+                if url.startAccessingSecurityScopedResource() {
+                    accessed.append(url)
+                }
+                let resolved = url.resolvingSymlinksInPath()
+                let values = try resolved.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])
+                if values.isSymbolicLink == true {
+                    continue
+                }
+                if values.isDirectory == true {
+                    var base = canonicalPath(for: resolved.path)
+                    if base.hasSuffix("/") && base.count > 1 {
+                        base.removeLast()
+                    }
+                    for file in enumerateFiles(in: resolved) {
+                        files.append((file, base))
+                    }
+                } else {
+                    files.append((url, nil))
+                }
+            }
+            let sorted = files.sorted { $0.url.path < $1.url.path }
+            var rows: [CsvRow] = []
+            for index in sorted.indices {
+                rows.append(row(for: sorted[index].url, base: sorted[index].base, algorithm: algorithm))
+                progress?(index + 1, sorted.count)
+            }
+            for url in accessed {
+                url.stopAccessingSecurityScopedResource()
+            }
+            return rows
+        } catch {
+            for url in accessed {
+                url.stopAccessingSecurityScopedResource()
+            }
+            throw error
+        }
+    }
+
     private static func row(for url: URL, base: String?, algorithm: ChecksumAlgorithm) -> CsvRow {
         let values = try? url.resourceValues(forKeys: [.fileSizeKey, .creationDateKey, .contentModificationDateKey])
         let checksum: String
