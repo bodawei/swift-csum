@@ -11,6 +11,7 @@ struct ReportView: View {
 
     var body: some View {
         let report = comparison.report
+
         VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 Text("First: \(comparison.firstName) · Second: \(comparison.secondName)")
@@ -21,10 +22,12 @@ struct ReportView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
             if report.isEmpty {
                 Text("Nothing to compare.")
                     .foregroundStyle(.secondary)
             }
+
             ScrollView([.horizontal, .vertical]) {
                 LazyVStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(items(report).enumerated()), id: \.offset) { _, item in
@@ -56,38 +59,48 @@ struct ReportView: View {
 
     private func items(_ report: ComparisonReport) -> [Item] {
         var items: [Item] = []
+
         func appendSection(_ title: String, _ color: Color, _ columns: [(title: String, width: CGFloat)], _ rows: [[String]]) {
             items.append(.header(title, color, rows.count))
             items.append(contentsOf: rows.map { .row(columns, $0) })
         }
+
         let standardColumns: [(title: String, width: CGFloat)] = [
             ("Filename", 170), ("Checksum", 470), ("Algorithm", 90),
             ("Size", 110), ("Created", 100), ("Modified", 100), ("Path", 340)
         ]
+
         if !report.unchanged.isEmpty {
             appendSection("Unchanged", .green, standardColumns, report.unchanged.map(CsvFormatter.rowValues))
         }
+
         if !report.added.isEmpty {
             appendSection("Added", .blue, standardColumns, report.added.map(CsvFormatter.rowValues))
         }
+
         if !report.removed.isEmpty {
             appendSection("Removed", .red, standardColumns, report.removed.map(CsvFormatter.rowValues))
         }
+
         if !report.moved.isEmpty {
             let columns: [(title: String, width: CGFloat)] = [
                 ("Filename", 170), ("Checksum", 470), ("Size", 110), ("From", 340), ("To", 340)
             ]
             let rows = report.moved.map { [$0.to.filename, $0.to.checksum, $0.to.size, $0.from.path, $0.to.path] }
+
             appendSection("Moved", .orange, columns, rows)
         }
+
         if !report.changed.isEmpty {
             let columns: [(title: String, width: CGFloat)] = [
                 ("Filename", 170), ("Path", 340), ("Old Size", 110), ("New Size", 110),
                 ("Old Checksum", 470), ("New Checksum", 470)
             ]
             let rows = report.changed.map { [$0.new.filename, $0.new.path, $0.old.size, $0.new.size, $0.old.checksum, $0.new.checksum] }
+
             appendSection("Changed", .purple, columns, rows)
         }
+
         return items
     }
 }

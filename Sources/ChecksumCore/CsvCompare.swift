@@ -54,26 +54,33 @@ public enum CsvCompare {
     public static func resolve(url: URL, algorithm: ChecksumAlgorithm) throws -> [CsvRow] {
         if url.path.lowercased().hasSuffix(".csum.csv") {
             let data = try Data(contentsOf: url)
+
             return rows(from: String(decoding: data, as: UTF8.self))
         }
+
         return ChecksumCollector.collect(url: url, algorithm: algorithm)
     }
 
     public static func parse(_ text: String) -> [[String]] {
         var scalars = text.unicodeScalars
+
         if scalars.first == "\u{FEFF}" {
             scalars.removeFirst()
         }
+
         var rows: [[String]] = []
         var row: [String] = []
         var field = String.UnicodeScalarView()
         var inQuotes = false
         var index = scalars.startIndex
+
         while index < scalars.endIndex {
             let scalar = scalars[index]
+
             if inQuotes {
                 if scalar == "\"" {
                     let next = scalars.index(after: index)
+
                     if next < scalars.endIndex && scalars[next] == "\"" {
                         field.append(scalar)
                         index = next
@@ -93,8 +100,10 @@ public enum CsvCompare {
                 field = String.UnicodeScalarView()
                 rows.append(row)
                 row = []
+
                 if scalar == "\r" {
                     let next = scalars.index(after: index)
+
                     if next < scalars.endIndex && scalars[next] == "\n" {
                         index = next
                     }
@@ -102,12 +111,15 @@ public enum CsvCompare {
             } else {
                 field.append(scalar)
             }
+
             index = scalars.index(after: index)
         }
+
         if !field.isEmpty || !row.isEmpty {
             row.append(String(field))
             rows.append(row)
         }
+
         return rows
     }
 
@@ -115,15 +127,24 @@ public enum CsvCompare {
         let fields = parse(text).filter { !$0.isEmpty && !($0.count == 1 && $0[0].isEmpty) }
         let cleaned = fields.filter { !($0.first?.hasPrefix("#") ?? false) }
         let dataRows = cleaned.first?.first == "Filename" ? Array(cleaned.dropFirst()) : cleaned
+
         return dataRows.map { columns in
             var row = CsvRow()
+
             if columns.count > 0 { row.filename = columns[0] }
+
             if columns.count > 1 { row.checksum = columns[1] }
+
             if columns.count > 2 { row.algorithm = columns[2] }
+
             if columns.count > 3 { row.size = columns[3] }
+
             if columns.count > 4 { row.created = columns[4] }
+
             if columns.count > 5 { row.modified = columns[5] }
+
             if columns.count > 6 { row.path = columns[6] }
+
             return row
         }
     }
@@ -139,6 +160,7 @@ public enum CsvCompare {
                 candidates.removeFirst()
                 byPath[row.path] = candidates.isEmpty ? nil : candidates
                 consumedPaths.insert(match.path)
+
                 if match.checksum == row.checksum && match.size == row.size {
                     report.unchanged.append(match)
                 } else {
@@ -164,6 +186,7 @@ public enum CsvCompare {
         report.removed.sort { $0.path < $1.path }
         report.moved.sort { $0.to.path < $1.to.path }
         report.changed.sort { $0.old.path < $1.old.path }
+
         return report
     }
 }

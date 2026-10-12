@@ -32,34 +32,53 @@ public enum ChecksumCalculator {
         defer {
             try? handle.close()
         }
+
         let path = url.path
+
+        let digest: String
+
         switch algorithm {
         case .sha256:
-            var hasher = SHA256()
-            try update(&hasher, with: handle, path: path)
-            return hexString(of: hasher.finalize())
+            digest = try digestHex(SHA256(), handle: handle, path: path)
         case .sha1:
-            var hasher = Insecure.SHA1()
-            try update(&hasher, with: handle, path: path)
-            return hexString(of: hasher.finalize())
+            digest = try digestHex(Insecure.SHA1(), handle: handle, path: path)
         case .md5:
-            var hasher = Insecure.MD5()
-            try update(&hasher, with: handle, path: path)
-            return hexString(of: hasher.finalize())
+            digest = try digestHex(Insecure.MD5(), handle: handle, path: path)
         }
+
+        return digest
     }
 
-    private static func update<H: HashFunction>(_ hasher: inout H, with handle: FileHandle, path: String) throws {
+    private static func digestHex<H: HashFunction>(
+        _ hasher: H,
+        handle: FileHandle,
+        path: String
+    ) throws -> String {
+        var hasher = hasher
+
+        try updateHasher(&hasher, withContentsOf: handle, path: path)
+
+        return hexString(of: hasher.finalize())
+    }
+
+    private static func updateHasher<H: HashFunction>(
+        _ hasher: inout H,
+        withContentsOf handle: FileHandle,
+        path: String
+    ) throws {
         while true {
             let chunk: Data?
+
             do {
                 chunk = try handle.read(upToCount: chunkSize)
             } catch {
                 throw ChecksumError.readFailed(path: path, underlying: error)
             }
+
             guard let chunk, !chunk.isEmpty else {
                 return
             }
+
             hasher.update(data: chunk)
         }
     }

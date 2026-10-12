@@ -34,6 +34,7 @@ struct CsumCLI: ParsableCommand {
         guard (1...2).contains(paths.count) else {
             throw ValidationError("Provide one path to checksum, or two to compare.")
         }
+
         if paths.count == 1 {
             let rows = try computeRows(for: paths[0])
             let text = CsvFormatter.fileText(
@@ -42,7 +43,9 @@ struct CsumCLI: ParsableCommand {
                 writer: "csum-cli",
                 version: "1.0"
             )
+
             FileHandle.standardOutput.write(Data(text.utf8))
+
             return
         }
 
@@ -57,22 +60,27 @@ struct CsumCLI: ParsableCommand {
         let report = CsvCompare.compare(first: first, second: second)
 
         var sections: [String] = []
+
         if showAdded {
             var rows = report.added
             rows += report.moved.map { $0.to }
             sections.append(CsvFormatter.section(title: "Added", rows: rows))
         }
+
         if showDeleted {
             var rows = report.removed
             rows += report.moved.map { $0.from }
             sections.append(CsvFormatter.section(title: "Deleted", rows: rows))
         }
+
         if showModified {
             sections.append(CsvFormatter.section(title: "Modified", rows: report.changed.map { $0.new }))
         }
+
         if showUnchanged {
             sections.append(CsvFormatter.section(title: "Unchanged", rows: report.unchanged))
         }
+
         FileHandle.standardOutput.write(Data(sections.joined(separator: "").utf8))
     }
 
@@ -80,6 +88,7 @@ struct CsumCLI: ParsableCommand {
         guard FileManager.default.fileExists(atPath: path) else {
             throw ValidationError("No such file or directory: \(path)")
         }
+
         return ChecksumCollector.collect(url: URL(fileURLWithPath: path), algorithm: algorithm)
     }
 }
