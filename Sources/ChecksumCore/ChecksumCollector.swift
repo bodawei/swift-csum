@@ -13,7 +13,7 @@ public enum ChecksumCollector {
         return String(cString: resolved)
     }
 
-    public static func collect(url: URL, algorithm: ChecksumAlgorithm) -> [CsvRow] {
+    public static func collect(url: URL, algorithm: ChecksumAlgorithm) -> [CsumCsvDataRow] {
         let resolved = url.resolvingSymlinksInPath()
         let isDirectory = (try? resolved.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
 
@@ -36,7 +36,7 @@ public enum ChecksumCollector {
         urls: [URL],
         algorithm: ChecksumAlgorithm,
         progress: ((Int, Int) -> Void)? = nil
-    ) throws -> [CsvRow] {
+    ) throws -> [CsumCsvDataRow] {
         var accessed: [URL] = []
 
         do {
@@ -70,7 +70,7 @@ public enum ChecksumCollector {
             }
 
             let sorted = files.sorted { $0.url.path < $1.url.path }
-            var rows: [CsvRow] = []
+            var rows: [CsumCsvDataRow] = []
 
             for index in sorted.indices {
                 rows.append(makeRow(for: sorted[index].url, base: sorted[index].base, algorithm: algorithm))
@@ -91,7 +91,7 @@ public enum ChecksumCollector {
         }
     }
 
-    private static func makeRow(for url: URL, base: String?, algorithm: ChecksumAlgorithm) -> CsvRow {
+    private static func makeRow(for url: URL, base: String?, algorithm: ChecksumAlgorithm) -> CsumCsvDataRow {
         let values = try? url.resourceValues(forKeys: [.fileSizeKey, .creationDateKey, .contentModificationDateKey])
         let checksum: String
 
@@ -101,7 +101,7 @@ public enum ChecksumCollector {
             checksum = "Error: \(error.localizedDescription)"
         }
 
-        return CsvRow(
+        return CsumCsvDataRow(
             filename: url.lastPathComponent,
             checksum: checksum,
             algorithm: algorithm.rawValue,
