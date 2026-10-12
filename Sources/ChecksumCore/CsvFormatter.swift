@@ -1,5 +1,6 @@
 import Foundation
 
+// foo``
 public enum CsvFormatter {
     public static let header = "Filename,Checksum,Algorithm,Size,Created,Modified,Path"
 
@@ -11,7 +12,7 @@ public enum CsvFormatter {
         if value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r") {
             return "\"" + value.replacingOccurrences(of: "\"", with: "\"\"") + "\""
         }
-
+``
         return value
     }
 
