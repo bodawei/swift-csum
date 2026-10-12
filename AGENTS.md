@@ -16,3 +16,13 @@ thing in a block or function.  Do the same around `switch` statements.
 
 Do not repeat lines across the cases of a switch.  Factor the common lines out of the
 cases.
+
+
+Member access
+==
+Default member access to private unless there is a reason to give more access.
+
+
+Naming
+==
+Name functions that do something with a verbal name.

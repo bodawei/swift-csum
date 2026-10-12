@@ -37,7 +37,7 @@ struct CsumCLI: ParsableCommand {
 
         if paths.count == 1 {
             let rows = try computeRows(for: paths[0])
-            let text = CsvFormatter.fileText(
+            let text = CsvFormattingUtils.buildFileText(
                 rows: rows,
                 sourcePaths: paths[0],
                 writer: "csum-cli",
@@ -64,21 +64,21 @@ struct CsumCLI: ParsableCommand {
         if showAdded {
             var rows = report.added
             rows += report.moved.map { $0.to }
-            sections.append(CsvFormatter.section(title: "Added", rows: rows))
+            sections.append(CsvFormattingUtils.formatSection(title: "Added", rows: rows))
         }
 
         if showDeleted {
             var rows = report.removed
             rows += report.moved.map { $0.from }
-            sections.append(CsvFormatter.section(title: "Deleted", rows: rows))
+            sections.append(CsvFormattingUtils.formatSection(title: "Deleted", rows: rows))
         }
 
         if showModified {
-            sections.append(CsvFormatter.section(title: "Modified", rows: report.changed.map { $0.new }))
+            sections.append(CsvFormattingUtils.formatSection(title: "Modified", rows: report.changed.map { $0.new }))
         }
 
         if showUnchanged {
-            sections.append(CsvFormatter.section(title: "Unchanged", rows: report.unchanged))
+            sections.append(CsvFormattingUtils.formatSection(title: "Unchanged", rows: report.unchanged))
         }
 
         FileHandle.standardOutput.write(Data(sections.joined(separator: "").utf8))
