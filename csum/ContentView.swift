@@ -380,7 +380,7 @@ struct ContentView: View {
             return
         }
 
-        let text = result.map { CsvFormatter.tsvLine(CsvFormatter.rowValues($0)) }.joined(separator: "\n")
+        let text = CsvFormattingUtils.generateTsvText(rows: result)
 
         #if os(iOS)
         UIPasteboard.general.string = text
@@ -398,7 +398,7 @@ struct ContentView: View {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
 
         exportDocument = CSVDocument(
-            text: CsvFormatter.fileText(
+            text: CsvFormattingUtils.buildFileText(
                 rows: result,
                 sourcePaths: sourcePaths,
                 writer: "csum",
