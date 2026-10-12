@@ -12,6 +12,7 @@ struct CsumCLI: ParsableCommand {
         )
     }
 
+    // delete me
     @Argument(help: "One file/directory to checksum, or two sources to compare (.csum.csv files and/or files/directories).")
     var paths: [String]
 
