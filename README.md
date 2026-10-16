@@ -1,8 +1,9 @@
 # swift-csum
 
 Compute file checksums (SHA-256, SHA-1, or MD5) with a SwiftUI app on iPhone, iPad, and
-Mac, or from the command line. Both front-ends share one hashing implementation
-(`Sources/CsumController`), which streams files in 1 MB chunks.
+Mac, or from the command line. Both front-ends are thin: the filesystem walk, the
+checksumming, the diff, and the `.csum.csv` reader and writer all live in one controller
+layer (`Sources/CsumController`), which streams files in 1 MB chunks.
 
 ## App
 
@@ -16,39 +17,37 @@ and folders from Finder and drop them straight onto these buttons (or onto the c
 form's buttons — the `.csum.csv` buttons accept only `.csum.csv` files); dropped items
 are handled exactly as if picked in the file dialog. Folders are checksummed
 recursively — every file at every depth gets a row (hidden files included), sorted by
-path, with paths shown relative to the picked folder as `./…`; a file that can't be read
-gets `Error: <details>` in its checksum cell instead of a digest.
+path; a file that cannot be read gets a failure code in its checksum cell instead of a
+digest, and the run carries on.
 
 The result is a table with column headings and visible cell boundaries, scrolled as
 needed, plus **Copy Rows** (tab-separated lines, paste-ready for a spreadsheet) and
 **Save CSV…** (an Excel-ready `checksums.csum.csv` — RFC 4180 quoting, CRLF line
-endings, UTF-8 BOM — starting with two `#` comment lines recording the app/version, the
-source path(s), and the ISO-8601 date):
+endings, UTF-8 BOM — led by five `# csum-…` comment lines carrying the format version,
+the tool, the ISO-8601 date, the algorithm, and the root the paths are relative to):
 
-| Filename | Checksum | Algorithm | Size | Created | Modified | Path |
-|----------|----------|-----------|------|---------|----------|------|
+| Checksum | Size | Created | Modified | Path |
+|----------|------|---------|----------|------|
 
-- `Filename` — the file's name.
-- `Checksum` — lowercase hex digest.
-- `Algorithm` — `sha256`, `sha1`, or `md5`.
+- `Checksum` — lowercase hex digest, or `!cannotOpen` / `!readFailed` if the file could
+  not be read.
 - `Size` — size in bytes.
 - `Created` / `Modified` — creation and modification dates as Unix epoch seconds
   (long integers); empty if the file has no such date.
-- `Path` — the file's path (`./…` relative for folder picks).
+- `Path` — the file's absolute path. It is last because it is the only field whose width
+  varies wildly: a table of rows is far easier to read with the path out of the way.
+
+Paths are stored absolute and the root is recorded separately, so a checksum file taken
+before the tree was moved still compares as unchanged afterwards.
 
 ### Comparing
 
 The compare form has two rows; each row takes either a saved `.csum.csv`
-(**Choose .csum.csv**) or a folder (**Choose Folder** — its checksums are computed on
-the spot, with the current algorithm). Once both rows show their pick, **Compare**
-enables and groups every entry into color-labeled sections: **Unchanged** (same path,
-hash, and size), **Added** (only in the second source), **Removed** (only in the
-first), **Moved** (same hash and size in a different directory, shown from → to),
-**Renamed** (same hash and size in the same directory under a different name, shown
-from → to), and **Changed** (same path, different hash or size, old and new side by
-side). Unchanged entries are discounted first, then the remaining entries are paired up
-as Moved or Renamed; anything left over is Added or Removed. Double-clicking a
-`.csum.csv` file in Finder drops it into the first row, ready for a second source.
+(**Choose .csum.csv**) or a folder (**Choose Folder**). Once both rows show their pick,
+**Compare** enables and groups every entry into color-labeled sections: **Unchanged**,
+**Added**, **Removed**, **Moved**, **Renamed**, and **Changed** — with old and new path,
+size, and times side by side for the last three. Double-clicking a `.csum.csv` file in
+Finder drops it into the first row, ready for a second source.
 
 Notes:
 
@@ -56,28 +55,56 @@ Notes:
   Signing & Capabilities. Simulator builds need no signing.
 - The bundle identifier `com.djb.csum` is a placeholder — change it in the target's
   Signing & Capabilities settings.
+- The app is being moved onto the new controller layer described below; until that
+  lands, build the command-line tool.
 
 ## Command line
 
 ```
-swift run csum-cli <path> [<path>] [-c <algorithm>] [-u] [-d] [-a] [-m] [-o] [-r]
+swift run csum-cli check <path> [-a <algorithm>]
+swift run csum-cli compare <first> <second> [-a] [-d] [-c] [-m] [-r] [-u]
 ```
 
-- **One path** — a file or directory: computes checksums and writes the complete
-  checksum file (comments, header, rows) to stdout; redirect to save:
-  `swift run csum-cli ~/Documents > docs.csum.csv`. Section flags are ignored here.
-- **Two paths** — compares them. Each side may be a `.csum.csv` file or a
-  file/directory (computed on the spot).
-- Output is grouped into sections, each led by a `#` comment title. Added, Deleted,
-  Modified, and Unchanged use the standard CSV header; Moved and Renamed use a
-  `Filename,Checksum,Size,From,To` header. Default output is `# Added`, `# Deleted`,
-  `# Moved`, `# Renamed`, `# Modified` (in that order); empty sections are skipped.
-  Unchanged entries are omitted by default.
-- `-u`, `-d`, `-a`, `-m`, `-o`, `-r` select exactly which sections print (if any is
-  given); without them, Added/Deleted/Moved/Renamed/Modified print.
-- `-c`/`--algorithm` — `sha256` (default), `sha1`, or `md5`, used when computing.
+### `check`
 
-Errors are written to stderr with a non-zero exit code.
+One file or directory: writes the complete checksum file (comments, header, rows) to
+stdout; redirect to save:
+
+```
+swift run csum-cli check ~/Documents > docs.csum.csv
+swift run csum-cli check -a sha1 ~/Documents > docs.csum.csv
+```
+
+`-a`/`--algorithm` selects `sha256` (default), `sha1`, or `md5`.
+
+Folders are checksummed recursively — every file at every depth (hidden files included),
+sorted by path. A file that cannot be read is recorded as `!cannotOpen` or `!readFailed`
+rather than failing the run.
+
+### `compare`
+
+Two sources, each a saved `.csum.csv` file, a file, or a directory (checksummed on the
+spot). Output is grouped into sections, each led by a `#` comment title:
+
+- **Added**, **Removed**, and **Unchanged** use the same five columns as `check`.
+- **Changed**, **Moved**, and **Renamed** use those five columns twice, prefixed `Old`
+  and `New`, so both sides of the change are present: old and new path, size, and times.
+
+```
+swift run csum-cli compare ~/Documents docs.csum.csv
+swift run csum-cli compare -u old.csum.csv /Volumes/Backup/Documents
+```
+
+- `-a -d -c -m -r -u` select added, removed, changed, moved, renamed, and unchanged.
+  Without any of them, everything except unchanged prints.
+- There is no algorithm option: a saved `.csum.csv` records the algorithm it was made
+  with, and that is what the other side is checksummed with. Comparing two saved files
+  that disagree is an error, and so is comparing two live sources without one.
+- Because matching is on the path relative to each side's root, a folder that has moved
+  since its checksums were taken compares as unchanged rather than as all-moved. That is
+  the case the whole file format is designed around.
+
+Errors go to stderr with a non-zero exit code.
 
 ## Building
 
@@ -95,6 +122,13 @@ The app is built by Xcode instead, into DerivedData, for example:
     Debug-maccatalyst/csum.app
 ```
 
+### Testing
+
+```
+swift test        # the controller: checksumming, the diff, the readers and writers
+bash Tests/e2e.sh # the CLI against shasum, on a temporary tree
+```
+
 ## Standalone executables
 
 The release CLI is a standalone binary: it links only against macOS system libraries
@@ -104,7 +138,8 @@ It runs on macOS 13 or newer.
 ```
 swift build -c release
 sudo cp .build/release/csum-cli /usr/local/bin/    # or: mkdir -p ~/bin && cp .build/release/csum-cli ~/bin/
-csum-cli ~/Downloads/archive.zip > archive.csum.csv
+csum-cli check ~/Downloads/archive.zip > archive.csum.csv
+csum-cli compare archive.csum.csv ~/Downloads/archive.zip
 ```
 
 For a universal binary (Apple silicon and Intel):
@@ -129,9 +164,13 @@ sign it with your Development Team, or share the repo and have them build it.
 ## Layout
 
 ```
-Sources/CsumController/   shared hashing library + CSV model/compare (CryptoKit)
+Sources/CsumController/  the controller layer
+  Model/                 checksum and comparison data structures, errors
+  Controller/            checksumming, the filesystem walk, and the diff engine
+  Format/                the .csum.csv reader and writer, and the CSV primitive
 Sources/csum-cli/        command-line tool (swift-argument-parser)
 csum.xcodeproj/          SwiftUI app project (iPhone, iPad, Mac)
 csum/                    app sources
 plans/                   project plans
+Tests/                   controller tests, and e2e.sh for the CLI
 ```
