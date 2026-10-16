@@ -46,7 +46,7 @@ struct CsumCLI: ParsableCommand {
         }
 
         if paths.count == 1 {
-            let rows = computeRows(for: paths[0])
+            let rows = try computeRows(for: paths[0])
             let text = CsvFormattingUtils.buildFileText(
                 rows: rows,
                 sourcePaths: paths[0],
@@ -100,8 +100,11 @@ struct CsumCLI: ParsableCommand {
         FileHandle.standardOutput.write(Data(sections.joined(separator: "").utf8))
     }
 
-    private func computeRows(for path: String) -> [CsumCsvDataRow] {
-        ChecksumCollector.collect(url: URL(fileURLWithPath: path), algorithm: algorithm)
+    private func computeRows(for path: String) throws -> [CsumCsvDataRow] {
+        let result = try CsumController(algorithm: algorithm, writer: CsumController.cliWriter)
+            .calculateChecksums(at: URL(fileURLWithPath: path))
+
+        return CsvCompare.rows(for: result)
     }
 }
 
