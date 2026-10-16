@@ -18,7 +18,7 @@ struct ReportView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .textSelection(.enabled)
-                Text("Unchanged \(report.unchanged.count) · Added \(report.added.count) · Removed \(report.removed.count) · Moved \(report.moved.count) · Changed \(report.changed.count)")
+                Text("Unchanged \(report.unchanged.count) · Added \(report.added.count) · Removed \(report.removed.count) · Moved \(report.moved.count) · Renamed \(report.renamed.count) · Changed \(report.changed.count)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -89,6 +89,15 @@ struct ReportView: View {
             let rows = report.moved.map { [$0.to.filename, $0.to.checksum, $0.to.size, $0.from.path, $0.to.path] }
 
             appendSection("Moved", .orange, columns, rows)
+        }
+
+        if !report.renamed.isEmpty {
+            let columns: [(title: String, width: CGFloat)] = [
+                ("Filename", 170), ("Checksum", 470), ("Size", 110), ("From", 340), ("To", 340)
+            ]
+            let rows = report.renamed.map { [$0.to.filename, $0.to.checksum, $0.to.size, $0.from.path, $0.to.path] }
+
+            appendSection("Renamed", .pink, columns, rows)
         }
 
         if !report.changed.isEmpty {

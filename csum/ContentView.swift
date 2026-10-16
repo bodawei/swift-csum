@@ -347,8 +347,8 @@ struct ContentView: View {
             var failure: Error?
 
             do {
-                let firstRows = try CsvCompare.resolve(url: first.url, algorithm: selectedAlgorithm)
-                let secondRows = try CsvCompare.resolve(url: second.url, algorithm: selectedAlgorithm)
+                let firstRows = try CsvCompare.loadRows(url: first.url, algorithm: selectedAlgorithm)
+                let secondRows = try CsvCompare.loadRows(url: second.url, algorithm: selectedAlgorithm)
 
                 built = CsvComparison(
                     firstName: first.name,

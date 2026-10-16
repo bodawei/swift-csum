@@ -43,10 +43,12 @@ The compare form has two rows; each row takes either a saved `.csum.csv`
 the spot, with the current algorithm). Once both rows show their pick, **Compare**
 enables and groups every entry into color-labeled sections: **Unchanged** (same path,
 hash, and size), **Added** (only in the second source), **Removed** (only in the
-first), **Moved** (same hash and size at a different path, shown from → to), and
-**Changed** (same path, different hash or size, old and new side by side).
-Double-clicking a `.csum.csv` file in Finder drops it into the first row, ready for a
-second source.
+first), **Moved** (same hash and size in a different directory, shown from → to),
+**Renamed** (same hash and size in the same directory under a different name, shown
+from → to), and **Changed** (same path, different hash or size, old and new side by
+side). Unchanged entries are discounted first, then the remaining entries are paired up
+as Moved or Renamed; anything left over is Added or Removed. Double-clicking a
+`.csum.csv` file in Finder drops it into the first row, ready for a second source.
 
 Notes:
 
@@ -58,7 +60,7 @@ Notes:
 ## Command line
 
 ```
-swift run csum-cli <path> [<path>] [--algorithm <algorithm>] [-u] [-d] [-a] [-m]
+swift run csum-cli <path> [<path>] [-c <algorithm>] [-u] [-d] [-a] [-m] [-o] [-r]
 ```
 
 - **One path** — a file or directory: computes checksums and writes the complete
@@ -66,12 +68,14 @@ swift run csum-cli <path> [<path>] [--algorithm <algorithm>] [-u] [-d] [-a] [-m]
   `swift run csum-cli ~/Documents > docs.csum.csv`. Section flags are ignored here.
 - **Two paths** — compares them. Each side may be a `.csum.csv` file or a
   file/directory (computed on the spot).
-- Output is grouped into sections, each led by a `#` comment title with the standard
-  CSV header: `# Added`, `# Deleted`, `# Modified` (in that order). Unchanged entries
-  are omitted by default.
-- `-u`, `-d`, `-a`, `-m` select exactly which sections print (if any is given);
-  without them, Added/Deleted/Modified print.
-- `--algorithm` — `sha256` (default), `sha1`, or `md5`, used when computing.
+- Output is grouped into sections, each led by a `#` comment title. Added, Deleted,
+  Modified, and Unchanged use the standard CSV header; Moved and Renamed use a
+  `Filename,Checksum,Size,From,To` header. Default output is `# Added`, `# Deleted`,
+  `# Moved`, `# Renamed`, `# Modified` (in that order); empty sections are skipped.
+  Unchanged entries are omitted by default.
+- `-u`, `-d`, `-a`, `-m`, `-o`, `-r` select exactly which sections print (if any is
+  given); without them, Added/Deleted/Moved/Renamed/Modified print.
+- `-c`/`--algorithm` — `sha256` (default), `sha1`, or `md5`, used when computing.
 
 Errors are written to stderr with a non-zero exit code.
 
