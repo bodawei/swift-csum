@@ -29,6 +29,15 @@ public enum CsvFormattingUtils {
         return "# \(title)\r\n\(header)\r\n\(body)\r\n"
     }
 
+    public static func formatPairSection(title: String, pairs: [MovedPair]) -> String {
+        let pairHeader = "Filename,Checksum,Size,From,To"
+        let body = pairs.map { pair in
+            formatLine([pair.to.filename, pair.to.checksum, pair.to.size, pair.from.path, pair.to.path])
+        }.joined(separator: "\r\n")
+
+        return "# \(title)\r\n\(pairHeader)\r\n\(body)\r\n"
+    }
+
     public static func buildFileText(
         rows: [CsvRow],
         sourcePaths: String,
