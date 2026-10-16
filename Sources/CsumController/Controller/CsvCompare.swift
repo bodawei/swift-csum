@@ -31,7 +31,57 @@ public enum CsvCompare {
             return parseRows(from: String(decoding: data, as: UTF8.self))
         }
 
-        return ChecksumCollector.collect(url: url, algorithm: algorithm)
+        let result = try CsumController(algorithm: algorithm, writer: CsumController.cliWriter)
+            .calculateChecksums(at: url)
+
+        return rows(for: result)
+    }
+
+    public static func rows(for result: ChecksumResult) -> [CsumCsvDataRow] {
+        result.entries.map { row(for: $0, root: result.metadata.root, algorithm: result.metadata.algorithm) }
+    }
+
+    private static func row(for entry: ChecksumEntry, root: String, algorithm: ChecksumAlgorithm) -> CsumCsvDataRow {
+        CsumCsvDataRow(
+            filename: (entry.path as NSString).lastPathComponent,
+            checksum: checksumText(for: entry.outcome),
+            algorithm: algorithm.rawValue,
+            size: String(entry.size),
+            created: timestampText(for: entry.created),
+            modified: timestampText(for: entry.modified),
+            path: displayPath(for: entry.path, root: root)
+        )
+    }
+
+    private static func checksumText(for outcome: ChecksumOutcome) -> String {
+        switch outcome {
+        case .digest(let digest):
+            return digest
+        case .failure(let code):
+            return "Error: " + EntryRowCodec.token(for: code)
+        }
+    }
+
+    private static func timestampText(for date: Date?) -> String {
+        guard let date else {
+            return ""
+        }
+
+        return String(Int64(date.timeIntervalSince1970))
+    }
+
+    private static func displayPath(for path: String, root: String) -> String {
+        if path == root {
+            return path
+        }
+
+        let prefix = root.hasSuffix("/") ? root : root + "/"
+
+        if path.hasPrefix(prefix) {
+            return "./" + String(path.dropFirst(prefix.count))
+        }
+
+        return path
     }
 
     public static func parseRows(from text: String) -> [CsumCsvDataRow] {
