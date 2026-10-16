@@ -111,16 +111,12 @@ public enum ChecksumFileCodec {
             throw MalformedFile(reason: .unparsableTimestamp(section: metadataSection, row: 0))
         }
 
-        let parts = writer.split(separator: " ")
-
-        guard parts.count >= 2 else {
-            throw MalformedFile(reason: .missingMetadata)
-        }
+        let parts = try MetadataComments.tool(from: writer)
 
         return ChecksumMetadata(
             formatVersion: version,
-            writer: parts.dropLast().joined(separator: " "),
-            toolVersion: String(parts[parts.count - 1]),
+            writer: parts.name,
+            toolVersion: parts.version,
             algorithm: algorithm,
             computedAt: computedAt,
             root: root
@@ -128,10 +124,10 @@ public enum ChecksumFileCodec {
     }
 
     private static func timestampText(for date: Date) -> String {
-        ISO8601DateFormatter().string(from: date)
+        MetadataComments.timestampText(for: date)
     }
 
     private static func date(from text: String) -> Date? {
-        ISO8601DateFormatter().date(from: text)
+        MetadataComments.date(from: text)
     }
 }
