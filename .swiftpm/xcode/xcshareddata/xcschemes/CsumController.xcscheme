@@ -15,8 +15,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ChecksumCore"
-               BuildableName = "ChecksumCore"
+               BlueprintIdentifier = "CsumController"
+               BuildableName = "CsumController"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -50,8 +50,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ChecksumCore"
-            BuildableName = "ChecksumCore"
+            BlueprintIdentifier = "CsumController"
+            BuildableName = "CsumController"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

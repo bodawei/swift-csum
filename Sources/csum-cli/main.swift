@@ -1,5 +1,5 @@
 import ArgumentParser
-import ChecksumCore
+import CsumController
 import Foundation
 
 extension ChecksumAlgorithm: ExpressibleByArgument {}
