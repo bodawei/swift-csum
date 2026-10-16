@@ -2,7 +2,9 @@ import Foundation
 
 public enum MalformedFileReason: Sendable, Equatable {
     case missingMetadata
+    case unparsableAlgorithm
     case unexpectedColumns(section: String, expected: Int, found: Int)
+    case wrongFieldCount(section: String, row: Int, expected: Int, found: Int)
     case unparsableSize(section: String, row: Int)
     case unparsableTimestamp(section: String, row: Int)
     case unparsableOutcome(section: String, row: Int)
