@@ -71,15 +71,15 @@ struct ReportView: View {
         ]
 
         if !report.unchanged.isEmpty {
-            appendSection("Unchanged", .green, standardColumns, report.unchanged.map(CsvFormattingUtils.rowValues))
+            appendSection("Unchanged", .green, standardColumns, report.unchanged.map(\.fields))
         }
 
         if !report.added.isEmpty {
-            appendSection("Added", .blue, standardColumns, report.added.map(CsvFormattingUtils.rowValues))
+            appendSection("Added", .blue, standardColumns, report.added.map(\.fields))
         }
 
         if !report.removed.isEmpty {
-            appendSection("Removed", .red, standardColumns, report.removed.map(CsvFormattingUtils.rowValues))
+            appendSection("Removed", .red, standardColumns, report.removed.map(\.fields))
         }
 
         if !report.moved.isEmpty {

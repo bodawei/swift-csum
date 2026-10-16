@@ -100,7 +100,7 @@ struct CsumCLI: ParsableCommand {
         FileHandle.standardOutput.write(Data(sections.joined(separator: "").utf8))
     }
 
-    private func computeRows(for path: String) -> [CsvRow] {
+    private func computeRows(for path: String) -> [CsumCsvDataRow] {
         ChecksumCollector.collect(url: URL(fileURLWithPath: path), algorithm: algorithm)
     }
 }

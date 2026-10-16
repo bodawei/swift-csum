@@ -2,28 +2,22 @@ import Foundation
 
 public enum CsvFormattingUtils {
     public static func generateTsvText(rows: [CsumCsvDataRow]) -> String {
-        Tsv.stringify(TableData(rows: rows.map { $0.fields }))
+        Tsv.stringify(ChecksumTable(rows: rows).table)
     }
 
     public static func formatSection(title: String, rows: [CsumCsvDataRow]) -> String {
-        var table = TableData(checksumRows: rows)
+        var table = ChecksumTable(rows: rows)
         table.leadingComments = ["# \(title)"]
 
-        let text = Csv.stringify(
-            table,
-            options: CsvOptions(dataFormat: .excel, allowLineComments: true, hasHeader: true)
-        )
-
-        return text + DataFormat.excel.lineEnding
+        return render(table.table)
     }
 
     public static func formatPairSection(title: String, pairs: [MovedPair]) -> String {
-        let pairHeader = "Filename,Checksum,Size,From,To"
-        let body = pairs.map { pair in
-            formatLine([pair.to.filename, pair.to.checksum, pair.to.size, pair.from.path, pair.to.path])
-        }.joined(separator: "\r\n")
+        var table = TableData(columns: ["Filename", "Checksum", "Size", "From", "To"])
+        table.leadingComments = ["# \(title)"]
+        table.rows = pairs.map { [$0.to.filename, $0.to.checksum, $0.to.size, $0.from.path, $0.to.path] }
 
-        return "# \(title)\r\n\(pairHeader)\r\n\(body)\r\n"
+        return render(table)
     }
 
     public static func buildFileText(
@@ -34,12 +28,16 @@ public enum CsvFormattingUtils {
         date: Date = Date()
     ) -> String {
         let stamp = ISO8601DateFormatter().string(from: date)
-        var table = TableData(checksumRows: rows)
+        var table = ChecksumTable(rows: rows)
         table.leadingComments = [
             "# written by \(writer) v\(version).",
             "# Checksums of files at \(sourcePaths) done on \(stamp)"
         ]
 
+        return render(table.table)
+    }
+
+    private static func render(_ table: TableData) -> String {
         let text = Csv.stringify(
             table,
             options: CsvOptions(dataFormat: .excel, allowLineComments: true, hasHeader: true)

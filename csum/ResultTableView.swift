@@ -2,7 +2,7 @@ import SwiftUI
 import ChecksumCore
 
 struct ResultTableView: View {
-    let items: [CsvRow]
+    let items: [CsumCsvDataRow]
     let onCopy: () -> Void
     let onSave: () -> Void
 
@@ -73,7 +73,7 @@ struct ResultTableView: View {
     }
 
     @ViewBuilder
-    private func checksumCell(_ item: CsvRow) -> some View {
+    private func checksumCell(_ item: CsumCsvDataRow) -> some View {
         if item.checksum.hasPrefix("Error:") {
             BorderedCell(width: columnWidths[1]) {
                 Text(item.checksum)

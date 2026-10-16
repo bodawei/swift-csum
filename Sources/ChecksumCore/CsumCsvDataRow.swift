@@ -60,12 +60,36 @@ public struct CsumCsvDataRow: Sendable {
     }
 }
 
-extension TableData {
-    public init(checksumRows rows: [CsumCsvDataRow]) {
-        self.init(columns: ChecksumColumns.all, rows: rows.map { $0.fields })
+public struct ChecksumTable: Sendable {
+    public var columns = ChecksumColumns.all
+    public var leadingComments: [String] = []
+    public var commentsBeforeRow: [Int: [String]] = [:]
+    public var rows: [CsumCsvDataRow] = []
+
+    public init(
+        rows: [CsumCsvDataRow] = [],
+        leadingComments: [String] = [],
+        commentsBeforeRow: [Int: [String]] = [:]
+    ) {
+        self.rows = rows
+        self.leadingComments = leadingComments
+        self.commentsBeforeRow = commentsBeforeRow
     }
 
-    public var checksumRows: [CsumCsvDataRow] {
-        rows.map(CsumCsvDataRow.init(fields:))
+    public init(table: TableData) {
+        self.init(
+            rows: table.rows.map { CsumCsvDataRow(fields: $0) },
+            leadingComments: table.leadingComments,
+            commentsBeforeRow: table.commentsBeforeRow
+        )
+    }
+
+    public var table: TableData {
+        TableData(
+            columns: columns,
+            leadingComments: leadingComments,
+            rows: rows.map(\.fields),
+            commentsBeforeRow: commentsBeforeRow
+        )
     }
 }

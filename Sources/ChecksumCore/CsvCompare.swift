@@ -24,36 +24,32 @@ public struct ComparisonReport: Sendable {
 }
 
 public enum CsvCompare {
-    public static func loadRows(url: URL, algorithm: ChecksumAlgorithm) throws -> [CsvRow] {
+    public static func loadRows(url: URL, algorithm: ChecksumAlgorithm) throws -> [CsumCsvDataRow] {
         if url.path.lowercased().hasSuffix(".csum.csv") {
             let data = try Data(contentsOf: url)
 
-            return rows(from: String(decoding: data, as: UTF8.self))
+            return parseRows(from: String(decoding: data, as: UTF8.self))
         }
 
         return ChecksumCollector.collect(url: url, algorithm: algorithm)
     }
 
-    public static func rows(from text: String) -> [CsumCsvDataRow] {
-        guard var table = try? Csv.parse(
+    public static func parseRows(from text: String) -> [CsumCsvDataRow] {
+        guard let table = try? Csv.parse(
             text,
-            options: CsvOptions(dataFormat: .excel, allowLineComments: true)
+            options: CsvOptions(dataFormat: .excel, allowLineComments: true, hasHeader: true)
         ) else {
             return []
         }
 
-        if table.rows.first?.first == ChecksumColumns.filename {
-            table.columns = table.rows.removeFirst()
-        }
-
-        return table.checksumRows
+        return ChecksumTable(table: table).rows
     }
 
     public static func compare(first: [CsumCsvDataRow], second: [CsumCsvDataRow]) -> ComparisonReport {
         var report = ComparisonReport()
         var byPath = Dictionary(grouping: second.indices, by: { second[$0].path })
         var remaining = Set(second.indices)
-        var unmatchedFirst: [CsvRow] = []
+        var unmatchedFirst: [CsumCsvDataRow] = []
 
         for row in first {
             if var candidates = byPath[row.path], let index = candidates.first {
@@ -108,7 +104,7 @@ public enum CsvCompare {
         return report
     }
 
-    private static func matchKey(for row: CsvRow) -> String {
+    private static func matchKey(for row: CsumCsvDataRow) -> String {
         "\(row.checksum)\u{1F}\(row.size)"
     }
 
