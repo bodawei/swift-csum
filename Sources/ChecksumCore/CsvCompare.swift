@@ -1,47 +1,19 @@
 import Foundation
 
-public struct CsvRow: Sendable {
-    public var filename = ""
-    public var checksum = ""
-    public var algorithm = ""
-    public var size = ""
-    public var created = ""
-    public var modified = ""
-    public var path = ""
-
-    public init(
-        filename: String = "",
-        checksum: String = "",
-        algorithm: String = "",
-        size: String = "",
-        created: String = "",
-        modified: String = "",
-        path: String = ""
-    ) {
-        self.filename = filename
-        self.checksum = checksum
-        self.algorithm = algorithm
-        self.size = size
-        self.created = created
-        self.modified = modified
-        self.path = path
-    }
-}
-
 public struct MovedPair: Sendable {
-    public let from: CsvRow
-    public let to: CsvRow
+    public let from: CsumCsvDataRow
+    public let to: CsumCsvDataRow
 }
 
 public struct ChangedPair: Sendable {
-    public let old: CsvRow
-    public let new: CsvRow
+    public let old: CsumCsvDataRow
+    public let new: CsumCsvDataRow
 }
 
 public struct ComparisonReport: Sendable {
-    public var unchanged: [CsvRow] = []
-    public var added: [CsvRow] = []
-    public var removed: [CsvRow] = []
+    public var unchanged: [CsumCsvDataRow] = []
+    public var added: [CsumCsvDataRow] = []
+    public var removed: [CsumCsvDataRow] = []
     public var moved: [MovedPair] = []
     public var renamed: [MovedPair] = []
     public var changed: [ChangedPair] = []
@@ -52,109 +24,32 @@ public struct ComparisonReport: Sendable {
 }
 
 public enum CsvCompare {
-    public static func loadRows(url: URL, algorithm: ChecksumAlgorithm) throws -> [CsvRow] {
+    public static func loadRows(url: URL, algorithm: ChecksumAlgorithm) throws -> [CsumCsvDataRow] {
         if url.path.lowercased().hasSuffix(".csum.csv") {
             let data = try Data(contentsOf: url)
 
-            return rows(from: String(decoding: data, as: UTF8.self))
+            return parseRows(from: String(decoding: data, as: UTF8.self))
         }
 
         return ChecksumCollector.collect(url: url, algorithm: algorithm)
     }
 
-    public static func parse(_ text: String) -> [[String]] {
-        var scalars = text.unicodeScalars
-
-        if scalars.first == "\u{FEFF}" {
-            scalars.removeFirst()
+    public static func parseRows(from text: String) -> [CsumCsvDataRow] {
+        guard let table = try? Csv.parse(
+            text,
+            options: CsvOptions(dataFormat: .excel, allowLineComments: true, hasHeader: true)
+        ) else {
+            return []
         }
 
-        var rows: [[String]] = []
-        var row: [String] = []
-        var field = String.UnicodeScalarView()
-        var inQuotes = false
-        var index = scalars.startIndex
-
-        while index < scalars.endIndex {
-            let scalar = scalars[index]
-
-            if inQuotes {
-                if scalar == "\"" {
-                    let next = scalars.index(after: index)
-
-                    if next < scalars.endIndex && scalars[next] == "\"" {
-                        field.append(scalar)
-                        index = next
-                    } else {
-                        inQuotes = false
-                    }
-                } else {
-                    field.append(scalar)
-                }
-            } else if scalar == "\"" {
-                inQuotes = true
-            } else if scalar == "," {
-                row.append(String(field))
-                field = String.UnicodeScalarView()
-            } else if scalar == "\n" || scalar == "\r" {
-                row.append(String(field))
-                field = String.UnicodeScalarView()
-                rows.append(row)
-                row = []
-
-                if scalar == "\r" {
-                    let next = scalars.index(after: index)
-
-                    if next < scalars.endIndex && scalars[next] == "\n" {
-                        index = next
-                    }
-                }
-            } else {
-                field.append(scalar)
-            }
-
-            index = scalars.index(after: index)
-        }
-
-        if !field.isEmpty || !row.isEmpty {
-            row.append(String(field))
-            rows.append(row)
-        }
-
-        return rows
+        return ChecksumTable(table: table).rows
     }
 
-    public static func rows(from text: String) -> [CsvRow] {
-        let fields = parse(text).filter { !$0.isEmpty && !($0.count == 1 && $0[0].isEmpty) }
-        let cleaned = fields.filter { !($0.first?.hasPrefix("#") ?? false) }
-        let dataRows = cleaned.first?.first == "Filename" ? Array(cleaned.dropFirst()) : cleaned
-
-        return dataRows.map { columns in
-            var row = CsvRow()
-
-            if columns.count > 0 { row.filename = columns[0] }
-
-            if columns.count > 1 { row.checksum = columns[1] }
-
-            if columns.count > 2 { row.algorithm = columns[2] }
-
-            if columns.count > 3 { row.size = columns[3] }
-
-            if columns.count > 4 { row.created = columns[4] }
-
-            if columns.count > 5 { row.modified = columns[5] }
-
-            if columns.count > 6 { row.path = columns[6] }
-
-            return row
-        }
-    }
-
-    public static func compare(first: [CsvRow], second: [CsvRow]) -> ComparisonReport {
+    public static func compare(first: [CsumCsvDataRow], second: [CsumCsvDataRow]) -> ComparisonReport {
         var report = ComparisonReport()
         var byPath = Dictionary(grouping: second.indices, by: { second[$0].path })
         var remaining = Set(second.indices)
-        var unmatchedFirst: [CsvRow] = []
+        var unmatchedFirst: [CsumCsvDataRow] = []
 
         for row in first {
             if var candidates = byPath[row.path], let index = candidates.first {
@@ -209,7 +104,7 @@ public enum CsvCompare {
         return report
     }
 
-    private static func matchKey(for row: CsvRow) -> String {
+    private static func matchKey(for row: CsumCsvDataRow) -> String {
         "\(row.checksum)\u{1F}\(row.size)"
     }
 

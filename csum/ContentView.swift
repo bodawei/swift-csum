@@ -18,7 +18,7 @@ struct ContentView: View {
     @State private var isComparing = false
     @State private var processedFiles = 0
     @State private var totalFiles = 0
-    @State private var result: [CsvRow]?
+    @State private var result: [CsumCsvDataRow]?
     @State private var comparison: CsvComparison?
     @State private var sourcePaths = ""
     @State private var exportDocument: CSVDocument?
@@ -299,7 +299,7 @@ struct ContentView: View {
         let selectedAlgorithm = algorithm
 
         Task.detached(priority: .userInitiated) {
-            var rows: [CsvRow] = []
+            var rows: [CsumCsvDataRow] = []
             var failure: Error?
 
             do {
