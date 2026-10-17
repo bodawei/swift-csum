@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="600" viewBox="0 0 390 600" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif">
+  <rect x="0.5" y="0.5" width="389" height="599" rx="24" fill="#FFFFFF" stroke="#D6D6DB"/>
+
+  <text x="24" y="40" font-size="17" font-weight="700" fill="#1C1C1E">Diff rows</text>
+  <text x="24" y="62" font-size="12" fill="#6C6C70">Symbol and color together, never color alone.</text>
+
+  <text x="24" y="96" font-size="11" font-weight="600" fill="#6C6C70">ADDED</text>
+  <rect x="16" y="106" width="358" height="30" rx="8" fill="#E8F5E9"/>
+  <text x="24" y="126" font-size="13" font-weight="600" fill="#248A3D">+</text>
+  <text x="44" y="126" font-size="13" fill="#1C1C1E">2026-10/scan-0003.pdf</text>
+
+  <text x="24" y="166" font-size="11" font-weight="600" fill="#6C6C70">REMOVED</text>
+  <rect x="16" y="176" width="358" height="30" rx="8" fill="#FDECEA"/>
+  <text x="24" y="196" font-size="13" font-weight="600" fill="#C9252D">−</text>
+  <text x="44" y="196" font-size="13" fill="#1C1C1E">2026-10/scan-0002.pdf</text>
+
+  <text x="24" y="236" font-size="11" font-weight="600" fill="#6C6C70">CHANGED — THE CHECKSUM IS EMPHASIZED</text>
+  <rect x="16" y="246" width="358" height="30" rx="8" fill="#FDECEA"/>
+  <text x="24" y="266" font-size="13" font-weight="600" fill="#C9252D">−</text>
+  <text x="44" y="266" font-size="13" fill="#1C1C1E">2026-09/IMG_1100.HEIC</text>
+  <rect x="214" y="253" width="60" height="17" rx="4" fill="#F7C6C2"/>
+  <text x="220" y="266" font-size="10" fill="#7A1B1F" font-family="'SF Mono', ui-monospace, Menlo, monospace">4a1f…9c02</text>
+
+  <rect x="16" y="280" width="358" height="30" rx="8" fill="#E8F5E9"/>
+  <text x="24" y="300" font-size="13" font-weight="600" fill="#248A3D">+</text>
+  <text x="44" y="300" font-size="13" fill="#1C1C1E">2026-09/IMG_1100.HEIC</text>
+  <rect x="214" y="287" width="60" height="17" rx="4" fill="#BFE3C4"/>
+  <text x="220" y="300" font-size="10" fill="#145A25" font-family="'SF Mono', ui-monospace, Menlo, monospace">8b7c…11de</text>
+
+  <text x="24" y="340" font-size="11" font-weight="600" fill="#6C6C70">MOVED — THE WHOLE PATH IS EMPHASIZED</text>
+  <rect x="16" y="350" width="358" height="30" rx="8" fill="#FDECEA"/>
+  <text x="24" y="370" font-size="13" font-weight="600" fill="#C9252D">−</text>
+  <rect x="44" y="357" width="196" height="17" rx="4" fill="#F7C6C2"/>
+  <text x="50" y="370" font-size="12" fill="#7A1B1F">2026-09/IMG_1100.HEIC</text>
+
+  <rect x="16" y="384" width="358" height="30" rx="8" fill="#E8F5E9"/>
+  <text x="24" y="404" font-size="13" font-weight="600" fill="#248A3D">+</text>
+  <rect x="44" y="391" width="196" height="17" rx="4" fill="#BFE3C4"/>
+  <text x="50" y="404" font-size="12" fill="#145A25">2026-09/archive/IMG_1100.HEIC</text>
+
+  <text x="24" y="444" font-size="11" font-weight="600" fill="#6C6C70">RENAMED — ONLY THE LEAF NAME IS EMPHASIZED</text>
+  <rect x="16" y="454" width="358" height="30" rx="8" fill="#FDECEA"/>
+  <text x="24" y="474" font-size="13" font-weight="600" fill="#C9252D">−</text>
+  <text x="44" y="474" font-size="13" fill="#1C1C1E">2026-10/</text>
+  <rect x="101" y="461" width="84" height="17" rx="4" fill="#F7C6C2"/>
+  <text x="107" y="474" font-size="12" fill="#7A1B1F">scan-0001.pdf</text>
+
+  <rect x="16" y="488" width="358" height="30" rx="8" fill="#E8F5E9"/>
+  <text x="24" y="508" font-size="13" font-weight="600" fill="#248A3D">+</text>
+  <text x="44" y="508" font-size="13" fill="#1C1C1E">2026-10/</text>
+  <rect x="101" y="495" width="84" height="17" rx="4" fill="#BFE3C4"/>
+  <text x="107" y="508" font-size="12" fill="#145A25">scan-0001-final.pdf</text>
+
+  <text x="24" y="548" font-size="11" font-weight="600" fill="#6C6C70">UNCHANGED</text>
+  <rect x="16" y="558" width="358" height="26" rx="8" fill="#F7F7FA"/>
+  <text x="44" y="575" font-size="13" fill="#1C1C1E">2026-08/notes.txt</text>
+</svg>
