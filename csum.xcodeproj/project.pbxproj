@@ -17,6 +17,11 @@
 		C500000000000000000000B7 /* ChecksumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000A7 /* ChecksumService.swift */; };
 		C500000000000000000000B8 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000A8 /* Formatters.swift */; };
 		C500000000000000000000B9 /* CsumCSVFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000A9 /* CsumCSVFile.swift */; };
+		C500000000000000000000BA /* FileSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AA /* FileSectionModel.swift */; };
+		C500000000000000000000BB /* FileResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AB /* FileResultView.swift */; };
+		C500000000000000000000BC /* MetadataStrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AC /* MetadataStrip.swift */; };
+		C500000000000000000000BD /* KeyValueCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AD /* KeyValueCard.swift */; };
+		C500000000000000000000BE /* ErrorStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AE /* ErrorStateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +37,11 @@
 		C500000000000000000000A7 /* ChecksumService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksumService.swift; sourceTree = "<group>"; };
 		C500000000000000000000A8 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		C500000000000000000000A9 /* CsumCSVFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumCSVFile.swift; sourceTree = "<group>"; };
+		C500000000000000000000AA /* FileSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSectionModel.swift; sourceTree = "<group>"; };
+		C500000000000000000000AB /* FileResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileResultView.swift; sourceTree = "<group>"; };
+		C500000000000000000000AC /* MetadataStrip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataStrip.swift; sourceTree = "<group>"; };
+		C500000000000000000000AD /* KeyValueCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueCard.swift; sourceTree = "<group>"; };
+		C500000000000000000000AE /* ErrorStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorStateView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +101,8 @@
 			isa = PBXGroup;
 			children = (
 				C500000000000000000000A4 /* FileSectionView.swift */,
+				C500000000000000000000AA /* FileSectionModel.swift */,
+				C500000000000000000000AB /* FileResultView.swift */,
 			);
 			path = File;
 			sourceTree = "<group>";
@@ -116,6 +128,9 @@
 			children = (
 				C500000000000000000000A8 /* Formatters.swift */,
 				C500000000000000000000A9 /* CsumCSVFile.swift */,
+				C500000000000000000000AC /* MetadataStrip.swift */,
+				C500000000000000000000AD /* KeyValueCard.swift */,
+				C500000000000000000000AE /* ErrorStateView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -212,6 +227,11 @@
 				C500000000000000000000B7 /* ChecksumService.swift in Sources */,
 				C500000000000000000000B8 /* Formatters.swift in Sources */,
 				C500000000000000000000B9 /* CsumCSVFile.swift in Sources */,
+				C500000000000000000000BA /* FileSectionModel.swift in Sources */,
+				C500000000000000000000BB /* FileResultView.swift in Sources */,
+				C500000000000000000000BC /* MetadataStrip.swift in Sources */,
+				C500000000000000000000BD /* KeyValueCard.swift in Sources */,
+				C500000000000000000000BE /* ErrorStateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
