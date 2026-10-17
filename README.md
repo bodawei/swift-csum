@@ -129,6 +129,20 @@ swift test        # the controller: checksumming, the diff, the readers and writ
 bash Tests/e2e.sh # the CLI against shasum, on a temporary tree
 ```
 
+### Formatting
+
+Apple's `swift format` is part of the Swift toolchain, so no extra install is
+needed. `.swift-format` sets the house style: 4-space indent, 100 columns.
+
+```
+swift format --in-place --recursive --configuration .swift-format Sources Tests csum
+```
+
+`.github/workflows/swift-format.yml` runs `swift format lint --strict` on the
+Swift files a pull request changes, and fails the PR if any of them would be
+rewritten. Nothing is auto-committed. Only touched files are checked, so files
+that have not been reformatted yet keep their layout until someone edits them.
+
 ## Standalone executables
 
 The release CLI is a standalone binary: it links only against macOS system libraries
