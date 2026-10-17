@@ -14,4 +14,5 @@ final class AppModel {
 
     let file = FileSectionModel()
     let folder = FolderSectionModel()
+    let compare = CompareSectionModel()
 }
