@@ -1,0 +1,49 @@
+import CsumController
+import SwiftUI
+
+struct ChecksumTable: View {
+    private struct Row: Identifiable {
+        let entry: ChecksumEntry
+
+        var id: String {
+            entry.path
+        }
+    }
+
+    let result: ChecksumResult
+
+    var body: some View {
+        Table(of: Row.self) {
+            TableColumn("Name") { row in
+                Text(verbatim: result.relativePath(of: row.entry))
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }
+
+            TableColumn("Size") { row in
+                Text(verbatim: Format.size(row.entry.size))
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+
+            TableColumn("Created") { row in
+                Text(verbatim: Format.day(row.entry.created))
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+
+            TableColumn("Modified") { row in
+                Text(verbatim: Format.day(row.entry.modified))
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+
+            TableColumn("Checksum") { row in
+                Text(verbatim: Format.checksum(row.entry))
+                    .font(.caption.monospaced())
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+        } rows: {
+            ForEach(result.entries, id: \.path) { entry in
+                TableRow(Row(entry: entry))
+            }
+        }
+    }
+}

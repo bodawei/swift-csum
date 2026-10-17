@@ -13,4 +13,5 @@ final class AppModel {
     var selectedSection: Section = .file
 
     let file = FileSectionModel()
+    let folder = FolderSectionModel()
 }
