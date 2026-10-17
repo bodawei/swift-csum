@@ -174,3 +174,24 @@ csum/                    app sources
 plans/                   project plans
 Tests/                   controller tests, and e2e.sh for the CLI
 ```
+
+## Code review
+
+Every pull request gets an automated first pass from Claude Code through
+`.github/workflows/claude-review.yml`. It runs on `ubuntu-latest`, reads the diff
+and the surrounding sources, and posts one summary comment plus inline comments
+for line-specific findings. It never builds or runs tests: it reviews logic,
+the `.csum.csv` format, the layering, and the conventions in `AGENTS.md`, not
+compile errors.
+
+The review is skipped for draft pull requests, for pull requests from forks, and
+when no credential is configured. To turn it on, add one repository secret under
+Settings → Secrets and variables → Actions:
+
+- `ANTHROPIC_API_KEY` — an Anthropic API key, or
+- `CLAUDE_CODE_OAUTH_TOKEN` — the token from `claude setup-token`, for Pro and Max
+  accounts.
+
+It comments as `github-actions[bot]` using the workflow's own token, so the
+Claude GitHub App is not needed. Runs are grouped per pull request, so a new
+push cancels a review of the previous commit.
