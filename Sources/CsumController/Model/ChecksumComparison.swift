@@ -28,6 +28,10 @@ public struct ComparisonSource: Sendable, Equatable {
         self.root = root
         self.computedAt = computedAt
     }
+
+    public func relativePath(of entry: ChecksumEntry) -> String {
+        CanonicalPath.relativePath(of: entry.path, root: root)
+    }
 }
 
 public struct ComparisonMetadata: Sendable, Equatable {
