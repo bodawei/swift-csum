@@ -1,7 +1,7 @@
 #if os(macOS)
 import AppKit
 import UniformTypeIdentifiers
-import ChecksumCore
+import CsumController
 
 enum FileDialogs {
     static func pickSources(

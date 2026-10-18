@@ -1,5 +1,5 @@
 import Foundation
-import ChecksumCore
+import CsumController
 
 struct CompareSource: Sendable {
     let name: String
