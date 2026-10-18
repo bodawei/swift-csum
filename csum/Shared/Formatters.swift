@@ -28,6 +28,10 @@ enum Format {
         value.formatted()
     }
 
+    static func isolated(_ value: String) -> String {
+        "\u{2066}\(value)\u{2069}"
+    }
+
     static func checksum(_ entry: ChecksumEntry) -> String {
         switch entry.outcome {
         case .digest(let digest):

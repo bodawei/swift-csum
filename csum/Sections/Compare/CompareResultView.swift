@@ -102,6 +102,7 @@ struct CompareResultView: View {
                             Text(Format.count(count(for: section, in: comparison)))
                                 .foregroundStyle(.secondary)
                         }
+                        .accessibilityElement(children: .combine)
                     }
                 }
             }

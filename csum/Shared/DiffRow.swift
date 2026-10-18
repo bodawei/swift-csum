@@ -10,6 +10,7 @@ struct DiffRow: Identifiable {
     let created: String
     let checksum: AttributedString
     let date: String
+    let label: LocalizedStringKey
 }
 
 enum DiffRows {
@@ -18,6 +19,18 @@ enum DiffRows {
         case checksum
         case path
         case leaf
+    }
+
+    private enum Label {
+        case added
+        case removed
+        case unchanged
+        case changedOld
+        case changedNew
+        case movedFrom
+        case movedTo
+        case renamedFrom
+        case renamedTo
     }
 
     static func rows(for section: ComparisonSection, of comparison: ChecksumComparison) -> [DiffRow]
@@ -31,6 +44,7 @@ enum DiffRows {
                     symbol: "+",
                     tint: .green,
                     emphasis: .none,
+                    label: .added,
                     id: "added-\($0.path)"
                 )
             }
@@ -42,6 +56,7 @@ enum DiffRows {
                     symbol: "−",
                     tint: .red,
                     emphasis: .none,
+                    label: .removed,
                     id: "removed-\($0.path)"
                 )
             }
@@ -53,6 +68,7 @@ enum DiffRows {
                     symbol: " ",
                     tint: nil,
                     emphasis: .none,
+                    label: .unchanged,
                     id: "unchanged-\($0.path)"
                 )
             }
@@ -70,13 +86,27 @@ enum DiffRows {
         of comparison: ChecksumComparison,
         emphasis: Emphasis
     ) -> [DiffRow] {
-        [
+        let labels: (Label, Label)
+
+        switch emphasis {
+        case .checksum:
+            labels = (.changedOld, .changedNew)
+        case .path:
+            labels = (.movedFrom, .movedTo)
+        case .leaf:
+            labels = (.renamedFrom, .renamedTo)
+        case .none:
+            labels = (.unchanged, .unchanged)
+        }
+
+        return [
             row(
                 matched.old,
                 source: comparison.metadata.first,
                 symbol: "−",
                 tint: .red,
                 emphasis: emphasis,
+                label: labels.0,
                 id: "old-\(matched.old.path)"
             ),
             row(
@@ -85,6 +115,7 @@ enum DiffRows {
                 symbol: "+",
                 tint: .green,
                 emphasis: emphasis,
+                label: labels.1,
                 id: "new-\(matched.new.path)"
             ),
         ]
@@ -96,6 +127,7 @@ enum DiffRows {
         symbol: String,
         tint: Color?,
         emphasis: Emphasis,
+        label: Label,
         id: String
     ) -> DiffRow {
         let path = source.relativePath(of: entry)
@@ -121,6 +153,32 @@ enum DiffRows {
             checksum.backgroundColor = highlight.opacity(0.22)
         }
 
+        let isolatedPath = Format.isolated(path)
+        let isolatedChecksum = Format.isolated(Format.checksum(entry))
+
+        let accessibilityLabel: LocalizedStringKey
+
+        switch label {
+        case .added:
+            accessibilityLabel = "Added, \(isolatedPath)"
+        case .removed:
+            accessibilityLabel = "Removed, \(isolatedPath)"
+        case .unchanged:
+            accessibilityLabel = "Unchanged, \(isolatedPath)"
+        case .changedOld:
+            accessibilityLabel = "Changed, \(isolatedPath), old checksum \(isolatedChecksum)"
+        case .changedNew:
+            accessibilityLabel = "Changed, \(isolatedPath), new checksum \(isolatedChecksum)"
+        case .movedFrom:
+            accessibilityLabel = "Moved from \(isolatedPath)"
+        case .movedTo:
+            accessibilityLabel = "Moved to \(isolatedPath)"
+        case .renamedFrom:
+            accessibilityLabel = "Renamed from \(isolatedPath)"
+        case .renamedTo:
+            accessibilityLabel = "Renamed to \(isolatedPath)"
+        }
+
         return DiffRow(
             id: id,
             symbol: symbol,
@@ -129,7 +187,8 @@ enum DiffRows {
             size: Format.size(entry.size),
             created: Format.day(entry.created),
             checksum: checksum,
-            date: Format.day(entry.modified)
+            date: Format.day(entry.modified),
+            label: accessibilityLabel
         )
     }
 }
@@ -172,6 +231,7 @@ struct DiffRowView: View {
             }
         }
         .padding(.vertical, 2)
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(row.label)
     }
 }
