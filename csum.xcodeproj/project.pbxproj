@@ -14,6 +14,9 @@
 		C500000000000000000000B4 /* FileSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000A4 /* FileSectionView.swift */; };
 		C500000000000000000000B5 /* FolderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000A5 /* FolderSectionView.swift */; };
 		C500000000000000000000B6 /* CompareSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000A6 /* CompareSectionView.swift */; };
+		C500000000000000000000B7 /* ChecksumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000A7 /* ChecksumService.swift */; };
+		C500000000000000000000B8 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000A8 /* Formatters.swift */; };
+		C500000000000000000000B9 /* CsumCSVFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000A9 /* CsumCSVFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,9 @@
 		C500000000000000000000A4 /* FileSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSectionView.swift; sourceTree = "<group>"; };
 		C500000000000000000000A5 /* FolderSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionView.swift; sourceTree = "<group>"; };
 		C500000000000000000000A6 /* CompareSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareSectionView.swift; sourceTree = "<group>"; };
+		C500000000000000000000A7 /* ChecksumService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksumService.swift; sourceTree = "<group>"; };
+		C500000000000000000000A8 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
+		C500000000000000000000A9 /* CsumCSVFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumCSVFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +60,7 @@
 				C500000000000000000000A1 /* CsumApp.swift */,
 				C500000000000000000000C1 /* App */,
 				C500000000000000000000C2 /* Sections */,
+				C500000000000000000000C6 /* Shared */,
 				C50000000000000000000016 /* Info.plist */,
 				C50000000000000000000013 /* Assets.xcassets */,
 			);
@@ -65,6 +72,7 @@
 			children = (
 				C500000000000000000000A2 /* AppModel.swift */,
 				C500000000000000000000A3 /* RootView.swift */,
+				C500000000000000000000A7 /* ChecksumService.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -101,6 +109,15 @@
 				C500000000000000000000A6 /* CompareSectionView.swift */,
 			);
 			path = Compare;
+			sourceTree = "<group>";
+		};
+		C500000000000000000000C6 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				C500000000000000000000A8 /* Formatters.swift */,
+				C500000000000000000000A9 /* CsumCSVFile.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		C50000000000000000000042 /* Products */ = {
@@ -192,6 +209,9 @@
 				C500000000000000000000B4 /* FileSectionView.swift in Sources */,
 				C500000000000000000000B5 /* FolderSectionView.swift in Sources */,
 				C500000000000000000000B6 /* CompareSectionView.swift in Sources */,
+				C500000000000000000000B7 /* ChecksumService.swift in Sources */,
+				C500000000000000000000B8 /* Formatters.swift in Sources */,
+				C500000000000000000000B9 /* CsumCSVFile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
