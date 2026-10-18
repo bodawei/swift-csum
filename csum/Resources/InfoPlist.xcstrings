@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "المجاميع الاختبارية" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "校验和" } }
+      }
+    },
+    "UTTypeDescription" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "مجاميع csum الاختبارية" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "csum 校验和" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}
