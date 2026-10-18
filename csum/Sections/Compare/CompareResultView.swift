@@ -157,8 +157,10 @@ struct CompareResultView: View {
                     TableRowItem.section(section, count: count(for: section, in: comparison)),
                     isExpanded: binding(for: section)
                 ) {
-                    ForEach(DiffRows.rows(for: section, of: comparison)) { row in
-                        TableRow(TableRowItem.entry(row))
+                    if expanded.contains(section) {
+                        ForEach(DiffRows.rows(for: section, of: comparison)) { row in
+                            TableRow(TableRowItem.entry(row))
+                        }
                     }
                 }
             }
