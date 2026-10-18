@@ -35,6 +35,21 @@
 		C50000000000000000000104 /* SectionModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000103 /* SectionModelTests.swift */; };
 		C50000000000000000000112 /* DemoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000111 /* DemoService.swift */; };
 		C50000000000000000000116 /* AppFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000115 /* AppFlowUITests.swift */; };
+		C50000000000000000000001 /* ChecksumApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000011 /* ChecksumApp.swift */; };
+		C50000000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000012 /* ContentView.swift */; };
+		C50000000000000000000003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000013 /* Assets.xcassets */; };
+		C50000000000000000000004 /* ChecksumCore in Frameworks */ = {isa = PBXBuildFile; productRef = C50000000000000000000030 /* ChecksumCore */; };
+		C50000000000000000000006 /* CompareSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000017 /* CompareSource.swift */; };
+		C50000000000000000000007 /* CSVDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000018 /* CSVDocument.swift */; };
+		C50000000000000000000008 /* ResultTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000019 /* ResultTableView.swift */; };
+		C50000000000000000000009 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5000000000000000000001A /* ReportView.swift */; };
+		C5000000000000000000000A /* CompareFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5000000000000000000001B /* CompareFormView.swift */; };
+		C5000000000000000000000B /* TableCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5000000000000000000001C /* TableCells.swift */; };
+		C5000000000000000000000C /* FileDialogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5000000000000000000001D /* FileDialogs.swift */; };
+		C5000000000000000000000D /* Telemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5000000000000000000001E /* Telemetry.swift */; };
+		C50000000000000000000095 /* OpenTelemetryApi in Frameworks */ = {isa = PBXBuildFile; productRef = C50000000000000000000092 /* OpenTelemetryApi */; };
+		C50000000000000000000096 /* OpenTelemetrySdk in Frameworks */ = {isa = PBXBuildFile; productRef = C50000000000000000000093 /* OpenTelemetrySdk */; };
+		C50000000000000000000097 /* OpenTelemetryProtocolExporterHTTP in Frameworks */ = {isa = PBXBuildFile; productRef = C50000000000000000000094 /* OpenTelemetryProtocolExporterHTTP */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -315,6 +330,8 @@
 			mainGroup = C50000000000000000000040;
 			packageReferences = (
 				C50000000000000000000031 /* XCLocalSwiftPackageReference */,
+				C50000000000000000000090 /* XCRemoteSwiftPackageReference "opentelemetry-swift-core" */,
+				C50000000000000000000091 /* XCRemoteSwiftPackageReference "opentelemetry-swift" */,
 			);
 			productRefGroup = C50000000000000000000042 /* Products */;
 			projectDirPath = "";
@@ -738,11 +755,45 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		C50000000000000000000090 /* XCRemoteSwiftPackageReference "opentelemetry-swift-core" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/open-telemetry/opentelemetry-swift-core.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.0;
+			};
+		};
+		C50000000000000000000091 /* XCRemoteSwiftPackageReference "opentelemetry-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/open-telemetry/opentelemetry-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		C50000000000000000000030 /* CsumController */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C50000000000000000000031 /* XCLocalSwiftPackageReference */;
 			productName = CsumController;
+		};
+		C50000000000000000000092 /* OpenTelemetryApi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C50000000000000000000090 /* XCRemoteSwiftPackageReference "opentelemetry-swift-core" */;
+			productName = OpenTelemetryApi;
+		};
+		C50000000000000000000093 /* OpenTelemetrySdk */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C50000000000000000000090 /* XCRemoteSwiftPackageReference "opentelemetry-swift-core" */;
+			productName = OpenTelemetrySdk;
+		};
+		C50000000000000000000094 /* OpenTelemetryProtocolExporterHTTP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C50000000000000000000091 /* XCRemoteSwiftPackageReference "opentelemetry-swift" */;
+			productName = OpenTelemetryProtocolExporterHTTP;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

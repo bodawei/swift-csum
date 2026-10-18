@@ -19,21 +19,31 @@ public struct CsumController: Sendable {
         progress: (@Sendable (Int, Int) -> Void)? = nil,
         isCancelled: (@Sendable () -> Bool)? = nil
     ) throws -> ChecksumResult {
-        let entries = try withScopedAccess(to: url) {
-            try collectEntries(at: url, progress: progress, isCancelled: isCancelled)
-        }
+        try Telemetry.span(
+            named: "csum.calculateChecksums",
+            attributes: [
+                Telemetry.Keys.algorithm: .string(algorithm.rawValue),
+                Telemetry.Keys.path: .string(url.path),
+            ]
+        ) { span in
+            let entries = try withScopedAccess(to: url) {
+                try collectEntries(at: url, progress: progress, isCancelled: isCancelled)
+            }
 
-        return ChecksumResult(
-            metadata: ChecksumMetadata(
-                formatVersion: CsumFormat.version,
-                writer: writer,
-                toolVersion: CsumFormat.toolVersion,
-                algorithm: algorithm,
-                computedAt: Date(),
-                root: CanonicalPath.of(url.path)
-            ),
-            entries: entries
-        )
+            span.setAttribute(key: Telemetry.Keys.entryCount, value: entries.count)
+
+            return ChecksumResult(
+                metadata: ChecksumMetadata(
+                    formatVersion: CsumFormat.version,
+                    writer: writer,
+                    toolVersion: CsumFormat.toolVersion,
+                    algorithm: algorithm,
+                    computedAt: Date(),
+                    root: CanonicalPath.of(url.path)
+                ),
+                entries: entries
+            )
+        }
     }
 
     public func loadChecksumResult(
@@ -53,30 +63,50 @@ public struct CsumController: Sendable {
         }
     }
 
-    public func compare(
-        first firstURL: URL,
-        second secondURL: URL,
-        isCancelled: (@Sendable () -> Bool)? = nil
-    ) throws -> ChecksumComparison {
-        let comparisonAlgorithm = try resolveAlgorithm(first: firstURL, second: secondURL)
-        let comparison = CsumController(algorithm: comparisonAlgorithm, writer: writer)
+        public func compare(
+            first firstURL: URL,
+            second secondURL: URL,
+            isCancelled: (@Sendable () -> Bool)? = nil
+        ) throws -> ChecksumComparison {
+        try Telemetry.span(
+            named: "csum.compare",
+            attributes: [
+                Telemetry.Keys.firstPath: .string(firstURL.path),
+                Telemetry.Keys.secondPath: .string(secondURL.path),
+            ]
+        ) { span in
+            let comparisonAlgorithm = try resolveAlgorithm(first: firstURL, second: secondURL)
+            let comparison = CsumController(algorithm: comparisonAlgorithm, writer: writer)
 
-        let first = try comparison.loadChecksumResult(at: firstURL, isCancelled: isCancelled)
-        let second = try comparison.loadChecksumResult(at: secondURL, isCancelled: isCancelled)
+            let first = try comparison.loadChecksumResult(at: firstURL, isCancelled: isCancelled)
+            let second = try comparison.loadChecksumResult(at: secondURL, isCancelled: isCancelled)
 
-        return ComparisonEngine.compare(
-            first: first,
-            second: second,
-            metadata: ComparisonMetadata(
-                formatVersion: CsumFormat.version,
-                writer: writer,
-                toolVersion: CsumFormat.toolVersion,
-                computedAt: Date(),
-                algorithm: comparisonAlgorithm,
-                first: source(for: firstURL, result: first),
-                second: source(for: secondURL, result: second)
+            let result = ComparisonEngine.compare(
+                first: first,
+                second: second,
+                metadata: ComparisonMetadata(
+                    formatVersion: CsumFormat.version,
+                    writer: writer,
+                    toolVersion: CsumFormat.toolVersion,
+                    computedAt: Date(),
+                    algorithm: comparisonAlgorithm,
+                    first: source(for: firstURL, result: first),
+                    second: source(for: secondURL, result: second)
+                )
             )
-        )
+
+            span.setAttributes([
+                Telemetry.Keys.algorithm: .string(comparisonAlgorithm.rawValue),
+                Telemetry.Keys.unchangedCount: .int(result.unchanged.count),
+                Telemetry.Keys.changedCount: .int(result.changed.count),
+                Telemetry.Keys.addedCount: .int(result.added.count),
+                Telemetry.Keys.removedCount: .int(result.removed.count),
+                Telemetry.Keys.movedCount: .int(result.moved.count),
+                Telemetry.Keys.renamedCount: .int(result.renamed.count),
+            ])
+
+            return result
+        }
     }
 
     private func resolveAlgorithm(first firstURL: URL, second secondURL: URL) throws
