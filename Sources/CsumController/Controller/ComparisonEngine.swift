@@ -15,11 +15,13 @@ enum ComparisonEngine {
         var remaining = Set(second.entries.indices)
         var byPath = Dictionary(
             grouping: second.entries.indices,
-            by: { relativePath(of: second.entries[$0].path, root: second.metadata.root) }
+            by: {
+                CanonicalPath.relativePath(of: second.entries[$0].path, root: second.metadata.root)
+            }
         )
 
         for entry in first.entries {
-            let key = relativePath(of: entry.path, root: first.metadata.root)
+            let key = CanonicalPath.relativePath(of: entry.path, root: first.metadata.root)
 
             guard var candidates = byPath[key], let index = candidates.first else {
                 unmatched.append(entry)
@@ -61,8 +63,12 @@ enum ComparisonEngine {
 
             let pair = MatchedEntry(old: entry, new: second.entries[index])
 
-            if parentDirectory(of: relativePath(of: entry.path, root: first.metadata.root))
-                == parentDirectory(of: relativePath(of: second.entries[index].path, root: second.metadata.root)) {
+            if parentDirectory(
+                of: CanonicalPath.relativePath(of: entry.path, root: first.metadata.root))
+                == parentDirectory(
+                    of: CanonicalPath.relativePath(
+                        of: second.entries[index].path, root: second.metadata.root))
+            {
                 renamed.append(pair)
             } else {
                 moved.append(pair)
@@ -78,20 +84,6 @@ enum ComparisonEngine {
             moved: moved.sorted { $0.new.path < $1.new.path },
             renamed: renamed.sorted { $0.new.path < $1.new.path }
         )
-    }
-
-    private static func relativePath(of path: String, root: String) -> String {
-        if path == root {
-            return ""
-        }
-
-        let prefix = root.hasSuffix("/") ? root : root + "/"
-
-        guard path.hasPrefix(prefix) else {
-            return path
-        }
-
-        return String(path.dropFirst(prefix.count))
     }
 
     private static func key(for entry: ChecksumEntry) -> String {

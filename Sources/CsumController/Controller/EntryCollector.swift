@@ -6,12 +6,17 @@ enum EntryCollector {
     static func entries(
         in folder: URL,
         algorithm: ChecksumAlgorithm,
-        progress: (@Sendable (Int, Int) -> Void)?
+        progress: (@Sendable (Int, Int) -> Void)?,
+        isCancelled: (@Sendable () -> Bool)? = nil
     ) throws -> [ChecksumEntry] {
         let files = try files(in: folder)
         var entries: [ChecksumEntry] = []
 
         for index in files.indices {
+            if isCancelled?() == true {
+                throw CancellationError()
+            }
+
             entries.append(entry(for: files[index], algorithm: algorithm))
             progress?(index + 1, files.count)
         }
@@ -20,7 +25,9 @@ enum EntryCollector {
     }
 
     static func entry(for url: URL, algorithm: ChecksumAlgorithm) -> ChecksumEntry {
-        let values = try? url.resourceValues(forKeys: [.fileSizeKey, .creationDateKey, .contentModificationDateKey])
+        let values = try? url.resourceValues(forKeys: [
+            .fileSizeKey, .creationDateKey, .contentModificationDateKey,
+        ])
 
         return ChecksumEntry(
             path: CanonicalPath.of(url.path),
@@ -51,7 +58,10 @@ enum EntryCollector {
     }
 
     private static func files(in folder: URL) throws -> [URL] {
-        guard let enumerator = FileManager.default.enumerator(at: folder, includingPropertiesForKeys: keys) else {
+        guard
+            let enumerator = FileManager.default.enumerator(
+                at: folder, includingPropertiesForKeys: keys)
+        else {
             throw CsumError.sourceUnreadable(path: CanonicalPath.of(folder.path))
         }
 
@@ -59,8 +69,9 @@ enum EntryCollector {
 
         for case let url as URL in enumerator {
             guard let values = try? url.resourceValues(forKeys: Set(keys)),
-                  values.isSymbolicLink != true,
-                  values.isDirectory != true else {
+                values.isSymbolicLink != true,
+                values.isDirectory != true
+            else {
                 continue
             }
 

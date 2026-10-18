@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <filter id="tabshadow6" x="-20%" y="-30%" width="140%" height="180%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#000000" flood-opacity="0.10"/>
+    </filter>
+    <linearGradient id="glass6" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBFBFD" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#F1F1F5" stop-opacity="0.96"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0.5" y="0.5" width="389" height="843" rx="44" fill="#FFFFFF" stroke="#D6D6DB"/>
+
+  <text x="30" y="38" font-size="15" font-weight="600" fill="#1C1C1E">9:41</text>
+  <g fill="#1C1C1E">
+    <rect x="292" y="27" width="3" height="5" rx="1"/>
+    <rect x="297" y="24" width="3" height="8" rx="1"/>
+    <rect x="302" y="21" width="3" height="11" rx="1"/>
+    <rect x="307" y="18" width="3" height="14" rx="1"/>
+    <path d="M323 25c4-3.4 9.6-3.4 13.6 0l-6.8 7z" opacity="0.95"/>
+    <rect x="343" y="20" width="24" height="11" rx="3" fill="none" stroke="#1C1C1E" stroke-width="1.4" opacity="0.7"/>
+    <rect x="345.5" y="22.5" width="16" height="6" rx="1.5"/>
+    <rect x="369" y="23" width="2" height="5" rx="1" opacity="0.7"/>
+  </g>
+
+  <g fill="none" stroke="#0A84FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M30 74l-7 7 7 7"/>
+  </g>
+  <text x="40" y="86" font-size="17" fill="#0A84FF">Compare</text>
+
+  <g transform="translate(340, 72)" fill="none" stroke="#0A84FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 -2v-7"/>
+    <path d="M-5 -5l5-5 5 5"/>
+    <path d="M-8 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/>
+  </g>
+
+  <rect x="16" y="104" width="358" height="0.5" fill="#E5E5EA"/>
+
+  <text x="24" y="126" font-size="12" fill="#6C6C70">Pictures/2026 → Pictures/2026-copy</text>
+  <text x="24" y="143" font-size="11" fill="#6C6C70">Computed 17 Oct 2026 at 09:12 and 10:02 · Format 1.0</text>
+
+  <text x="24" y="170" font-size="12" fill="#6C6C70">Added <tspan fill="#248A3D" font-weight="600">3</tspan> · Removed <tspan fill="#C9252D" font-weight="600">1</tspan> · Changed <tspan fill="#1C1C1E" font-weight="600">2</tspan></text>
+  <text x="24" y="190" font-size="12" fill="#6C6C70">Moved <tspan fill="#1C1C1E" font-weight="600">1</tspan> · Renamed <tspan fill="#1C1C1E" font-weight="600">1</tspan> · Unchanged <tspan fill="#1C1C1E" font-weight="600">1,204</tspan></text>
+
+  <path d="M26 210l4 4 4-4" fill="none" stroke="#6C6C70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="44" y="218" font-size="12" font-weight="600" fill="#1C1C1E">Added (3)</text>
+
+  <rect x="16" y="230" width="358" height="52" rx="8" fill="#E8F5E9"/>
+  <text x="28" y="252" font-size="13" font-weight="600" fill="#248A3D">+</text>
+  <text x="46" y="252" font-size="13" fill="#1C1C1E">2026-10/scan-0003.pdf</text>
+  <text x="358" y="252" text-anchor="end" font-size="11" fill="#6C6C70">812 KB</text>
+  <text x="46" y="274" font-size="10" font-family="'SF Mono', ui-monospace, Menlo, monospace" fill="#6C6C70">aa71…4e29</text>
+  <text x="358" y="274" text-anchor="end" font-size="11" fill="#6C6C70">17 Oct 2026</text>
+
+  <rect x="16" y="286" width="358" height="52" rx="8" fill="#E8F5E9"/>
+  <text x="28" y="308" font-size="13" font-weight="600" fill="#248A3D">+</text>
+  <text x="46" y="308" font-size="13" fill="#1C1C1E">2026-10/scan-0004.pdf</text>
+  <text x="358" y="308" text-anchor="end" font-size="11" fill="#6C6C70">798 KB</text>
+  <text x="46" y="330" font-size="10" font-family="'SF Mono', ui-monospace, Menlo, monospace" fill="#6C6C70">0e5c…91b7</text>
+  <text x="358" y="330" text-anchor="end" font-size="11" fill="#6C6C70">17 Oct 2026</text>
+
+  <rect x="16" y="342" width="358" height="52" rx="8" fill="#E8F5E9"/>
+  <text x="28" y="364" font-size="13" font-weight="600" fill="#248A3D">+</text>
+  <text x="46" y="364" font-size="13" fill="#1C1C1E">2026-10/scan-0005.pdf</text>
+  <text x="358" y="364" text-anchor="end" font-size="11" fill="#6C6C70">801 KB</text>
+  <text x="46" y="386" font-size="10" font-family="'SF Mono', ui-monospace, Menlo, monospace" fill="#6C6C70">7d10…22af</text>
+  <text x="358" y="386" text-anchor="end" font-size="11" fill="#6C6C70">17 Oct 2026</text>
+
+  <path d="M28 404l4 4-4 4" fill="none" stroke="#6C6C70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="44" y="412" font-size="12" font-weight="600" fill="#1C1C1E">Removed (1)</text>
+
+  <path d="M26 432l4 4 4-4" fill="none" stroke="#6C6C70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="44" y="440" font-size="12" font-weight="600" fill="#1C1C1E">Changed (2)</text>
+
+  <rect x="16" y="452" width="358" height="52" rx="8" fill="#FDECEA"/>
+  <text x="28" y="474" font-size="13" font-weight="600" fill="#C9252D">−</text>
+  <text x="46" y="474" font-size="13" fill="#1C1C1E">2026-09/IMG_1100.HEIC</text>
+  <text x="358" y="474" text-anchor="end" font-size="11" fill="#6C6C70">3.2 MB</text>
+  <rect x="46" y="484" width="62" height="16" rx="4" fill="#F7C6C2"/>
+  <text x="52" y="496" font-size="10" fill="#7A1B1F" font-family="'SF Mono', ui-monospace, Menlo, monospace">4a1f…9c02</text>
+  <text x="358" y="496" text-anchor="end" font-size="11" fill="#6C6C70">3 Aug 2026</text>
+
+  <rect x="16" y="508" width="358" height="52" rx="8" fill="#E8F5E9"/>
+  <text x="28" y="530" font-size="13" font-weight="600" fill="#248A3D">+</text>
+  <text x="46" y="530" font-size="13" fill="#1C1C1E">2026-09/IMG_1100.HEIC</text>
+  <text x="358" y="530" text-anchor="end" font-size="11" fill="#6C6C70">3.2 MB</text>
+  <rect x="46" y="540" width="62" height="16" rx="4" fill="#BFE3C4"/>
+  <text x="52" y="552" font-size="10" fill="#145A25" font-family="'SF Mono', ui-monospace, Menlo, monospace">8b7c…11de</text>
+  <text x="358" y="552" text-anchor="end" font-size="11" fill="#6C6C70">9 Aug 2026</text>
+
+  <path d="M28 570l4 4-4 4" fill="none" stroke="#6C6C70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="44" y="578" font-size="12" font-weight="600" fill="#1C1C1E">Moved (1)</text>
+
+  <path d="M28 598l4 4-4 4" fill="none" stroke="#6C6C70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="44" y="606" font-size="12" font-weight="600" fill="#1C1C1E">Renamed (1)</text>
+
+  <path d="M28 626l4 4-4 4" fill="none" stroke="#6C6C70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="44" y="634" font-size="12" font-weight="600" fill="#1C1C1E">Unchanged (1,204)</text>
+
+  <g filter="url(#tabshadow6)">
+    <rect x="16" y="754" width="358" height="68" rx="34" fill="url(#glass6)" stroke="#E0E0E5"/>
+    <rect x="255" y="764" width="100" height="48" rx="24" fill="#E7F0FF"/>
+  </g>
+
+  <g transform="translate(86, 778)">
+    <path d="M-7 -10h8l6 6v14a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2v-18a2 2 0 0 1 2-2z" fill="none" stroke="#6C6C70" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M1 -10v6h6" fill="none" stroke="#6C6C70" stroke-width="1.8" stroke-linejoin="round"/>
+  </g>
+  <text x="86" y="812" font-size="11" font-weight="500" fill="#6C6C70" text-anchor="middle">File</text>
+
+  <g transform="translate(195, 778)">
+    <path d="M-12 -6a3 3 0 0 1 3-3h5l3 3h10a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3h-18a3 3 0 0 1-3-3z" fill="none" stroke="#6C6C70" stroke-width="1.8" stroke-linejoin="round"/>
+  </g>
+  <text x="195" y="812" font-size="11" font-weight="500" fill="#6C6C70" text-anchor="middle">Folder</text>
+
+  <g transform="translate(305, 778)">
+    <rect x="-13" y="-8" width="11" height="15" rx="2" fill="none" stroke="#0A84FF" stroke-width="1.7"/>
+    <rect x="2" y="-11" width="11" height="15" rx="2" fill="none" stroke="#0A84FF" stroke-width="1.7"/>
+    <path d="M-5 3h8M1 0l2.5 3L1 6" fill="none" stroke="#0A84FF" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <text x="305" y="812" font-size="11" font-weight="600" fill="#0A84FF" text-anchor="middle">Compare</text>
+
+  <rect x="130" y="832" width="130" height="5" rx="2.5" fill="#1C1C1E" opacity="0.85"/>
+</svg>
