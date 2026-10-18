@@ -186,6 +186,66 @@
         "ar" : { "stringUnit" : { "state" : "translated", "value" : "دون تغيير" } },
         "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "未更改" } }
       }
+    },
+    "Added, %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "مضاف، %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已添加，%@" } }
+      }
+    },
+    "Removed, %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "محذوف، %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已移除，%@" } }
+      }
+    },
+    "Unchanged, %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "دون تغيير، %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "未更改，%@" } }
+      }
+    },
+    "Changed, %@, old checksum %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "متغير، %@، المجموع الاختباري القديم %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已更改，%@，旧校验和 %@" } }
+      }
+    },
+    "Changed, %@, new checksum %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "متغير، %@، المجموع الاختباري الجديد %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已更改，%@，新校验和 %@" } }
+      }
+    },
+    "Moved from %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "منقول من %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "移动自 %@" } }
+      }
+    },
+    "Moved to %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "منقول إلى %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "移动到 %@" } }
+      }
+    },
+    "Renamed from %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "معاد تسميته من %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "重命名自 %@" } }
+      }
+    },
+    "Renamed to %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "معاد تسميته إلى %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "重命名为 %@" } }
+      }
+    },
+    "Checksumming…" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ الحساب…" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "正在校验…" } }
+      }
     }
   },
   "version" : "1.0"

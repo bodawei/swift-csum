@@ -64,6 +64,7 @@ private struct FolderProgress: View {
             }
         }
         .padding(24)
+        .accessibilityElement(children: .combine)
     }
 }
 

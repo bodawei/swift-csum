@@ -12,6 +12,13 @@ struct FileResultView: View {
                     share
                 }
             }
+            .onChange(of: model.showsSpinner) { _, shows in
+                guard shows else {
+                    return
+                }
+
+                AccessibilityNotification.Announcement("Checksumming…").post()
+            }
     }
 
     @ViewBuilder
@@ -23,6 +30,7 @@ struct FileResultView: View {
             if model.showsSpinner {
                 ProgressView()
                     .controlSize(.large)
+                    .accessibilityLabel("Checksumming…")
             } else {
                 Color.clear
             }
