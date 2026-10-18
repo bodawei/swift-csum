@@ -1,5 +1,5 @@
 import SwiftUI
-import ChecksumCore
+import CsumController
 
 struct ReportView: View {
     let comparison: CsvComparison

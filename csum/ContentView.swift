@@ -3,7 +3,7 @@ import UniformTypeIdentifiers
 #if os(macOS)
 import AppKit
 #endif
-import ChecksumCore
+import CsumController
 
 struct ContentView: View {
     @AppStorage("checksumAlgorithm") private var algorithmRawValue = ChecksumAlgorithm.sha256.rawValue
