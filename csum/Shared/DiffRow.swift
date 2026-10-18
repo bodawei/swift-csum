@@ -7,6 +7,7 @@ struct DiffRow: Identifiable {
     let tint: Color?
     let name: AttributedString
     let size: String
+    let created: String
     let checksum: AttributedString
     let date: String
 }
@@ -126,6 +127,7 @@ enum DiffRows {
             tint: tint,
             name: name,
             size: Format.size(entry.size),
+            created: Format.day(entry.created),
             checksum: checksum,
             date: Format.day(entry.modified)
         )
