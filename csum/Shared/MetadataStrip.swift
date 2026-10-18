@@ -2,12 +2,12 @@ import SwiftUI
 
 struct MetadataStrip: View {
     let path: String
-    let detail: String
+    let detail: LocalizedStringKey
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(verbatim: path)
-            Text(verbatim: detail)
+            Text(detail)
         }
         .font(.footnote)
         .foregroundStyle(.secondary)

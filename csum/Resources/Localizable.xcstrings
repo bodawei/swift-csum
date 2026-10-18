@@ -1,0 +1,192 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Added" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "مضاف" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已添加" } }
+      }
+    },
+    "Algorithm" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "الخوارزمية" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "算法" } }
+      }
+    },
+    "Changed" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "متغير" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已更改" } }
+      }
+    },
+    "Checksum" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "المجموع الاختباري" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "校验和" } }
+      }
+    },
+    "Checksum File…" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "حساب مجموع الملف…" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "校验文件…" } }
+      }
+    },
+    "Checksum Folder…" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "حساب مجموع المجلد…" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "校验文件夹…" } }
+      }
+    },
+    "Checksumming Folder…" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "جارٍ حساب مجموع المجلد…" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "正在校验文件夹…" } }
+      }
+    },
+    "Choose…" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "اختيار…" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "选择…" } }
+      }
+    },
+    "Compare" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "مقارنة" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "比较" } }
+      }
+    },
+    "Computed %@ · Format %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "حُسب في %@ · التنسيق %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "计算于 %@ · 格式 %@" } }
+      }
+    },
+    "Computed %@ · Format %@ · Entries: %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "حُسب في %@ · التنسيق %@ · عدد المدخلات: %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "计算于 %@ · 格式 %@ · 条目数：%@" } }
+      }
+    },
+    "Computed %@ and %@ · Format %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "حُسب في %@ و %@ · التنسيق %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "计算于 %@ 和 %@ · 格式 %@" } }
+      }
+    },
+    "Created" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "تاريخ الإنشاء" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "创建时间" } }
+      }
+    },
+    "Failed" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "فشل" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "失败" } }
+      }
+    },
+    "File" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "ملف" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "文件" } }
+      }
+    },
+    "First Source" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "المصدر الأول" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "第一个来源" } }
+      }
+    },
+    "Folder" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "مجلد" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "文件夹" } }
+      }
+    },
+    "Modified" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "تاريخ التعديل" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "修改时间" } }
+      }
+    },
+    "Moved" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "منقول" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已移动" } }
+      }
+    },
+    "No differences" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "لا توجد اختلافات" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "没有差异" } }
+      }
+    },
+    "Nothing chosen yet" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "لم يتم الاختيار بعد" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "尚未选择" } }
+      }
+    },
+    "Path" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "المسار" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "路径" } }
+      }
+    },
+    "Processed %@ of %@" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "تمت معالجة %@ من %@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已处理 %@，共 %@" } }
+      }
+    },
+    "Removed" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "محذوف" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已移除" } }
+      }
+    },
+    "Renamed" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "معاد تسميته" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已重命名" } }
+      }
+    },
+    "Second Source" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "المصدر الثاني" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "第二个来源" } }
+      }
+    },
+    "Share" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "مشاركة" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "共享" } }
+      }
+    },
+    "Size" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "الحجم" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "大小" } }
+      }
+    },
+    "Source Type" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "نوع المصدر" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "来源类型" } }
+      }
+    },
+    "Swap" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "تبديل" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "交换" } }
+      }
+    },
+    "Unchanged" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "دون تغيير" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "未更改" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

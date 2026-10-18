@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct KeyValueCard: View {
-    let rows: [(label: String, value: String)]
+    let rows: [(label: LocalizedStringKey, value: String)]
 
     var body: some View {
         Grid(alignment: .leading, horizontalSpacing: 24, verticalSpacing: 14) {

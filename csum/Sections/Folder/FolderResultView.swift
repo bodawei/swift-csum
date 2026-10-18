@@ -55,7 +55,7 @@ private struct FolderProgress: View {
                 ProgressView(value: Double(progress.done), total: Double(progress.total))
                     .frame(maxWidth: 320)
 
-                Text("\(Format.count(progress.done)) of \(Format.count(progress.total)) files")
+                Text("Processed \(Format.count(progress.done)) of \(Format.count(progress.total))")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             } else {

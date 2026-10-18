@@ -30,6 +30,8 @@
 		C500000000000000000000F6 /* CompareSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E1 /* CompareSectionModel.swift */; };
 		C500000000000000000000F7 /* CompareResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E2 /* CompareResultView.swift */; };
 		C500000000000000000000F8 /* DiffRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E3 /* DiffRow.swift */; };
+		C500000000000000000000F9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E4 /* Localizable.xcstrings */; };
+		C500000000000000000000FA /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E5 /* InfoPlist.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,8 @@
 		C500000000000000000000E1 /* CompareSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareSectionModel.swift; sourceTree = "<group>"; };
 		C500000000000000000000E2 /* CompareResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareResultView.swift; sourceTree = "<group>"; };
 		C500000000000000000000E3 /* DiffRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffRow.swift; sourceTree = "<group>"; };
+		C500000000000000000000E4 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		C500000000000000000000E5 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,7 @@
 				C500000000000000000000C1 /* App */,
 				C500000000000000000000C2 /* Sections */,
 				C500000000000000000000C6 /* Shared */,
+				C500000000000000000000C7 /* Resources */,
 				C50000000000000000000016 /* Info.plist */,
 				C50000000000000000000013 /* Assets.xcassets */,
 			);
@@ -141,6 +146,15 @@
 				C500000000000000000000E2 /* CompareResultView.swift */,
 			);
 			path = Compare;
+			sourceTree = "<group>";
+		};
+		C500000000000000000000C7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C500000000000000000000E4 /* Localizable.xcstrings */,
+				C500000000000000000000E5 /* InfoPlist.xcstrings */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		C500000000000000000000C6 /* Shared */ = {
@@ -232,6 +246,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C50000000000000000000003 /* Assets.xcassets in Resources */,
+				C500000000000000000000F9 /* Localizable.xcstrings in Resources */,
+				C500000000000000000000FA /* InfoPlist.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,7 +410,6 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "校驗和";
 				INFOPLIST_FILE = csum/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -426,7 +441,6 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "校驗和";
 				INFOPLIST_FILE = csum/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -69,7 +69,7 @@ private struct FileDetails: View {
         }
     }
 
-    private var rows: [(label: String, value: String)] {
+    private var rows: [(label: LocalizedStringKey, value: String)] {
         guard let entry = result.entries.first else {
             return []
         }
