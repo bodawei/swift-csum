@@ -2,7 +2,7 @@
 
 Compute file checksums (SHA-256, SHA-1, or MD5) with a SwiftUI app on iPhone, iPad, and
 Mac, or from the command line. Both front-ends share one hashing implementation
-(`Sources/ChecksumCore`), which streams files in 1 MB chunks.
+(`Sources/CsumController`), which streams files in 1 MB chunks.
 
 ## App
 
@@ -129,7 +129,7 @@ sign it with your Development Team, or share the repo and have them build it.
 ## Layout
 
 ```
-Sources/ChecksumCore/    shared hashing library + CSV model/compare (CryptoKit)
+Sources/CsumController/   shared hashing library + CSV model/compare (CryptoKit)
 Sources/csum-cli/        command-line tool (swift-argument-parser)
 csum.xcodeproj/          SwiftUI app project (iPhone, iPad, Mac)
 csum/                    app sources
