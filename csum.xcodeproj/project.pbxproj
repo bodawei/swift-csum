@@ -22,6 +22,11 @@
 		C500000000000000000000BC /* MetadataStrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AC /* MetadataStrip.swift */; };
 		C500000000000000000000BD /* KeyValueCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AD /* KeyValueCard.swift */; };
 		C500000000000000000000BE /* ErrorStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AE /* ErrorStateView.swift */; };
+		C500000000000000000000F1 /* AdaptiveContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AF /* AdaptiveContent.swift */; };
+		C500000000000000000000F2 /* ChecksumRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D1 /* ChecksumRow.swift */; };
+		C500000000000000000000F3 /* ChecksumTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D2 /* ChecksumTable.swift */; };
+		C500000000000000000000F4 /* FolderSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D3 /* FolderSectionModel.swift */; };
+		C500000000000000000000F5 /* FolderResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D4 /* FolderResultView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +47,11 @@
 		C500000000000000000000AC /* MetadataStrip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataStrip.swift; sourceTree = "<group>"; };
 		C500000000000000000000AD /* KeyValueCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueCard.swift; sourceTree = "<group>"; };
 		C500000000000000000000AE /* ErrorStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorStateView.swift; sourceTree = "<group>"; };
+		C500000000000000000000AF /* AdaptiveContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveContent.swift; sourceTree = "<group>"; };
+		C500000000000000000000D1 /* ChecksumRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksumRow.swift; sourceTree = "<group>"; };
+		C500000000000000000000D2 /* ChecksumTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksumTable.swift; sourceTree = "<group>"; };
+		C500000000000000000000D3 /* FolderSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionModel.swift; sourceTree = "<group>"; };
+		C500000000000000000000D4 /* FolderResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderResultView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				C500000000000000000000A5 /* FolderSectionView.swift */,
+				C500000000000000000000D3 /* FolderSectionModel.swift */,
+				C500000000000000000000D4 /* FolderResultView.swift */,
 			);
 			path = Folder;
 			sourceTree = "<group>";
@@ -131,6 +143,9 @@
 				C500000000000000000000AC /* MetadataStrip.swift */,
 				C500000000000000000000AD /* KeyValueCard.swift */,
 				C500000000000000000000AE /* ErrorStateView.swift */,
+				C500000000000000000000AF /* AdaptiveContent.swift */,
+				C500000000000000000000D1 /* ChecksumRow.swift */,
+				C500000000000000000000D2 /* ChecksumTable.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -232,6 +247,11 @@
 				C500000000000000000000BC /* MetadataStrip.swift in Sources */,
 				C500000000000000000000BD /* KeyValueCard.swift in Sources */,
 				C500000000000000000000BE /* ErrorStateView.swift in Sources */,
+				C500000000000000000000F1 /* AdaptiveContent.swift in Sources */,
+				C500000000000000000000F2 /* ChecksumRow.swift in Sources */,
+				C500000000000000000000F3 /* ChecksumTable.swift in Sources */,
+				C500000000000000000000F4 /* FolderSectionModel.swift in Sources */,
+				C500000000000000000000F5 /* FolderResultView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
