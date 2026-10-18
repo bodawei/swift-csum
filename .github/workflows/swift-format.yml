@@ -1,0 +1,60 @@
+name: Swift Format
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: swift-format-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    container:
+      image: swift:6.4.1
+    timeout-minutes: 15
+    steps:
+      - name: Check out the pull request
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Lint changed Swift files
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+          swift format --version
+
+          files=()
+          while IFS= read -r file; do
+            files+=("$file")
+          done < <(git diff --name-only --diff-filter=d "$BASE_SHA" HEAD -- '*.swift')
+
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No Swift files changed, nothing to format."
+            exit 0
+          fi
+
+          printf 'Checking:\n%s\n' "${files[@]}"
+
+          if swift format lint --strict --parallel --configuration .swift-format "${files[@]}"; then
+            echo "All changed Swift files are formatted."
+            exit 0
+          fi
+
+          for file in "${files[@]}"; do
+            diff -u "$file" <(swift format --configuration .swift-format "$file") || true
+          done
+
+          echo "::error::swift-format would rewrite the files above. Run \`swift format --in-place --configuration .swift-format <paths>\` and commit the result."
+          exit 1
