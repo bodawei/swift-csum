@@ -25,6 +25,7 @@ struct ChecksumRow: View {
                     .font(.caption.monospaced())
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
+                    .truncationMode(.middle)
 
                 Spacer(minLength: 8)
 

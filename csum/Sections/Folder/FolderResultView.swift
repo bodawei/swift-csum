@@ -76,7 +76,7 @@ private struct FolderResults: View {
             MetadataStrip(
                 path: result.metadata.root,
                 detail:
-                    "Computed \(Format.timestamp(result.metadata.computedAt)) · Format \(result.metadata.formatVersion) · \(Format.count(result.entries.count)) entries"
+                    "Computed \(Format.timestamp(result.metadata.computedAt)) · Format \(result.metadata.formatVersion) · Entries: \(Format.count(result.entries.count))"
             )
             .padding(.horizontal, 20)
             .padding(.vertical, 12)

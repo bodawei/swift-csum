@@ -32,10 +32,19 @@ final class CompareSectionModel {
     private(set) var export: CsumCSVFile?
 
     private let service: any Checksumming
+    private let demoMode: Bool
     private var task: Task<Void, Never>?
 
-    init(service: any Checksumming = ControllerService()) {
+    init(service: any Checksumming = ControllerService(), demoMode: Bool = false) {
         self.service = service
+        self.demoMode = demoMode
+
+        #if DEBUG
+            if demoMode {
+                firstKind = .folder
+                secondKind = .folder
+            }
+        #endif
     }
 
     var isRunning: Bool {
@@ -61,10 +70,24 @@ final class CompareSectionModel {
     }
 
     func chooseFirst() {
+        #if DEBUG
+            if demoMode {
+                setFirst(DemoData.folderURL)
+                return
+            }
+        #endif
+
         isChoosingFirst = true
     }
 
     func chooseSecond() {
+        #if DEBUG
+            if demoMode {
+                setSecond(DemoData.copiedFolderURL)
+                return
+            }
+        #endif
+
         isChoosingSecond = true
     }
 
