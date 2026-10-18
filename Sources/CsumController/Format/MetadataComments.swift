@@ -5,6 +5,34 @@ enum MetadataComments {
         "# \(key) \(value)"
     }
 
+    static func tool(from text: String) throws -> (name: String, version: String) {
+        let parts = text.split(separator: " ")
+
+        guard parts.count >= 2 else {
+            throw MalformedFile(reason: .missingMetadata)
+        }
+
+        return (parts.dropLast().joined(separator: " "), String(parts[parts.count - 1]))
+    }
+
+    static func timestampText(for date: Date) -> String {
+        ISO8601DateFormatter().string(from: date)
+    }
+
+    static func date(from text: String) -> Date? {
+        ISO8601DateFormatter().date(from: text)
+    }
+
+    static func all(from table: TableData) -> [String] {
+        var comments = table.leadingComments
+
+        for index in table.commentsBeforeRow.keys.sorted() {
+            comments.append(contentsOf: table.commentsBeforeRow[index] ?? [])
+        }
+
+        return comments
+    }
+
     static func keyValue(from comment: String) -> (key: String, value: String)? {
         guard comment.hasPrefix("#") else {
             return nil
