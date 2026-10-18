@@ -32,6 +32,7 @@
 		C500000000000000000000F8 /* DiffRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E3 /* DiffRow.swift */; };
 		C500000000000000000000F9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E4 /* Localizable.xcstrings */; };
 		C500000000000000000000FA /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E5 /* InfoPlist.xcstrings */; };
+		C50000000000000000000104 /* SectionModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000103 /* SectionModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,8 @@
 		C500000000000000000000E3 /* DiffRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffRow.swift; sourceTree = "<group>"; };
 		C500000000000000000000E4 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C500000000000000000000E5 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		C50000000000000000000102 /* csumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = csumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C50000000000000000000103 /* SectionModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +76,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C50000000000000000000105 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -80,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				C50000000000000000000041 /* csum */,
+				C5000000000000000000010D /* csumTests */,
 				C50000000000000000000042 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -173,10 +184,19 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		C5000000000000000000010D /* csumTests */ = {
+			isa = PBXGroup;
+			children = (
+				C50000000000000000000103 /* SectionModelTests.swift */,
+			);
+			path = csumTests;
+			sourceTree = "<group>";
+		};
 		C50000000000000000000042 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				C50000000000000000000014 /* csum.app */,
+				C50000000000000000000102 /* csumTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -203,6 +223,23 @@
 			productName = "csum";
 			productReference = C50000000000000000000014 /* csum.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C50000000000000000000101 /* csumTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C50000000000000000000108 /* Build configuration list for PBXNativeTarget "csumTests" */;
+			buildPhases = (
+				C50000000000000000000106 /* Sources */,
+				C50000000000000000000105 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C5000000000000000000010B /* PBXTargetDependency */,
+			);
+			name = csumTests;
+			productName = csumTests;
+			productReference = C50000000000000000000102 /* csumTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -236,9 +273,28 @@
 			projectRoot = "";
 			targets = (
 				C50000000000000000000050 /* csum */,
+				C50000000000000000000101 /* csumTests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXTargetDependency section */
+		C5000000000000000000010B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C50000000000000000000050 /* csum */;
+			targetProxy = C5000000000000000000010C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		C5000000000000000000010C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C50000000000000000000070 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C50000000000000000000050;
+			remoteInfo = csum;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C50000000000000000000061 /* Resources */ = {
@@ -280,6 +336,14 @@
 				C500000000000000000000F6 /* CompareSectionModel.swift in Sources */,
 				C500000000000000000000F7 /* CompareResultView.swift in Sources */,
 				C500000000000000000000F8 /* DiffRow.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C50000000000000000000106 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C50000000000000000000104 /* SectionModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +528,58 @@
 			};
 			name = Release;
 		};
+		C50000000000000000000109 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.djb.csumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/csum.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/csum";
+			};
+			name = Debug;
+		};
+		C5000000000000000000010A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.djb.csumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/csum.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/csum";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -481,6 +597,15 @@
 			buildConfigurations = (
 				C50000000000000000000080 /* Debug */,
 				C50000000000000000000081 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C50000000000000000000108 /* Build configuration list for PBXNativeTarget "csumTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C50000000000000000000109 /* Debug */,
+				C5000000000000000000010A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
