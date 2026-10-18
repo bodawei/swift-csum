@@ -16,10 +16,11 @@ public struct CsumController: Sendable {
 
     public func calculateChecksums(
         at url: URL,
-        progress: (@Sendable (Int, Int) -> Void)? = nil
+        progress: (@Sendable (Int, Int) -> Void)? = nil,
+        isCancelled: (@Sendable () -> Bool)? = nil
     ) throws -> ChecksumResult {
         let entries = try withScopedAccess(to: url) {
-            try collectEntries(at: url, progress: progress)
+            try collectEntries(at: url, progress: progress, isCancelled: isCancelled)
         }
 
         return ChecksumResult(
@@ -35,13 +36,16 @@ public struct CsumController: Sendable {
         )
     }
 
-    public func loadChecksumResult(at url: URL) throws -> ChecksumResult {
+    public func loadChecksumResult(
+        at url: URL,
+        isCancelled: (@Sendable () -> Bool)? = nil
+    ) throws -> ChecksumResult {
         guard FileManager.default.fileExists(atPath: url.path) else {
             throw CsumError.notFound(path: url.path)
         }
 
         guard isChecksumFile(url) else {
-            return try calculateChecksums(at: url)
+            return try calculateChecksums(at: url, isCancelled: isCancelled)
         }
 
         return try withScopedAccess(to: url) {
@@ -49,12 +53,16 @@ public struct CsumController: Sendable {
         }
     }
 
-    public func compare(first firstURL: URL, second secondURL: URL) throws -> ChecksumComparison {
+    public func compare(
+        first firstURL: URL,
+        second secondURL: URL,
+        isCancelled: (@Sendable () -> Bool)? = nil
+    ) throws -> ChecksumComparison {
         let comparisonAlgorithm = try resolveAlgorithm(first: firstURL, second: secondURL)
         let comparison = CsumController(algorithm: comparisonAlgorithm, writer: writer)
 
-        let first = try comparison.loadChecksumResult(at: firstURL)
-        let second = try comparison.loadChecksumResult(at: secondURL)
+        let first = try comparison.loadChecksumResult(at: firstURL, isCancelled: isCancelled)
+        let second = try comparison.loadChecksumResult(at: secondURL, isCancelled: isCancelled)
 
         return ComparisonEngine.compare(
             first: first,
@@ -71,7 +79,9 @@ public struct CsumController: Sendable {
         )
     }
 
-    private func resolveAlgorithm(first firstURL: URL, second secondURL: URL) throws -> ChecksumAlgorithm {
+    private func resolveAlgorithm(first firstURL: URL, second secondURL: URL) throws
+        -> ChecksumAlgorithm
+    {
         let firstRecorded = try recordedAlgorithm(at: firstURL)
         let secondRecorded = try recordedAlgorithm(at: secondURL)
 
@@ -123,7 +133,8 @@ public struct CsumController: Sendable {
 
     private func collectEntries(
         at url: URL,
-        progress: (@Sendable (Int, Int) -> Void)?
+        progress: (@Sendable (Int, Int) -> Void)?,
+        isCancelled: (@Sendable () -> Bool)?
     ) throws -> [ChecksumEntry] {
         guard FileManager.default.fileExists(atPath: url.path) else {
             throw CsumError.notFound(path: url.path)
@@ -132,7 +143,16 @@ public struct CsumController: Sendable {
         let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
 
         if isDirectory {
-            return try EntryCollector.entries(in: url, algorithm: algorithm, progress: progress)
+            return try EntryCollector.entries(
+                in: url,
+                algorithm: algorithm,
+                progress: progress,
+                isCancelled: isCancelled
+            )
+        }
+
+        if isCancelled?() == true {
+            throw CancellationError()
         }
 
         progress?(1, 1)
