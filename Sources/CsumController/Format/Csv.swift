@@ -106,7 +106,7 @@ public enum Csv {
             }
 
             if options.allowLineComments, line[0].hasPrefix("#") {
-                pendingComments.append(line[0])
+                pendingComments.append(line.joined(separator: ","))
 
                 continue
             }
@@ -144,7 +144,7 @@ public enum Csv {
         var lines: [String] = []
 
         if options.allowLineComments {
-            lines.append(contentsOf: data.leadingComments)
+            lines.append(contentsOf: data.leadingComments.map(formatField))
         }
 
         if options.hasHeader {
@@ -153,14 +153,14 @@ public enum Csv {
 
         for index in data.rows.indices {
             if options.allowLineComments, let block = data.commentsBeforeRow[index] {
-                lines.append(contentsOf: block)
+                lines.append(contentsOf: block.map(formatField))
             }
 
             lines.append(stringifyLine(data.rows[index], quoting: options.dataFormat.quoting))
         }
 
         if options.allowLineComments, let block = data.commentsBeforeRow[data.rows.count] {
-            lines.append(contentsOf: block)
+            lines.append(contentsOf: block.map(formatField))
         }
 
         let body = lines.joined(separator: options.dataFormat.lineEnding)
@@ -179,8 +179,8 @@ public enum Csv {
         }
     }
 
-    private static func formatField(_ value: String) -> String {
-        if value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r") {
+    static func formatField(_ value: String) -> String {
+        if value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r") || value.hasPrefix(" ") || value.hasSuffix(" ") {
             return "\"" + value.replacingOccurrences(of: "\"", with: "\"\"") + "\""
         }
 
