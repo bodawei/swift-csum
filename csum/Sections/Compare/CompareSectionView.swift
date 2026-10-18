@@ -53,7 +53,8 @@ struct CompareSectionView: View {
                         get: { app.compare.firstKind },
                         set: { app.compare.setFirstKind($0) }
                     ),
-                    url: app.compare.first
+                    url: app.compare.first,
+                    chooseIdentifier: "chooseFirst"
                 ) {
                     app.compare.chooseFirst()
                 }
@@ -64,7 +65,8 @@ struct CompareSectionView: View {
                         get: { app.compare.secondKind },
                         set: { app.compare.setSecondKind($0) }
                     ),
-                    url: app.compare.second
+                    url: app.compare.second,
+                    chooseIdentifier: "chooseSecond"
                 ) {
                     app.compare.chooseSecond()
                 }
@@ -79,6 +81,7 @@ struct CompareSectionView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
+                .accessibilityIdentifier("compareButton")
                 .disabled(!app.compare.canCompare)
             }
             .padding(20)
@@ -91,6 +94,7 @@ struct CompareSectionView: View {
         title: LocalizedStringKey,
         kind: Binding<CompareSectionModel.Kind>,
         url: URL?,
+        chooseIdentifier: String,
         choose: @escaping () -> Void
     ) -> some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -109,6 +113,7 @@ struct CompareSectionView: View {
                 .labelsHidden()
 
                 Button("Choose…", action: choose)
+                    .accessibilityIdentifier(chooseIdentifier)
 
                 Spacer()
             }

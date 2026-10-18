@@ -26,17 +26,27 @@ final class FileSectionModel {
 
     private let service: any Checksumming
     private let sleep: Sleeper
+    private let demoMode: Bool
     private var task: Task<Void, Never>?
 
     init(
         service: any Checksumming = ControllerService(),
-        sleep: @escaping Sleeper = { try await Task.sleep(for: $0) }
+        sleep: @escaping Sleeper = { try await Task.sleep(for: $0) },
+        demoMode: Bool = false
     ) {
         self.service = service
         self.sleep = sleep
+        self.demoMode = demoMode
     }
 
     func chooseFile() {
+        #if DEBUG
+            if demoMode {
+                fileChosen(DemoData.fileURL)
+                return
+            }
+        #endif
+
         isChoosingSource = true
     }
 

@@ -45,13 +45,22 @@ final class FolderSectionModel {
     private(set) var export: CsumCSVFile?
 
     private let service: any Checksumming
+    private let demoMode: Bool
     private var task: Task<Void, Never>?
 
-    init(service: any Checksumming = ControllerService()) {
+    init(service: any Checksumming = ControllerService(), demoMode: Bool = false) {
         self.service = service
+        self.demoMode = demoMode
     }
 
     func chooseFolder() {
+        #if DEBUG
+            if demoMode {
+                folderChosen(DemoData.folderURL)
+                return
+            }
+        #endif
+
         isChoosingSource = true
     }
 

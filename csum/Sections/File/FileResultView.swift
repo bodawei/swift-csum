@@ -77,18 +77,20 @@ private struct FileDetails: View {
         }
     }
 
-    private var rows: [(label: LocalizedStringKey, value: String)] {
+    private var rows:
+        [(label: LocalizedStringKey, value: String, singleLine: Bool, monospaced: Bool)]
+    {
         guard let entry = result.entries.first else {
             return []
         }
 
         return [
-            ("Checksum", Format.checksum(entry)),
-            ("Algorithm", result.metadata.algorithm.displayName),
-            ("Size", Format.size(entry.size)),
-            ("Created", Format.timestamp(entry.created)),
-            ("Modified", Format.timestamp(entry.modified)),
-            ("Path", entry.path),
+            ("Checksum", Format.checksum(entry), true, true),
+            ("Algorithm", result.metadata.algorithm.displayName, true, false),
+            ("Size", Format.size(entry.size), true, false),
+            ("Created", Format.timestamp(entry.created), true, false),
+            ("Modified", Format.timestamp(entry.modified), true, false),
+            ("Path", entry.path, false, false),
         ]
     }
 }

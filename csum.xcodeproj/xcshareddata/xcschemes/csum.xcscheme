@@ -38,6 +38,16 @@
                ReferencedContainer = "container:csum.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C50000000000000000000118"
+               BuildableName = "csumUITests.xctest"
+               BlueprintName = "csumUITests"
+               ReferencedContainer = "container:csum.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
