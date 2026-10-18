@@ -549,3 +549,58 @@ project's local package product reference is updated in that pass too.
 - Failures are codes; no human strings in the controller. `!<code>` in the checksum cell.
 - Module renamed `CsumController`; the app target stays broken until the GUI revision.
 - Structured `# csum-*` comments; single format version 1.0; no legacy reading.
+
+## What the implementation changed
+
+Things that only became clear while building it, all of them recorded here rather than
+silently absorbed:
+
+- **`ChecksumComparison`, not `ComparisonResult`.** `Foundation.ComparisonResult` already
+  exists — the `orderedAscending`/`orderedSame`/`orderedDescending` enum. Every consumer
+  imports Foundation, so the planned name was an ambiguous type lookup away from being
+  unusable.
+- **One comment line per source field.** The plan sketched
+  `# csum-first path=… kind=… root=… computed=…`, which cannot survive a source path
+  containing a space, since the fields are space-separated inside a comment. It is now
+  `# csum-first-path`, `# csum-first-kind`, `# csum-first-root`, `# csum-first-computed`
+  (and `second` likewise), which the `key <space> value` rule parses exactly.
+- **`Csv` had two bugs**, both found while building the format on top of it: a comment line
+  was truncated at its first comma, and a comment containing a quote could not be read back
+  at all. Fixed, with tests, before the codecs relied on the behaviour.
+- **`ComparisonSection` lives with the model**, not only in the codec: the CLI needs the
+  same ordering vocabulary, and a section list is part of what a comparison *is*.
+- **Failure tokens live in the codec.** `ChecksumFailureCode` stays a plain enum with no
+  raw values; `!cannotOpen` is a wire detail, so the wire layer owns it.
+- **`writer` is an `init` argument** (`CsumController.cliWriter` / `.appWriter`), because the
+  file records which tool produced it and the two heads differ.
+- **The walk and the canonical path are their own types** (`EntryCollector`,
+  `CanonicalPath`) rather than private methods on the controller, so the filesystem
+  behaviour can be tested without going through the public API.
+
+The comparison engine's move/rename pool was regrouped by index order during review of the
+engine step: grouping a `Set` lets Swift's per-process hash randomisation decide how two
+byte-identical files pair, which is exactly the kind of thing that passes once and fails
+later. The determinism test caught it on a second run.
+
+### How the work was split
+
+Twelve pull requests, one per step of the sequence above, none over 500 lines where the
+split was not artificial:
+
+| PR | |
+|---|---|
+| #18 | the plan |
+| #19 | rename the module |
+| #20 | the checksum model and error codes |
+| #21 | make CSV comments and padded fields round-trip |
+| #22 | the entry row and metadata comment primitives |
+| #23 | the single-source `.csum.csv` codec |
+| #24 | the entry collector |
+| #25 | the `CsumController` API |
+| #26 | the comparison model and engine |
+| #27 | compare two sources |
+| #28 | the comparison file writer |
+| #29 | the comparison file reader |
+| #30 | the CLI subcommands, and retiring the old CSV layer |
+| #31 | the e2e script and this README |
+

@@ -8,100 +8,157 @@ struct CsumCLI: ParsableCommand {
     static var configuration: CommandConfiguration {
         CommandConfiguration(
             commandName: "csum-cli",
-            abstract: "Compute checksums, or compare two checksum sources."
+            abstract: "Compute file checksums, or compare two checksum sources.",
+            subcommands: [Check.self, Compare.self]
         )
     }
+}
 
-    @Argument(help: "One file/directory to checksum, or two sources to compare (.csum.csv files and/or files/directories).")
-    var paths: [String]
-
-    @Option(name: [.customShort("c"), .long], help: "The checksum algorithm to use when computing.")
-    var algorithm: ChecksumAlgorithm = .sha256
-
-    @Flag(name: .shortAndLong, help: "Include unchanged entries in compare output.")
-    var unchanged = false
-
-    @Flag(name: .shortAndLong, help: "Include deleted entries in compare output.")
-    var deleted = false
-
-    @Flag(name: .shortAndLong, help: "Include added entries in compare output.")
-    var added = false
-
-    @Flag(name: .shortAndLong, help: "Include modified entries in compare output.")
-    var modified = false
-
-    @Flag(name: [.customShort("o"), .long], help: "Include moved entries in compare output.")
-    var moved = false
-
-    @Flag(name: [.customShort("r"), .long], help: "Include renamed entries in compare output.")
-    var renamed = false
-
-    func run() throws {
-        guard (1...2).contains(paths.count) else {
-            throw ValidationError("Provide one path to checksum, or two to compare.")
-        }
-
-        for path in paths where !FileManager.default.fileExists(atPath: path) {
-            throw ValidationError("No such file or directory: \(path)")
-        }
-
-        if paths.count == 1 {
-            let rows = computeRows(for: paths[0])
-            let text = CsvFormattingUtils.buildFileText(
-                rows: rows,
-                sourcePaths: paths[0],
-                writer: "csum-cli",
-                version: "1.0"
-            )
-
-            FileHandle.standardOutput.write(Data(text.utf8))
-
-            return
-        }
-
-        let explicit = unchanged || deleted || added || modified || moved || renamed
-        let showUnchanged = unchanged
-        let showDeleted = explicit ? deleted : true
-        let showAdded = explicit ? added : true
-        let showModified = explicit ? modified : true
-        let showMoved = explicit ? moved : true
-        let showRenamed = explicit ? renamed : true
-
-        let first = try CsvCompare.loadRows(url: URL(fileURLWithPath: paths[0]), algorithm: algorithm)
-        let second = try CsvCompare.loadRows(url: URL(fileURLWithPath: paths[1]), algorithm: algorithm)
-        let report = CsvCompare.compare(first: first, second: second)
-
-        var sections: [String] = []
-
-        if showAdded && !report.added.isEmpty {
-            sections.append(CsvFormattingUtils.formatSection(title: "Added", rows: report.added))
-        }
-
-        if showDeleted && !report.removed.isEmpty {
-            sections.append(CsvFormattingUtils.formatSection(title: "Deleted", rows: report.removed))
-        }
-
-        if showMoved && !report.moved.isEmpty {
-            sections.append(CsvFormattingUtils.formatPairSection(title: "Moved", pairs: report.moved))
-        }
-
-        if showRenamed && !report.renamed.isEmpty {
-            sections.append(CsvFormattingUtils.formatPairSection(title: "Renamed", pairs: report.renamed))
-        }
-
-        if showModified && !report.changed.isEmpty {
-            sections.append(CsvFormattingUtils.formatSection(title: "Modified", rows: report.changed.map { $0.new }))
-        }
-
-        if showUnchanged && !report.unchanged.isEmpty {
-            sections.append(CsvFormattingUtils.formatSection(title: "Unchanged", rows: report.unchanged))
-        }
-
-        FileHandle.standardOutput.write(Data(sections.joined(separator: "").utf8))
+struct Check: ParsableCommand {
+    static var configuration: CommandConfiguration {
+        CommandConfiguration(abstract: "Write the checksums of a file or folder as .csum.csv.")
     }
 
-    private func computeRows(for path: String) -> [CsumCsvDataRow] {
-        ChecksumCollector.collect(url: URL(fileURLWithPath: path), algorithm: algorithm)
+    @Argument(help: "The file or folder to checksum.")
+    var path: String
+
+    @Option(name: [.customShort("a"), .long], help: "sha256, sha1, or md5.")
+    var algorithm: ChecksumAlgorithm = .sha256
+
+    func run() throws {
+        do {
+            try write()
+        } catch {
+            throw validationError(for: error)
+        }
+    }
+
+    private func write() throws {
+        let controller = CsumController(algorithm: algorithm, writer: CsumController.cliWriter)
+        let result = try controller.calculateChecksums(at: URL(fileURLWithPath: path))
+
+        FileHandle.standardOutput.write(Data(ChecksumFileCodec.render(result).utf8))
+    }
+}
+
+struct Compare: ParsableCommand {
+    static var configuration: CommandConfiguration {
+        CommandConfiguration(abstract: "Compare two .csum.csv files, files, or folders.")
+    }
+
+    @Argument(help: "The first source: a .csum.csv file, a file, or a folder.")
+    var first: String
+
+    @Argument(help: "The second source: a .csum.csv file, a file, or a folder.")
+    var second: String
+
+    @Flag(name: .shortAndLong, help: "Include added entries.")
+    var added = false
+
+    @Flag(name: [.customShort("d"), .long], help: "Include removed entries.")
+    var removed = false
+
+    @Flag(name: [.customShort("c"), .long], help: "Include changed entries.")
+    var changed = false
+
+    @Flag(name: [.customShort("m"), .long], help: "Include moved entries.")
+    var moved = false
+
+    @Flag(name: .shortAndLong, help: "Include renamed entries.")
+    var renamed = false
+
+    @Flag(name: .shortAndLong, help: "Include unchanged entries.")
+    var unchanged = false
+
+    func run() throws {
+        do {
+            try write()
+        } catch {
+            throw validationError(for: error)
+        }
+    }
+
+    private func write() throws {
+        let controller = CsumController(algorithm: .sha256, writer: CsumController.cliWriter)
+        let comparison = try controller.compare(
+            first: URL(fileURLWithPath: first),
+            second: URL(fileURLWithPath: second)
+        )
+
+        let text = ComparisonFileCodec.render(comparison, sections: selectedSections)
+
+        FileHandle.standardOutput.write(Data(text.utf8))
+    }
+
+    private var selectedSections: [ComparisonSection] {
+        let selected: [ComparisonSection?] = [
+            added ? .added : nil,
+            removed ? .removed : nil,
+            changed ? .changed : nil,
+            moved ? .moved : nil,
+            renamed ? .renamed : nil,
+            unchanged ? .unchanged : nil,
+        ]
+        let explicit = selected.compactMap { $0 }
+
+        guard explicit.isEmpty else {
+            return explicit
+        }
+
+        return ComparisonSection.allCases.filter { $0 != .unchanged }
+    }
+}
+
+private func validationError(for error: Error) -> Error {
+    guard let error = error as? CsumError else {
+        return error
+    }
+
+    switch error {
+    case .notFound(let path):
+        return ValidationError("No such file or directory: \(path)")
+    case .sourceUnreadable(let path):
+        return ValidationError("Cannot read \(path).")
+    case .malformedFile(let path, let reason):
+        return ValidationError(
+            "\(sourceName(path)) is not a valid .csum.csv file: \(describe(reason)).")
+    case .unsupportedFormatVersion(let found, let expected):
+        return ValidationError(
+            "Unsupported .csum.csv format version \(found); this tool reads and writes \(expected)."
+        )
+    case .algorithmMismatch(let first, let second):
+        return ValidationError(
+            "Cannot compare \(first.rawValue) checksums with \(second.rawValue) checksums.")
+    }
+}
+
+private func sourceName(_ path: String) -> String {
+    path.isEmpty ? "The input" : path
+}
+
+private func describe(_ reason: MalformedFileReason) -> String {
+    switch reason {
+    case .missingMetadata:
+        return "the metadata comments are missing or unusable"
+    case .unparsableAlgorithm:
+        return "the algorithm is not sha256, sha1, or md5"
+    case .unparsableSourceKind(let source):
+        return "the \(source) source kind is unknown"
+    case .rowOutsideSections(let row):
+        return "row \(row) is not inside a section"
+    case .unexpectedColumns(let section, let expected, let found):
+        return "the \(section) section has \(found) columns where \(expected) are expected"
+    case .wrongFieldCount(let section, let row, let expected, let found):
+        return
+            "row \(row) of the \(section) section has \(found) fields where \(expected) are expected"
+    case .unparsableSize(let section, let row):
+        return "row \(row) of the \(section) section has an unreadable size"
+    case .unparsableTimestamp(let section, let row):
+        return "row \(row) of the \(section) section has an unreadable timestamp"
+    case .unparsableOutcome(let section, let row):
+        return "row \(row) of the \(section) section has an unreadable checksum"
+    case .unterminatedQuote:
+        return "a quoted field is never closed"
     }
 }
 
