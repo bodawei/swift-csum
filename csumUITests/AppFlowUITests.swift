@@ -66,7 +66,13 @@ final class AppFlowUITests: XCTestCase {
 
             XCTAssertTrue(app.staticTexts["Algorithm"].waitForExistence(timeout: 5))
 
-            app.menuBars.menuBarItems["File"].click()
+            let fileMenu = app.menuBars.menuBarItems["File"]
+            fileMenu.click()
+
+            for title in ["Duplicate", "Move", "Rename…", "Export As…"] {
+                XCTAssertFalse(fileMenu.menuItems[title].exists)
+            }
+
             app.menuBars.menuItems["Save As…"].click()
 
             XCTAssertTrue(app.sheets.firstMatch.waitForExistence(timeout: 5))

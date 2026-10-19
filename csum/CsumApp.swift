@@ -8,6 +8,10 @@ import SwiftUI
 struct CsumApp: App {
     @State private var model = AppModel()
 
+    #if targetEnvironment(macCatalyst)
+        @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    #endif
+
     init() {
         #if os(macOS)
             NSWindow.allowsAutomaticWindowTabbing = false
