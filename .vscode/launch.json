@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:amsterdam}",
+            "name": "Debug csum-cli",
+            "target": "csum-cli",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug csum-cli"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:amsterdam}",
+            "name": "Release csum-cli",
+            "target": "csum-cli",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release csum-cli"
+        }
+    ]
+}

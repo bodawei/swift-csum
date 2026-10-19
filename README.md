@@ -181,3 +181,33 @@ csumUITests/             app UI flow tests
 plans/                   project plans
 Tests/                   controller tests, and e2e.sh for the CLI
 ```
+
+## Telemetry
+
+The controller is instrumented with [OpenTelemetry](https://opentelemetry.io): every
+`calculateChecksums(at:)` call and every `compare(first:second:)` call records a span,
+through `opentelemetry-swift-core`. A `csum.compare` span nests the
+`csum.calculateChecksums` spans it triggers when a side is checksummed live.
+
+| Span | Attributes |
+|------|------------|
+| `csum.calculateChecksums` | `csum.algorithm`, `csum.path`, `csum.entry_count` |
+| `csum.compare` | `csum.first.path`, `csum.second.path`, `csum.algorithm`, and the `csum.unchanged.count`, `csum.changed.count`, `csum.added.count`, `csum.removed.count`, `csum.moved.count`, `csum.renamed.count` counts |
+
+A thrown error is recorded as an exception event and sets the span status to error. The
+controller depends only on `OpenTelemetryApi`, so the spans are no-ops until the process
+registers a `TracerProvider`.
+
+The app does that in `csum/Telemetry.swift`, exporting over OTLP/HTTP when an endpoint is
+configured, either in the environment or in `Info.plist`. Set
+`OTEL_EXPORTER_OTLP_ENDPOINT` in the scheme's environment for a Mac or simulator run, or
+add it as a string key in `Info.plist` on a device. An endpoint with no path gets
+`/v1/traces` appended, so both of these work:
+
+```
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318/v1/traces
+```
+
+With no endpoint configured the app keeps the no-op provider and sends nothing. The CLI
+registers no provider either, so `csum-cli` exports nothing.
