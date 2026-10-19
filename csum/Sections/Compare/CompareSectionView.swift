@@ -46,29 +46,38 @@ struct CompareSectionView: View {
     private var picker: some View {
         ScrollView {
             VStack(spacing: 16) {
-                card(
-                    title: "First Source",
-                    kind: Binding(
-                        get: { app.compare.firstKind },
-                        set: { app.compare.setFirstKind($0) }
-                    ),
-                    url: app.compare.first,
-                    chooseIdentifier: "chooseFirst"
-                ) {
-                    app.compare.chooseFirst()
-                }
+                VStack(spacing: 14) {
+                    source(
+                        label: "First:",
+                        kind: Binding(
+                            get: { app.compare.firstKind },
+                            set: { app.compare.setFirstKind($0) }
+                        ),
+                        url: app.compare.first,
+                        chooseIdentifier: "chooseFirst"
+                    ) {
+                        app.compare.chooseFirst()
+                    }
 
-                card(
-                    title: "Second Source",
-                    kind: Binding(
-                        get: { app.compare.secondKind },
-                        set: { app.compare.setSecondKind($0) }
-                    ),
-                    url: app.compare.second,
-                    chooseIdentifier: "chooseSecond"
-                ) {
-                    app.compare.chooseSecond()
+                    Divider()
+
+                    source(
+                        label: "Second:",
+                        kind: Binding(
+                            get: { app.compare.secondKind },
+                            set: { app.compare.setSecondKind($0) }
+                        ),
+                        url: app.compare.second,
+                        chooseIdentifier: "chooseSecond"
+                    ) {
+                        app.compare.chooseSecond()
+                    }
                 }
+                .padding(16)
+                .background(
+                    Color(.secondarySystemBackground),
+                    in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+                )
 
                 Button("Swap") {
                     app.compare.swap()
@@ -90,17 +99,35 @@ struct CompareSectionView: View {
         .toolbar(.hidden, for: .navigationBar)
     }
 
-    private func card(
-        title: LocalizedStringKey,
+    private func source(
+        label: LocalizedStringKey,
         kind: Binding<CompareSectionModel.Kind>,
         url: URL?,
         chooseIdentifier: String,
         choose: @escaping () -> Void
     ) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(title)
-                .font(.footnote.weight(.semibold))
-                .foregroundStyle(.secondary)
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Text(label)
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.secondary)
+
+                if let url {
+                    Text(verbatim: displayPath(for: url))
+                        .font(.callout)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                        .textSelection(.enabled)
+                        .help(displayPath(for: url))
+                        .accessibilityIdentifier("\(chooseIdentifier)Path")
+                } else {
+                    Text("Nothing chosen yet")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer(minLength: 0)
+            }
 
             HStack(spacing: 12) {
                 Picker("Source Type", selection: kind) {
@@ -117,21 +144,17 @@ struct CompareSectionView: View {
 
                 Spacer()
             }
-
-            if let url {
-                Text(verbatim: url.lastPathComponent)
-                    .font(.callout)
-            } else {
-                Text("Nothing chosen yet")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-            }
         }
-        .padding(16)
-        .background(
-            Color(.secondarySystemBackground),
-            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-        )
+    }
+
+    private func displayPath(for url: URL) -> String {
+        let path = url.path(percentEncoded: false)
+
+        guard path.count > 1, path.hasSuffix("/") else {
+            return path
+        }
+
+        return String(path.dropLast())
     }
 
     private func contentTypes(for kind: CompareSectionModel.Kind) -> [UTType] {

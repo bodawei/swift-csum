@@ -305,12 +305,12 @@
         }
       }
     },
-    "First Source" : {
+    "First:" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "المصدر الأول"
+            "value" : "الأول:"
           }
         },
         "zh-Hant" : {
@@ -565,12 +565,12 @@
         }
       }
     },
-    "Second Source" : {
+    "Second:" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "المصدر الثاني"
+            "value" : "الثاني:"
           }
         },
         "zh-Hant" : {

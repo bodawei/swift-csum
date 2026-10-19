@@ -53,6 +53,10 @@ final class AppFlowUITests: XCTestCase {
         app.buttons["chooseFirst"].tap()
         app.buttons["chooseSecond"].tap()
 
+        XCTAssertEqual(app.staticTexts["chooseFirstPath"].label, "/Users/demo/Pictures/2026")
+        XCTAssertEqual(app.staticTexts["chooseSecondPath"].label, "/Users/demo/Pictures/2026-copy")
+        attach(app, name: "compare-picker")
+
         XCTAssertTrue(app.buttons["compareButton"].isEnabled)
         app.buttons["compareButton"].tap()
 
