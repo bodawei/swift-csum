@@ -112,7 +112,7 @@ struct CompareResultView: View {
 
     private func wideSections(_ comparison: ChecksumComparison) -> some View {
         Table(of: TableRowItem.self) {
-            TableColumn("Name") { item in
+            TableColumn(TableHeader.text("Name")) { item in
                 switch item {
                 case .section(let section, let count):
                     HStack(spacing: 8) {
@@ -131,19 +131,19 @@ struct CompareResultView: View {
                 }
             }
 
-            TableColumn("Size") { item in
+            TableColumn(TableHeader.text("Size")) { item in
                 value(item) { $0.size }
             }
 
-            TableColumn("Created") { item in
+            TableColumn(TableHeader.text("Created")) { item in
                 value(item, alignment: .leading) { $0.created }
             }
 
-            TableColumn("Modified") { item in
+            TableColumn(TableHeader.text("Modified")) { item in
                 value(item, alignment: .leading) { $0.date }
             }
 
-            TableColumn("Checksum") { item in
+            TableColumn(TableHeader.text("Checksum")) { item in
                 if case .entry(let row) = item {
                     Text(row.checksum)
                         .font(.caption.monospaced())

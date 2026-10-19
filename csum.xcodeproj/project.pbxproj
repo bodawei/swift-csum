@@ -30,6 +30,7 @@
 		C500000000000000000000F1 /* AdaptiveContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AF /* AdaptiveContent.swift */; };
 		C500000000000000000000F2 /* ChecksumRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D1 /* ChecksumRow.swift */; };
 		C500000000000000000000F3 /* ChecksumTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D2 /* ChecksumTable.swift */; };
+		C500000000000000000000101 /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000102 /* TableHeader.swift */; };
 		C500000000000000000000F4 /* FolderSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D3 /* FolderSectionModel.swift */; };
 		C500000000000000000000F5 /* FolderResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D4 /* FolderResultView.swift */; };
 		C500000000000000000000F6 /* CompareSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E1 /* CompareSectionModel.swift */; };
@@ -80,6 +81,7 @@
 		C500000000000000000000AF /* AdaptiveContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveContent.swift; sourceTree = "<group>"; };
 		C500000000000000000000D1 /* ChecksumRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksumRow.swift; sourceTree = "<group>"; };
 		C500000000000000000000D2 /* ChecksumTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksumTable.swift; sourceTree = "<group>"; };
+		C500000000000000000000102 /* TableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableHeader.swift; sourceTree = "<group>"; };
 		C500000000000000000000D3 /* FolderSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionModel.swift; sourceTree = "<group>"; };
 		C500000000000000000000D4 /* FolderResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderResultView.swift; sourceTree = "<group>"; };
 		C500000000000000000000D6 /* Telemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Telemetry.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 				C500000000000000000000AF /* AdaptiveContent.swift */,
 				C500000000000000000000D1 /* ChecksumRow.swift */,
 				C500000000000000000000D2 /* ChecksumTable.swift */,
+				C500000000000000000000102 /* TableHeader.swift */,
 				C500000000000000000000E3 /* DiffRow.swift */,
 			);
 			path = Shared;
@@ -395,6 +398,7 @@
 				C500000000000000000000F1 /* AdaptiveContent.swift in Sources */,
 				C500000000000000000000F2 /* ChecksumRow.swift in Sources */,
 				C500000000000000000000F3 /* ChecksumTable.swift in Sources */,
+				C500000000000000000000101 /* TableHeader.swift in Sources */,
 				C500000000000000000000F4 /* FolderSectionModel.swift in Sources */,
 				C500000000000000000000F5 /* FolderResultView.swift in Sources */,
 				C500000000000000000000F6 /* CompareSectionModel.swift in Sources */,

@@ -29,6 +29,12 @@ thing in a block or function.  Do the same around `switch` statements.
 Do not repeat lines across the cases of a switch.  Factor the common lines out of the
 cases.
 
+Screenshots
+==
+Check screenshots that show a change into `images/changes/`, naming each for the change it
+shows (e.g. `mac-table-headers-before.png`), and reference them from the PR description.
+That is the preferred pattern for change screenshots.
+
 Architecture
 ====
 Layering
