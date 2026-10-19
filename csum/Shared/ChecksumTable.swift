@@ -24,16 +24,19 @@ struct ChecksumTable: View {
                 Text(verbatim: Format.size(row.entry.size))
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
+            .width(min: 70, ideal: 90, max: 110)
 
             TableColumn(TableHeader.text("Created")) { row in
                 Text(verbatim: Format.day(row.entry.created))
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .width(min: 90, ideal: 100, max: 130)
 
             TableColumn(TableHeader.text("Modified")) { row in
                 Text(verbatim: Format.day(row.entry.modified))
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .width(min: 90, ideal: 100, max: 130)
 
             TableColumn(TableHeader.text("Checksum")) { row in
                 Text(verbatim: Format.checksum(row.entry))
