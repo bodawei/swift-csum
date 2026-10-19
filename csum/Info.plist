@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Checksums</string>
+	<string>csum</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
