@@ -136,11 +136,11 @@ struct CompareResultView: View {
             }
 
             TableColumn("Created") { item in
-                value(item) { $0.created }
+                value(item, alignment: .leading) { $0.created }
             }
 
             TableColumn("Modified") { item in
-                value(item) { $0.date }
+                value(item, alignment: .leading) { $0.date }
             }
 
             TableColumn("Checksum") { item in
@@ -168,10 +168,14 @@ struct CompareResultView: View {
     }
 
     @ViewBuilder
-    private func value(_ item: TableRowItem, of row: (DiffRow) -> String) -> some View {
+    private func value(
+        _ item: TableRowItem,
+        alignment: Alignment = .trailing,
+        of row: (DiffRow) -> String
+    ) -> some View {
         if case .entry(let diff) = item {
             Text(verbatim: row(diff))
-                .frame(maxWidth: .infinity, alignment: .trailing)
+                .frame(maxWidth: .infinity, alignment: alignment)
         }
     }
 

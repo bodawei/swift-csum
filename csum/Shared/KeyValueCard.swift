@@ -1,7 +1,15 @@
 import SwiftUI
 
 struct KeyValueCard: View {
-    let rows: [(label: LocalizedStringKey, value: String, singleLine: Bool, monospaced: Bool)]
+    struct Row {
+        let label: LocalizedStringKey
+        let value: String
+        let singleLine: Bool
+        let monospaced: Bool
+        var alignment: Alignment = .trailing
+    }
+
+    let rows: [Row]
 
     @Environment(\.displayScale) private var displayScale
 
@@ -20,7 +28,7 @@ struct KeyValueCard: View {
                         .font(rows[index].monospaced ? .body.monospaced() : .body)
                         .lineLimit(rows[index].singleLine ? 1 : nil)
                         .truncationMode(.middle)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .frame(maxWidth: .infinity, alignment: rows[index].alignment)
                         .textSelection(.enabled)
                 }
             }
