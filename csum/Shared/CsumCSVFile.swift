@@ -19,5 +19,6 @@ struct CsumCSVFile: Transferable {
 
             return SentTransferredFile(url)
         }
+        .suggestedFileName { $0.fileName }
     }
 }
