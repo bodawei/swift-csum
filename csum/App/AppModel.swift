@@ -27,6 +27,12 @@ final class AppModel {
         file = FileSectionModel(service: service, demoMode: demoMode)
         folder = FolderSectionModel(service: service, demoMode: demoMode)
         compare = CompareSectionModel(service: service, demoMode: demoMode)
+
+        #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("-csumUITestSaveAs") {
+                file.fileChosen(DemoData.fileURL)
+            }
+        #endif
     }
 
     var currentExport: CsumCSVFile? {

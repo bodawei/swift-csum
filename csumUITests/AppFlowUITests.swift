@@ -60,10 +60,24 @@ final class AppFlowUITests: XCTestCase {
         attach(app, name: "compare-result")
     }
 
-    private func launch() -> XCUIApplication {
+    #if targetEnvironment(macCatalyst)
+        func testSaveAsPresentsTheSavePanel() {
+            let app = launch(arguments: ["-csumUITestSaveAs"])
+
+            XCTAssertTrue(app.staticTexts["Algorithm"].waitForExistence(timeout: 5))
+
+            app.menuBars.menuBarItems["File"].click()
+            app.menuBars.menuItems["Save As…"].click()
+
+            XCTAssertTrue(app.sheets.firstMatch.waitForExistence(timeout: 5))
+        }
+    #endif
+
+    private func launch(arguments: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-csumUITestMode"]
+        app.launchArguments = ["-csumUITestMode"] + arguments
         app.launch()
+        app.activate()
 
         return app
     }

@@ -1,4 +1,5 @@
 import CsumController
+import UniformTypeIdentifiers
 import XCTest
 
 @testable import csum
@@ -260,4 +261,24 @@ final class SectionModelTests: XCTestCase {
             XCTAssertEqual(model.currentExport?.fileName, "archive.zip.csum.csv")
         }
     #endif
+
+    func testExportWritesTheTextToTheSuggestedFile() async throws {
+        guard #available(iOS 18.2, macCatalyst 18.2, macOS 15.2, *) else {
+            throw XCTSkip("export(to:contentType:) is unavailable")
+        }
+
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+
+        defer {
+            try? FileManager.default.removeItem(at: directory)
+        }
+
+        let export = CsumCSVFile(text: "sha256  1  a.txt\n", fileName: "a.txt.csum.csv")
+        let url = try await export.export(to: directory, contentType: .commaSeparatedText)
+
+        XCTAssertEqual(url.lastPathComponent, "a.txt.csum.csv")
+        XCTAssertEqual(try String(contentsOf: url, encoding: .utf8), "sha256  1  a.txt\n")
+    }
 }
