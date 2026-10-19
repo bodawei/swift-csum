@@ -77,20 +77,50 @@ private struct FileDetails: View {
         }
     }
 
-    private var rows:
-        [(label: LocalizedStringKey, value: String, singleLine: Bool, monospaced: Bool)]
-    {
+    private var rows: [KeyValueCard.Row] {
         guard let entry = result.entries.first else {
             return []
         }
 
         return [
-            ("Checksum", Format.checksum(entry), true, true),
-            ("Algorithm", result.metadata.algorithm.displayName, true, false),
-            ("Size", Format.size(entry.size), true, false),
-            ("Created", Format.timestamp(entry.created), true, false),
-            ("Modified", Format.timestamp(entry.modified), true, false),
-            ("Path", entry.path, false, false),
+            KeyValueCard.Row(
+                label: "Checksum",
+                value: Format.checksum(entry),
+                singleLine: true,
+                monospaced: true
+            ),
+            KeyValueCard.Row(
+                label: "Algorithm",
+                value: result.metadata.algorithm.displayName,
+                singleLine: true,
+                monospaced: false
+            ),
+            KeyValueCard.Row(
+                label: "Size",
+                value: Format.size(entry.size),
+                singleLine: true,
+                monospaced: false
+            ),
+            KeyValueCard.Row(
+                label: "Created",
+                value: Format.timestamp(entry.created),
+                singleLine: true,
+                monospaced: false,
+                alignment: .leading
+            ),
+            KeyValueCard.Row(
+                label: "Modified",
+                value: Format.timestamp(entry.modified),
+                singleLine: true,
+                monospaced: false,
+                alignment: .leading
+            ),
+            KeyValueCard.Row(
+                label: "Path",
+                value: entry.path,
+                singleLine: false,
+                monospaced: false
+            ),
         ]
     }
 }

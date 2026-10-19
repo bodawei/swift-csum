@@ -176,8 +176,8 @@ columns:
 |--------|---------|-----------|
 | Name | path relative to the root | leading |
 | Size | `ByteCountFormatStyle` (3.8 MB, 812 KB) | trailing |
-| Created | locale date | trailing |
-| Modified | locale date | trailing |
+| Created | locale date | leading |
+| Modified | locale date | leading |
 | Checksum | monospaced, middle-truncated, full value via VoiceOver and copy | trailing |
 
 In the compact layout it is a `List` of two-line rows built from the same data: the name

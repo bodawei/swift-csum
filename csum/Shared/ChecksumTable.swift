@@ -27,12 +27,12 @@ struct ChecksumTable: View {
 
             TableColumn("Created") { row in
                 Text(verbatim: Format.day(row.entry.created))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
 
             TableColumn("Modified") { row in
                 Text(verbatim: Format.day(row.entry.modified))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
 
             TableColumn("Checksum") { row in
