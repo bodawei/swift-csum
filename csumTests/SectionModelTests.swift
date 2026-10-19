@@ -234,4 +234,30 @@ final class SectionModelTests: XCTestCase {
 
         XCTAssertNotNil(model.export)
     }
+
+    func testSaveAsDoesNothingWithoutAnExport() {
+        let model = AppModel()
+
+        model.saveAs()
+
+        XCTAssertFalse(model.canSaveAs)
+        XCTAssertFalse(model.isPresentingSaveAs)
+    }
+
+    #if DEBUG
+        func testSaveAsPresentsTheLoadedExport() async {
+            let model = AppModel(demoMode: true)
+
+            model.file.fileChosen(DemoData.fileURL)
+
+            await waitUntil {
+                model.canSaveAs
+            }
+
+            model.saveAs()
+
+            XCTAssertTrue(model.isPresentingSaveAs)
+            XCTAssertEqual(model.currentExport?.fileName, "archive.zip.csum.csv")
+        }
+    #endif
 }

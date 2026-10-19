@@ -151,6 +151,12 @@
         "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已重命名" } }
       }
     },
+    "Save As…" : {
+      "localizations" : {
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "حفظ باسم…" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "存储为…" } }
+      }
+    },
     "Second Source" : {
       "localizations" : {
         "ar" : { "stringUnit" : { "state" : "translated", "value" : "المصدر الثاني" } },

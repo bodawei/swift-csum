@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct RootView: View {
     @Environment(AppModel.self) private var model
@@ -25,5 +26,11 @@ struct RootView: View {
                 }
                 .tag(AppModel.Section.compare)
         }
+        .fileExporter(
+            isPresented: $model.isPresentingSaveAs,
+            item: model.currentExport,
+            contentTypes: [.commaSeparatedText],
+            defaultFilename: model.currentExport?.fileName
+        ) { _ in }
     }
 }
