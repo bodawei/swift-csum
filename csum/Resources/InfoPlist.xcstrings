@@ -17,10 +17,10 @@
             "value" : "csum"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "校验和"
+            "value" : "檢查碼"
           }
         }
       }
@@ -49,10 +49,10 @@
             "value" : "مجاميع csum الاختبارية"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "csum 校验和"
+            "value" : "csum 檢查碼"
           }
         }
       }
