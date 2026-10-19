@@ -6,20 +6,6 @@ struct CompareResultView: View {
 
     @State private var expanded: Set<ComparisonSection> = [.added, .removed, .changed]
 
-    private enum TableRowItem: Identifiable {
-        case section(ComparisonSection, count: Int)
-        case entry(DiffRow)
-
-        var id: String {
-            switch self {
-            case .section(let section, _):
-                return "section-\(section.rawValue)"
-            case .entry(let row):
-                return "entry-\(row.id)"
-            }
-        }
-    }
-
     var body: some View {
         content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -76,7 +62,7 @@ struct CompareResultView: View {
                 AdaptiveContent {
                     sections(comparison)
                 } wide: {
-                    wideSections(comparison)
+                    ComparisonTable(comparison: comparison, expanded: $expanded)
                 }
             }
         }
@@ -85,7 +71,7 @@ struct CompareResultView: View {
     private func sections(_ comparison: ChecksumComparison) -> some View {
         List {
             ForEach(ComparisonSection.allCases, id: \.self) { section in
-                if count(for: section, in: comparison) > 0 {
+                if section.count(in: comparison) > 0 {
                     DisclosureGroup(isExpanded: binding(for: section)) {
                         if expanded.contains(section) {
                             ForEach(DiffRows.rows(for: section, of: comparison)) { row in
@@ -95,11 +81,11 @@ struct CompareResultView: View {
                         }
                     } label: {
                         HStack {
-                            Text(title(for: section))
+                            Text(section.displayTitle)
 
                             Spacer()
 
-                            Text(Format.count(count(for: section, in: comparison)))
+                            Text(Format.count(section.count(in: comparison)))
                                 .foregroundStyle(.secondary)
                         }
                         .accessibilityElement(children: .combine)
@@ -108,63 +94,6 @@ struct CompareResultView: View {
             }
         }
         .listStyle(.plain)
-    }
-
-    private func wideSections(_ comparison: ChecksumComparison) -> some View {
-        Table(of: TableRowItem.self) {
-            TableColumn(TableHeader.text("Name")) { item in
-                switch item {
-                case .section(let section, let count):
-                    HStack(spacing: 8) {
-                        Text(title(for: section))
-                        Text(Format.count(count))
-                            .foregroundStyle(.secondary)
-                    }
-                case .entry(let row):
-                    HStack(spacing: 6) {
-                        Text(verbatim: row.symbol)
-                            .foregroundStyle(row.tint ?? Color.secondary)
-                        Text(row.name)
-                            .lineLimit(1)
-                            .truncationMode(.middle)
-                    }
-                }
-            }
-
-            TableColumn(TableHeader.text("Size")) { item in
-                value(item) { $0.size }
-            }
-
-            TableColumn(TableHeader.text("Created")) { item in
-                value(item, alignment: .leading) { $0.created }
-            }
-
-            TableColumn(TableHeader.text("Modified")) { item in
-                value(item, alignment: .leading) { $0.date }
-            }
-
-            TableColumn(TableHeader.text("Checksum")) { item in
-                if case .entry(let row) = item {
-                    Text(row.checksum)
-                        .font(.caption.monospaced())
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                }
-            }
-        } rows: {
-            ForEach(visibleSections(comparison), id: \.self) { section in
-                DisclosureTableRow(
-                    TableRowItem.section(section, count: count(for: section, in: comparison)),
-                    isExpanded: binding(for: section)
-                ) {
-                    if expanded.contains(section) {
-                        ForEach(DiffRows.rows(for: section, of: comparison)) { row in
-                            TableRow(TableRowItem.entry(row))
-                        }
-                    }
-                }
-            }
-        }
     }
 
     @ViewBuilder
@@ -194,40 +123,6 @@ struct CompareResultView: View {
                 }
             }
         )
-    }
-
-    private func count(for section: ComparisonSection, in comparison: ChecksumComparison) -> Int {
-        switch section {
-        case .added:
-            return comparison.added.count
-        case .removed:
-            return comparison.removed.count
-        case .changed:
-            return comparison.changed.count
-        case .moved:
-            return comparison.moved.count
-        case .renamed:
-            return comparison.renamed.count
-        case .unchanged:
-            return comparison.unchanged.count
-        }
-    }
-
-    private func title(for section: ComparisonSection) -> LocalizedStringKey {
-        switch section {
-        case .added:
-            return "Added"
-        case .removed:
-            return "Removed"
-        case .changed:
-            return "Changed"
-        case .moved:
-            return "Moved"
-        case .renamed:
-            return "Renamed"
-        case .unchanged:
-            return "Unchanged"
-        }
     }
 
     private func isIdentical(_ comparison: ChecksumComparison) -> Bool {
