@@ -35,6 +35,7 @@
 		C500000000000000000000F6 /* CompareSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E1 /* CompareSectionModel.swift */; };
 		C500000000000000000000F7 /* CompareResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E2 /* CompareResultView.swift */; };
 		C500000000000000000000F8 /* DiffRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E3 /* DiffRow.swift */; };
+		C50000000000000000000121 /* TableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000120 /* TableLayout.swift */; };
 		C500000000000000000000F9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E4 /* Localizable.xcstrings */; };
 		C500000000000000000000FA /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E5 /* InfoPlist.xcstrings */; };
 		C50000000000000000000104 /* SectionModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000103 /* SectionModelTests.swift */; };
@@ -86,6 +87,7 @@
 		C500000000000000000000E1 /* CompareSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareSectionModel.swift; sourceTree = "<group>"; };
 		C500000000000000000000E2 /* CompareResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareResultView.swift; sourceTree = "<group>"; };
 		C500000000000000000000E3 /* DiffRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffRow.swift; sourceTree = "<group>"; };
+		C50000000000000000000120 /* TableLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableLayout.swift; sourceTree = "<group>"; };
 		C500000000000000000000E4 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C500000000000000000000E5 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		C50000000000000000000102 /* csumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = csumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -222,6 +224,7 @@
 				C500000000000000000000D1 /* ChecksumRow.swift */,
 				C500000000000000000000D2 /* ChecksumTable.swift */,
 				C500000000000000000000E3 /* DiffRow.swift */,
+				C50000000000000000000120 /* TableLayout.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 				C500000000000000000000F6 /* CompareSectionModel.swift in Sources */,
 				C500000000000000000000F7 /* CompareResultView.swift in Sources */,
 				C500000000000000000000F8 /* DiffRow.swift in Sources */,
+				C50000000000000000000121 /* TableLayout.swift in Sources */,
 				C50000000000000000000112 /* DemoService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

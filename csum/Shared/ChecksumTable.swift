@@ -2,48 +2,38 @@ import CsumController
 import SwiftUI
 
 struct ChecksumTable: View {
-    private struct Row: Identifiable {
-        let entry: ChecksumEntry
-
-        var id: String {
-            entry.path
-        }
-    }
-
     let result: ChecksumResult
 
     var body: some View {
-        Table(of: Row.self) {
-            TableColumn("Name") { row in
-                Text(verbatim: result.relativePath(of: row.entry))
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-            }
-
-            TableColumn("Size") { row in
-                Text(verbatim: Format.size(row.entry.size))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-
-            TableColumn("Created") { row in
-                Text(verbatim: Format.day(row.entry.created))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-
-            TableColumn("Modified") { row in
-                Text(verbatim: Format.day(row.entry.modified))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-
-            TableColumn("Checksum") { row in
-                Text(verbatim: Format.checksum(row.entry))
-                    .font(.caption.monospaced())
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-        } rows: {
-            ForEach(result.entries, id: \.path) { entry in
-                TableRow(Row(entry: entry))
+        List {
+            Section {
+                ForEach(result.entries.indices, id: \.self) { index in
+                    row(result.entries[index])
+                        .listRowInsets(EdgeInsets(top: 3, leading: 20, bottom: 3, trailing: 20))
+                        .listRowBackground(TableStriping.color(forRow: index))
+                        .listRowSeparator(.hidden)
+                }
+            } header: {
+                TableHeader()
             }
         }
+        .contentMargins(.top, 0, for: .scrollContent)
+        .listStyle(.plain)
+        .environment(\.defaultMinListRowHeight, 24)
+    }
+
+    private func row(_ entry: ChecksumEntry) -> some View {
+        TableRowLayout(
+            size: Format.size(entry.size),
+            created: Format.day(entry.created),
+            modified: Format.day(entry.modified),
+            name: {
+                Text(verbatim: result.relativePath(of: entry))
+                    .truncationMode(.middle)
+            },
+            checksum: {
+                Text(verbatim: Format.checksum(entry))
+            }
+        )
     }
 }
