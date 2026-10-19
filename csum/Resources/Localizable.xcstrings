@@ -9,10 +9,10 @@
             "value" : "مضاف"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已添加"
+            "value" : "已新增"
           }
         }
       }
@@ -25,10 +25,10 @@
             "value" : "مضاف، %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已添加，%@"
+            "value" : "已新增，%@"
           }
         }
       }
@@ -41,10 +41,10 @@
             "value" : "الخوارزمية"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "算法"
+            "value" : "演算法"
           }
         }
       }
@@ -57,10 +57,10 @@
             "value" : "متغير"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已更改"
+            "value" : "已變更"
           }
         }
       }
@@ -73,10 +73,10 @@
             "value" : "متغير، %@، المجموع الاختباري الجديد %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已更改，%@，新校验和 %@"
+            "value" : "已變更，%@，新檢查碼 %@"
           }
         }
       }
@@ -89,10 +89,10 @@
             "value" : "متغير، %@، المجموع الاختباري القديم %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已更改，%@，旧校验和 %@"
+            "value" : "已變更，%@，舊檢查碼 %@"
           }
         }
       }
@@ -105,10 +105,10 @@
             "value" : "المجموع الاختباري"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "校验和"
+            "value" : "檢查碼"
           }
         }
       }
@@ -121,10 +121,10 @@
             "value" : "حساب مجموع الملف…"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "校验文件…"
+            "value" : "計算檔案檢查碼…"
           }
         }
       }
@@ -137,10 +137,10 @@
             "value" : "حساب مجموع المجلد…"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "校验文件夹…"
+            "value" : "計算資料夾檢查碼…"
           }
         }
       }
@@ -153,10 +153,10 @@
             "value" : "جارٍ حساب مجموع المجلد…"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在校验文件夹…"
+            "value" : "正在計算資料夾檢查碼…"
           }
         }
       }
@@ -169,10 +169,10 @@
             "value" : "جارٍ الحساب…"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在校验…"
+            "value" : "正在計算檢查碼…"
           }
         }
       }
@@ -185,10 +185,10 @@
             "value" : "اختيار…"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "选择…"
+            "value" : "選擇…"
           }
         }
       }
@@ -201,10 +201,10 @@
             "value" : "مقارنة"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "比较"
+            "value" : "比較"
           }
         }
       }
@@ -217,10 +217,10 @@
             "value" : "حُسب في %@ · التنسيق %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "计算于 %@ · 格式 %@"
+            "value" : "計算於 %@ · 格式 %@"
           }
         }
       }
@@ -233,10 +233,10 @@
             "value" : "حُسب في %@ · التنسيق %@ · عدد المدخلات: %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "计算于 %@ · 格式 %@ · 条目数：%@"
+            "value" : "計算於 %@ · 格式 %@ · 項目數：%@"
           }
         }
       }
@@ -249,10 +249,10 @@
             "value" : "حُسب في %@ و %@ · التنسيق %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "计算于 %@ 和 %@ · 格式 %@"
+            "value" : "計算於 %@ 與 %@ · 格式 %@"
           }
         }
       }
@@ -265,10 +265,10 @@
             "value" : "تاريخ الإنشاء"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "创建时间"
+            "value" : "建立時間"
           }
         }
       }
@@ -281,10 +281,10 @@
             "value" : "فشل"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "失败"
+            "value" : "失敗"
           }
         }
       }
@@ -297,10 +297,10 @@
             "value" : "ملف"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "文件"
+            "value" : "檔案"
           }
         }
       }
@@ -313,10 +313,10 @@
             "value" : "المصدر الأول"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "第一个来源"
+            "value" : "第一個來源"
           }
         }
       }
@@ -329,10 +329,10 @@
             "value" : "مجلد"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "文件夹"
+            "value" : "資料夾"
           }
         }
       }
@@ -345,10 +345,10 @@
             "value" : "تاريخ التعديل"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "修改时间"
+            "value" : "修改時間"
           }
         }
       }
@@ -361,10 +361,10 @@
             "value" : "منقول"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已移动"
+            "value" : "已移動"
           }
         }
       }
@@ -377,10 +377,10 @@
             "value" : "منقول من %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "移动自 %@"
+            "value" : "移自 %@"
           }
         }
       }
@@ -393,10 +393,10 @@
             "value" : "منقول إلى %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "移动到 %@"
+            "value" : "移至 %@"
           }
         }
       }
@@ -413,10 +413,10 @@
             "value" : "لا توجد اختلافات"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "没有差异"
+            "value" : "沒有差異"
           }
         }
       }
@@ -429,10 +429,10 @@
             "value" : "لم يتم الاختيار بعد"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "尚未选择"
+            "value" : "尚未選擇"
           }
         }
       }
@@ -445,10 +445,10 @@
             "value" : "المسار"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "路径"
+            "value" : "路徑"
           }
         }
       }
@@ -461,10 +461,10 @@
             "value" : "تمت معالجة %@ من %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已处理 %@，共 %@"
+            "value" : "已處理 %@，共 %@"
           }
         }
       }
@@ -477,7 +477,7 @@
             "value" : "محذوف"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "已移除"
@@ -493,7 +493,7 @@
             "value" : "محذوف، %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "已移除，%@"
@@ -509,10 +509,10 @@
             "value" : "معاد تسميته"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已重命名"
+            "value" : "已重新命名"
           }
         }
       }
@@ -525,10 +525,10 @@
             "value" : "معاد تسميته من %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "重命名自 %@"
+            "value" : "重新命名自 %@"
           }
         }
       }
@@ -541,10 +541,10 @@
             "value" : "معاد تسميته إلى %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "重命名为 %@"
+            "value" : "重新命名為 %@"
           }
         }
       }
@@ -557,10 +557,10 @@
             "value" : "حفظ باسم…"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "存储为…"
+            "value" : "儲存為…"
           }
         }
       }
@@ -573,10 +573,10 @@
             "value" : "المصدر الثاني"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "第二个来源"
+            "value" : "第二個來源"
           }
         }
       }
@@ -589,10 +589,10 @@
             "value" : "مشاركة"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共享"
+            "value" : "分享"
           }
         }
       }
@@ -605,7 +605,7 @@
             "value" : "الحجم"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "大小"
@@ -621,10 +621,10 @@
             "value" : "نوع المصدر"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "来源类型"
+            "value" : "來源類型"
           }
         }
       }
@@ -637,10 +637,10 @@
             "value" : "تبديل"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "交换"
+            "value" : "交換"
           }
         }
       }
@@ -653,10 +653,10 @@
             "value" : "دون تغيير"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "未更改"
+            "value" : "未變更"
           }
         }
       }
@@ -669,10 +669,10 @@
             "value" : "دون تغيير، %@"
           }
         },
-        "zh-Hans" : {
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "未更改，%@"
+            "value" : "未變更，%@"
           }
         }
       }
