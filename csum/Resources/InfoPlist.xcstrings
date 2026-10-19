@@ -2,15 +2,59 @@
   "sourceLanguage" : "en",
   "strings" : {
     "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "المجاميع الاختبارية" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "校验和" } }
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "المجاميع الاختبارية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Checksums"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "校验和"
+          }
+        }
       }
     },
-    "UTTypeDescription" : {
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
-        "ar" : { "stringUnit" : { "state" : "translated", "value" : "مجاميع csum الاختبارية" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "csum 校验和" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "csum"
+          }
+        }
+      }
+    },
+    "csum checksums" : {
+
+    },
+    "UTTypeDescription" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مجاميع csum الاختبارية"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "csum 校验和"
+          }
+        }
       }
     }
   },
