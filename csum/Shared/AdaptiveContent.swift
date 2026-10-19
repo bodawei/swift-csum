@@ -3,6 +3,8 @@ import SwiftUI
 private let wideContentWidth: CGFloat = 700
 
 struct AdaptiveContent<Compact: View, Wide: View>: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
     @State private var isWide = false
 
     private let compact: Compact
@@ -18,7 +20,7 @@ struct AdaptiveContent<Compact: View, Wide: View>: View {
 
     var body: some View {
         Group {
-            if isWide {
+            if isWide && horizontalSizeClass != .compact {
                 wide
             } else {
                 compact
