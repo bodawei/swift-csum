@@ -1,10 +1,18 @@
 import SwiftUI
 
+#if os(macOS)
+    import AppKit
+#endif
+
 @main
 struct CsumApp: App {
     @State private var model = AppModel()
 
     init() {
+        #if os(macOS)
+            NSWindow.allowsAutomaticWindowTabbing = false
+        #endif
+
         Telemetry.start()
     }
 
