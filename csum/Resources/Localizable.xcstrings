@@ -305,18 +305,18 @@
         }
       }
     },
-    "First Source" : {
+    "First:" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "المصدر الأول"
+            "value" : "الأول:"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "第一个来源"
+            "value" : "第一个："
           }
         }
       }
@@ -565,18 +565,18 @@
         }
       }
     },
-    "Second Source" : {
+    "Second:" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "المصدر الثاني"
+            "value" : "الثاني:"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "第二个来源"
+            "value" : "第二个："
           }
         }
       }
