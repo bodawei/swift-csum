@@ -32,5 +32,8 @@ struct RootView: View {
             contentTypes: [.commaSeparatedText],
             defaultFilename: model.currentExport?.fileName
         ) { _ in }
+        #if targetEnvironment(macCatalyst)
+            .background(WindowTitleHider())
+        #endif
     }
 }

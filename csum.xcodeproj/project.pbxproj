@@ -40,6 +40,7 @@
 		C50000000000000000000104 /* SectionModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000103 /* SectionModelTests.swift */; };
 		C50000000000000000000112 /* DemoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000111 /* DemoService.swift */; };
 		C50000000000000000000116 /* AppFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000115 /* AppFlowUITests.swift */; };
+		C50000000000000000000121 /* WindowTitleHider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000120 /* WindowTitleHider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		C50000000000000000000111 /* DemoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoService.swift; sourceTree = "<group>"; };
 		C50000000000000000000114 /* csumUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = csumUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C50000000000000000000115 /* AppFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowUITests.swift; sourceTree = "<group>"; };
+		C50000000000000000000120 /* WindowTitleHider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowTitleHider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 				C500000000000000000000A2 /* AppModel.swift */,
 				C500000000000000000000A3 /* RootView.swift */,
 				C500000000000000000000A7 /* ChecksumService.swift */,
+				C50000000000000000000120 /* WindowTitleHider.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 				C500000000000000000000D7 /* Telemetry.swift in Sources */,
 				C500000000000000000000B2 /* AppModel.swift in Sources */,
 				C500000000000000000000B3 /* RootView.swift in Sources */,
+				C50000000000000000000121 /* WindowTitleHider.swift in Sources */,
 				C500000000000000000000B4 /* FileSectionView.swift in Sources */,
 				C500000000000000000000B5 /* FolderSectionView.swift in Sources */,
 				C500000000000000000000B6 /* CompareSectionView.swift in Sources */,
