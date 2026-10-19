@@ -19,6 +19,37 @@ public struct CsumController: Sendable {
         progress: (@Sendable (Int, Int) -> Void)? = nil,
         isCancelled: (@Sendable () -> Bool)? = nil
     ) throws -> ChecksumResult {
+        try withScopedAccess(to: url) {
+            try calculateChecksumsUnscoped(at: url, progress: progress, isCancelled: isCancelled)
+        }
+    }
+
+    public func loadChecksumResult(
+        at url: URL,
+        isCancelled: (@Sendable () -> Bool)? = nil
+    ) throws -> ChecksumResult {
+        try withScopedAccess(to: url) {
+            try loadChecksumResultUnscoped(at: url, isCancelled: isCancelled)
+        }
+    }
+
+    public func compare(
+        first firstURL: URL,
+        second secondURL: URL,
+        isCancelled: (@Sendable () -> Bool)? = nil
+    ) throws -> ChecksumComparison {
+        try withScopedAccess(to: firstURL) {
+            try withScopedAccess(to: secondURL) {
+                try compareUnscoped(first: firstURL, second: secondURL, isCancelled: isCancelled)
+            }
+        }
+    }
+
+    private func calculateChecksumsUnscoped(
+        at url: URL,
+        progress: (@Sendable (Int, Int) -> Void)?,
+        isCancelled: (@Sendable () -> Bool)?
+    ) throws -> ChecksumResult {
         try Telemetry.span(
             named: "csum.calculateChecksums",
             attributes: [
@@ -26,9 +57,7 @@ public struct CsumController: Sendable {
                 Telemetry.Keys.path: .string(url.path),
             ]
         ) { span in
-            let entries = try withScopedAccess(to: url) {
-                try collectEntries(at: url, progress: progress, isCancelled: isCancelled)
-            }
+            let entries = try collectEntries(at: url, progress: progress, isCancelled: isCancelled)
 
             span.setAttribute(key: Telemetry.Keys.entryCount, value: entries.count)
 
@@ -46,27 +75,26 @@ public struct CsumController: Sendable {
         }
     }
 
-    public func loadChecksumResult(
+    private func loadChecksumResultUnscoped(
         at url: URL,
-        isCancelled: (@Sendable () -> Bool)? = nil
+        isCancelled: (@Sendable () -> Bool)?
     ) throws -> ChecksumResult {
         guard FileManager.default.fileExists(atPath: url.path) else {
             throw CsumError.notFound(path: url.path)
         }
 
         guard isChecksumFile(url) else {
-            return try calculateChecksums(at: url, isCancelled: isCancelled)
+            return try calculateChecksumsUnscoped(
+                at: url, progress: nil, isCancelled: isCancelled)
         }
 
-        return try withScopedAccess(to: url) {
-            try ChecksumFileCodec.parse(contentsOf: url)
-        }
+        return try ChecksumFileCodec.parse(contentsOf: url)
     }
 
-    public func compare(
+    private func compareUnscoped(
         first firstURL: URL,
         second secondURL: URL,
-        isCancelled: (@Sendable () -> Bool)? = nil
+        isCancelled: (@Sendable () -> Bool)?
     ) throws -> ChecksumComparison {
         try Telemetry.span(
             named: "csum.compare",
@@ -78,8 +106,10 @@ public struct CsumController: Sendable {
             let comparisonAlgorithm = try resolveAlgorithm(first: firstURL, second: secondURL)
             let comparison = CsumController(algorithm: comparisonAlgorithm, writer: writer)
 
-            let first = try comparison.loadChecksumResult(at: firstURL, isCancelled: isCancelled)
-            let second = try comparison.loadChecksumResult(at: secondURL, isCancelled: isCancelled)
+            let first = try comparison.loadChecksumResultUnscoped(
+                at: firstURL, isCancelled: isCancelled)
+            let second = try comparison.loadChecksumResultUnscoped(
+                at: secondURL, isCancelled: isCancelled)
 
             let result = ComparisonEngine.compare(
                 first: first,
