@@ -11,6 +11,7 @@ final class AppModel {
     }
 
     var selectedSection: Section = .file
+    var isPresentingSaveAs = false
 
     let file: FileSectionModel
     let folder: FolderSectionModel
@@ -26,5 +27,28 @@ final class AppModel {
         file = FileSectionModel(service: service, demoMode: demoMode)
         folder = FolderSectionModel(service: service, demoMode: demoMode)
         compare = CompareSectionModel(service: service, demoMode: demoMode)
+    }
+
+    var currentExport: CsumCSVFile? {
+        switch selectedSection {
+        case .file:
+            return file.export
+        case .folder:
+            return folder.export
+        case .compare:
+            return compare.export
+        }
+    }
+
+    var canSaveAs: Bool {
+        currentExport != nil
+    }
+
+    func saveAs() {
+        guard canSaveAs else {
+            return
+        }
+
+        isPresentingSaveAs = true
     }
 }

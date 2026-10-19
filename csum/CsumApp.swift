@@ -13,5 +13,14 @@ struct CsumApp: App {
             RootView()
                 .environment(model)
         }
+        .commands {
+            CommandGroup(replacing: .saveItem) {
+                Button("Save As…") {
+                    model.saveAs()
+                }
+                .keyboardShortcut("s", modifiers: [.command, .shift])
+                .disabled(!model.canSaveAs)
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C50000000000000000000003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000013 /* Assets.xcassets */; };
 		C50000000000000000000004 /* CsumController in Frameworks */ = {isa = PBXBuildFile; productRef = C50000000000000000000030 /* CsumController */; };
 		C50000000000000000000095 /* OpenTelemetryApi in Frameworks */ = {isa = PBXBuildFile; productRef = C50000000000000000000092 /* OpenTelemetryApi */; };
 		C50000000000000000000096 /* OpenTelemetrySdk in Frameworks */ = {isa = PBXBuildFile; productRef = C50000000000000000000093 /* OpenTelemetrySdk */; };
