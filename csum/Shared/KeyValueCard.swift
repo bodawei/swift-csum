@@ -3,9 +3,15 @@ import SwiftUI
 struct KeyValueCard: View {
     let rows: [(label: LocalizedStringKey, value: String, singleLine: Bool, monospaced: Bool)]
 
+    @Environment(\.displayScale) private var displayScale
+
     var body: some View {
-        Grid(alignment: .leading, horizontalSpacing: 24, verticalSpacing: 14) {
+        Grid(alignment: .leading, horizontalSpacing: 24, verticalSpacing: 0) {
             ForEach(rows.indices, id: \.self) { index in
+                if index > 0 {
+                    separator
+                }
+
                 GridRow {
                     Text(rows[index].label)
                         .foregroundStyle(.secondary)
@@ -24,5 +30,13 @@ struct KeyValueCard: View {
             Color(.secondarySystemBackground),
             in: RoundedRectangle(cornerRadius: 16, style: .continuous)
         )
+    }
+
+    private var separator: some View {
+        Rectangle()
+            .fill(.separator)
+            .frame(height: 1 / displayScale)
+            .padding(.vertical, 7)
+            .gridCellColumns(2)
     }
 }
