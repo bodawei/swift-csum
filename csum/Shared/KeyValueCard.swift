@@ -6,7 +6,6 @@ struct KeyValueCard: View {
         let value: String
         let singleLine: Bool
         let monospaced: Bool
-        var alignment: Alignment = .trailing
     }
 
     let rows: [Row]
@@ -28,7 +27,7 @@ struct KeyValueCard: View {
                         .font(rows[index].monospaced ? .body.monospaced() : .body)
                         .lineLimit(rows[index].singleLine ? 1 : nil)
                         .truncationMode(.middle)
-                        .frame(maxWidth: .infinity, alignment: rows[index].alignment)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                         .textSelection(.enabled)
                 }
             }
