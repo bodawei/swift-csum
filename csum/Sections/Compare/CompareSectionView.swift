@@ -10,7 +10,6 @@ struct CompareSectionView: View {
 
         NavigationStack(path: $model.path) {
             picker
-                .navigationTitle("Compare")
                 .navigationDestination(for: CompareSectionModel.Route.self) { _ in
                     CompareResultView(model: model)
                 }
@@ -88,6 +87,7 @@ struct CompareSectionView: View {
             .frame(maxWidth: 640)
             .frame(maxWidth: .infinity)
         }
+        .toolbar(.hidden, for: .navigationBar)
     }
 
     private func card(
