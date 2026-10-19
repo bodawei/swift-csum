@@ -96,22 +96,6 @@ struct CompareResultView: View {
         .listStyle(.plain)
     }
 
-    @ViewBuilder
-    private func value(
-        _ item: TableRowItem,
-        alignment: Alignment = .trailing,
-        of row: (DiffRow) -> String
-    ) -> some View {
-        if case .entry(let diff) = item {
-            Text(verbatim: row(diff))
-                .frame(maxWidth: .infinity, alignment: alignment)
-        }
-    }
-
-    private func visibleSections(_ comparison: ChecksumComparison) -> [ComparisonSection] {
-        ComparisonSection.allCases.filter { count(for: $0, in: comparison) > 0 }
-    }
-
     private func binding(for section: ComparisonSection) -> Binding<Bool> {
         Binding(
             get: { expanded.contains(section) },
