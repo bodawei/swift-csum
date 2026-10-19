@@ -105,15 +105,13 @@ private struct FileDetails: View {
                 label: "Created",
                 value: Format.timestamp(entry.created),
                 singleLine: true,
-                monospaced: false,
-                alignment: .leading
+                monospaced: false
             ),
             KeyValueCard.Row(
                 label: "Modified",
                 value: Format.timestamp(entry.modified),
                 singleLine: true,
-                monospaced: false,
-                alignment: .leading
+                monospaced: false
             ),
             KeyValueCard.Row(
                 label: "Path",
