@@ -26,4 +26,12 @@ enum CanonicalPath {
 
         return String(path.dropFirst(prefix.count))
     }
+
+    static func absolutePath(of path: String, root: String) -> String {
+        guard !path.hasPrefix("/") else {
+            return path
+        }
+
+        return root.hasSuffix("/") ? root + path : root + "/" + path
+    }
 }

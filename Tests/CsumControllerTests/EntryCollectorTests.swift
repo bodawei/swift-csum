@@ -21,10 +21,10 @@ final class EntryCollectorTests: XCTestCase {
 
         let entries = try EntryCollector.entries(in: tree.url, algorithm: .sha256, progress: nil)
         let expected = [
-            tree.path("a.txt"),
-            tree.path("b.txt"),
-            tree.path("one/mid.txt"),
-            tree.path("one/two/three/deep.txt")
+            "a.txt",
+            "b.txt",
+            "one/mid.txt",
+            "one/two/three/deep.txt",
         ]
 
         XCTAssertEqual(entries.map(\.path), expected)
@@ -38,7 +38,7 @@ final class EntryCollectorTests: XCTestCase {
 
         XCTAssertEqual(
             entries.map(\.path).sorted(),
-            [tree.path(".hidden-file"), tree.path(".hidden/nested.txt")].sorted()
+            [".hidden-file", ".hidden/nested.txt"].sorted()
         )
     }
 
@@ -52,7 +52,7 @@ final class EntryCollectorTests: XCTestCase {
 
         let entries = try EntryCollector.entries(in: tree.url, algorithm: .sha256, progress: nil)
 
-        XCTAssertEqual(entries.map(\.path), [tree.path("real.txt"), tree.path("sub/other.txt")])
+        XCTAssertEqual(entries.map(\.path), ["real.txt", "sub/other.txt"])
     }
 
     func testEmptyFolderYieldsNoEntries() throws {
@@ -75,8 +75,8 @@ final class EntryCollectorTests: XCTestCase {
 
         XCTAssertEqual(entries.count, 2)
 
-        let secret = try XCTUnwrap(entries.first { $0.path == tree.path("secret.txt") })
-        let readable = try XCTUnwrap(entries.first { $0.path == tree.path("readable.txt") })
+        let secret = try XCTUnwrap(entries.first { $0.path == "secret.txt" })
+        let readable = try XCTUnwrap(entries.first { $0.path == "readable.txt" })
 
         XCTAssertEqual(secret.outcome, .failure(.cannotOpen))
         XCTAssertEqual(readable.outcome, .digest(digest(of: Data("readable".utf8), using: .sha256)))
@@ -102,7 +102,7 @@ final class EntryCollectorTests: XCTestCase {
 
         let entries = try EntryCollector.entries(in: tree.url, algorithm: .sha256, progress: nil)
 
-        XCTAssertEqual(entries.map(\.path).sorted(), names.map(tree.path).sorted())
+        XCTAssertEqual(entries.map(\.path).sorted(), names.sorted())
     }
 
     func testRecordsSizeAndDates() throws {
@@ -133,16 +133,16 @@ final class EntryCollectorTests: XCTestCase {
 
     func testSingleFileEntry() throws {
         let file = try tree.text("one.txt", "one")
-        let entry = EntryCollector.entry(for: file, algorithm: .sha256)
+        let entry = EntryCollector.entry(for: file, algorithm: .sha256, root: tree.root)
 
-        XCTAssertEqual(entry.path, tree.path("one.txt"))
+        XCTAssertEqual(entry.path, "one.txt")
         XCTAssertEqual(entry.outcome, .digest(digest(of: Data("one".utf8), using: .sha256)))
         XCTAssertEqual(entry.size, 3)
     }
 
     func testSingleMissingFileIsAReadFailure() {
         let missing = tree.url.appendingPathComponent("nope.txt")
-        let entry = EntryCollector.entry(for: missing, algorithm: .sha256)
+        let entry = EntryCollector.entry(for: missing, algorithm: .sha256, root: tree.root)
 
         XCTAssertEqual(entry.outcome, .failure(.cannotOpen))
     }

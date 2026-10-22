@@ -24,7 +24,7 @@
                     toolVersion: CsumFormat.toolVersion,
                     algorithm: .sha256,
                     computedAt: DemoData.computedAt,
-                    root: url.path
+                    root: url.hasDirectoryPath ? url.path : url.deletingLastPathComponent().path
                 ),
                 entries: entries
             )
@@ -47,21 +47,21 @@
 
         static let fileEntries = [
             entry(
-                "/Users/demo/Documents/archive.zip",
+                "archive.zip",
                 digest(1),
                 12_400_000
             )
         ]
 
         static let folderEntries: [ChecksumEntry] = [
-            entry("/Users/demo/Pictures/2026/2026-07/IMG_1042.HEIC", digest(2), 3_800_000),
-            entry("/Users/demo/Pictures/2026/2026-07/IMG_1043.HEIC", digest(3), 4_100_000),
-            entry("/Users/demo/Pictures/2026/2026-08/IMG_1101.HEIC", digest(4), 3_200_000),
-            entry("/Users/demo/Pictures/2026/2026-08/notes.txt", digest(5), 1_200),
-            entry("/Users/demo/Pictures/2026/2026-09/DSC_0117.NEF", digest(6), 48_600_000),
-            entry("/Users/demo/Pictures/2026/2026-09/DSC_0118.NEF", digest(7), 47_900_000),
-            entry("/Users/demo/Pictures/2026/2026-10/scan-0001.pdf", digest(8), 812_000),
-            entry("/Users/demo/Pictures/2026/2026-10/scan-0002.pdf", digest(9), 798_000),
+            entry("2026-07/IMG_1042.HEIC", digest(2), 3_800_000),
+            entry("2026-07/IMG_1043.HEIC", digest(3), 4_100_000),
+            entry("2026-08/IMG_1101.HEIC", digest(4), 3_200_000),
+            entry("2026-08/notes.txt", digest(5), 1_200),
+            entry("2026-09/DSC_0117.NEF", digest(6), 48_600_000),
+            entry("2026-09/DSC_0118.NEF", digest(7), 47_900_000),
+            entry("2026-10/scan-0001.pdf", digest(8), 812_000),
+            entry("2026-10/scan-0002.pdf", digest(9), 798_000),
         ]
 
         static let comparison: ChecksumComparison = {
@@ -89,33 +89,33 @@
                     )
                 ),
                 unchanged: [
-                    entry("\(root)/2026-08/notes.txt", digest(5), 1_200),
-                    entry("\(root)/2026-09/DSC_0117.NEF", digest(6), 48_600_000),
-                    entry("\(root)/2026-09/DSC_0118.NEF", digest(7), 47_900_000),
+                    entry("2026-08/notes.txt", digest(5), 1_200),
+                    entry("2026-09/DSC_0117.NEF", digest(6), 48_600_000),
+                    entry("2026-09/DSC_0118.NEF", digest(7), 47_900_000),
                 ],
                 added: [
-                    entry("\(copy)/2026-10/scan-0003.pdf", digest(10), 812_000),
-                    entry("\(copy)/2026-10/scan-0004.pdf", digest(11), 798_000),
+                    entry("2026-10/scan-0003.pdf", digest(10), 812_000),
+                    entry("2026-10/scan-0004.pdf", digest(11), 798_000),
                 ],
                 removed: [
-                    entry("\(root)/2026-10/scan-0002.pdf", digest(9), 798_000)
+                    entry("2026-10/scan-0002.pdf", digest(9), 798_000)
                 ],
                 changed: [
                     MatchedEntry(
-                        old: entry("\(root)/2026-09/IMG_1100.HEIC", digest(12), 3_200_000),
-                        new: entry("\(copy)/2026-09/IMG_1100.HEIC", digest(13), 3_200_000)
+                        old: entry("2026-09/IMG_1100.HEIC", digest(12), 3_200_000),
+                        new: entry("2026-09/IMG_1100.HEIC", digest(13), 3_200_000)
                     )
                 ],
                 moved: [
                     MatchedEntry(
-                        old: entry("\(root)/2026-08/IMG_1101.HEIC", digest(4), 3_200_000),
-                        new: entry("\(copy)/2026-08/archive/IMG_1101.HEIC", digest(4), 3_200_000)
+                        old: entry("2026-08/IMG_1101.HEIC", digest(4), 3_200_000),
+                        new: entry("2026-08/archive/IMG_1101.HEIC", digest(4), 3_200_000)
                     )
                 ],
                 renamed: [
                     MatchedEntry(
-                        old: entry("\(root)/2026-10/scan-0001.pdf", digest(8), 812_000),
-                        new: entry("\(copy)/2026-10/scan-0001-final.pdf", digest(8), 812_000)
+                        old: entry("2026-10/scan-0001.pdf", digest(8), 812_000),
+                        new: entry("2026-10/scan-0001-final.pdf", digest(8), 812_000)
                     )
                 ]
             )

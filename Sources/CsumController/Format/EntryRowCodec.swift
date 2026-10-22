@@ -23,7 +23,7 @@ enum EntryRowCodec {
             String(entry.size),
             timestampText(for: entry.created),
             timestampText(for: entry.modified),
-            entry.path
+            writtenPath(entry.path)
         ]
     }
 
@@ -44,12 +44,28 @@ enum EntryRowCodec {
         }
 
         return ChecksumEntry(
-            path: row[4],
+            path: readPath(row[4]),
             outcome: try outcome(from: row[0], section: section, rowIndex: rowIndex),
             size: size,
             created: try timestamp(from: row[2], section: section, rowIndex: rowIndex),
             modified: try timestamp(from: row[3], section: section, rowIndex: rowIndex)
         )
+    }
+
+    private static func writtenPath(_ path: String) -> String {
+        guard !path.hasPrefix("/") else {
+            return path
+        }
+
+        return "./" + path
+    }
+
+    private static func readPath(_ text: String) -> String {
+        guard text.hasPrefix("./") else {
+            return text
+        }
+
+        return String(text.dropFirst(2))
     }
 
     static func outcomeText(for outcome: ChecksumOutcome) -> String {

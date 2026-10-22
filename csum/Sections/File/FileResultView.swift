@@ -64,7 +64,7 @@ private struct FileDetails: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 MetadataStrip(
-                    path: result.metadata.root,
+                    path: filePath,
                     detail:
                         "Computed \(Format.timestamp(result.metadata.computedAt)) · Format \(result.metadata.formatVersion)"
                 )
@@ -75,6 +75,14 @@ private struct FileDetails: View {
             .frame(maxWidth: 640)
             .frame(maxWidth: .infinity)
         }
+    }
+
+    private var filePath: String {
+        guard let entry = result.entries.first else {
+            return result.metadata.root
+        }
+
+        return result.absolutePath(of: entry)
     }
 
     private var rows: [KeyValueCard.Row] {
@@ -115,7 +123,7 @@ private struct FileDetails: View {
             ),
             KeyValueCard.Row(
                 label: "Path",
-                value: entry.path,
+                value: filePath,
                 singleLine: false,
                 monospaced: false
             ),

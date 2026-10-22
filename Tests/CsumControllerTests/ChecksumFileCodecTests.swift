@@ -52,13 +52,13 @@ final class ChecksumFileCodecTests: XCTestCase {
             metadata: metadata(),
             entries: [
                 ChecksumEntry(
-                    path: "/tmp/tree/a.txt",
+                    path: "a.txt",
                     outcome: .digest("3b1f"),
                     size: 1234,
                     created: computedAt,
                     modified: computedAt
                 ),
-                ChecksumEntry(path: "/tmp/tree/sub/b.bin", outcome: .failure(.cannotOpen), size: 0)
+                ChecksumEntry(path: "sub/b.bin", outcome: .failure(.cannotOpen), size: 0)
             ]
         )
 
@@ -69,8 +69,8 @@ final class ChecksumFileCodecTests: XCTestCase {
             "# csum-algorithm sha256",
             "# csum-root /tmp/tree",
             "Checksum,Size,Created,Modified,Path",
-            "3b1f,1234,1750000000,1750000000,/tmp/tree/a.txt",
-            "!cannotOpen,0,,,/tmp/tree/sub/b.bin"
+            "3b1f,1234,1750000000,1750000000,./a.txt",
+            "!cannotOpen,0,,,./sub/b.bin"
         ].joined(separator: "\r\n") + "\r\n"
 
         XCTAssertEqual(ChecksumFileCodec.render(result), expected)
@@ -81,14 +81,14 @@ final class ChecksumFileCodecTests: XCTestCase {
             metadata: metadata(root: "/tmp/a,b/\"tree\""),
             entries: [
                 ChecksumEntry(
-                    path: "/tmp/a,b/\"tree\"/a, b\"c.txt",
+                    path: "a, b\"c.txt",
                     outcome: .digest("AbCdEf0123456789"),
                     size: 0,
                     created: Date(timeIntervalSince1970: 0),
                     modified: Date(timeIntervalSince1970: 1750000000)
                 ),
                 ChecksumEntry(path: " leading and trailing ", outcome: .failure(.readFailed), size: 7),
-                ChecksumEntry(path: "/tmp/üñïçø∂é/Ω.txt", outcome: .digest("ff"), size: 42, modified: nil),
+                ChecksumEntry(path: "üñïçø∂é/Ω.txt", outcome: .digest("ff"), size: 42, modified: nil),
                 ChecksumEntry(path: "/tmp/line\nbreak.txt", outcome: .digest("00"), size: 1, created: computedAt)
             ]
         )
@@ -101,12 +101,12 @@ final class ChecksumFileCodecTests: XCTestCase {
             metadata: metadata(),
             entries: [
                 ChecksumEntry(
-                    path: "/tmp/tree/a.txt",
+                    path: "a.txt",
                     outcome: .digest("3b1f"),
                     size: 1234,
                     created: computedAt
                 ),
-                ChecksumEntry(path: "/tmp/tree/b.txt", outcome: .failure(.readFailed), size: 0)
+                ChecksumEntry(path: "b.txt", outcome: .failure(.readFailed), size: 0)
             ]
         )
 
@@ -120,7 +120,7 @@ final class ChecksumFileCodecTests: XCTestCase {
             metadata: metadata(),
             entries: [
                 ChecksumEntry(
-                    path: "/tmp/tree/a.txt",
+                    path: "a.txt",
                     outcome: .digest("ab"),
                     size: 1,
                     created: computedAt.addingTimeInterval(0.75)
@@ -173,12 +173,13 @@ final class ChecksumFileCodecTests: XCTestCase {
     func testUnrelatedCommentsAreIgnored() throws {
         let text = document(
             comments: ["# Checksums of files at /tmp/tree done on 2025-06-15", "#"],
-            rows: ["3b1f,1234,,,/tmp/tree/a.txt"]
+            rows: ["3b1f,1234,,,./a.txt"]
         )
 
         let result = try ChecksumFileCodec.parse(text)
 
         XCTAssertEqual(result.entries.count, 1)
+        XCTAssertEqual(result.entries[0].path, "a.txt")
         XCTAssertEqual(result.metadata.root, "/tmp/tree")
     }
 
@@ -191,7 +192,7 @@ final class ChecksumFileCodecTests: XCTestCase {
 
     func testParseContentsOfFile() throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        let text = document(rows: ["3b1f,1234,,,/tmp/tree/a.txt"])
+        let text = document(rows: ["3b1f,1234,,,./a.txt"])
         try Data(text.utf8).write(to: url)
         defer {
             try? FileManager.default.removeItem(at: url)
@@ -212,7 +213,7 @@ final class ChecksumFileCodecTests: XCTestCase {
     }
 
     func testMalformedFileReportsTheSourcePath() {
-        let text = document(rows: ["3b1f,many,,,/a"])
+        let text = document(rows: ["3b1f,many,,,./a"])
 
         XCTAssertThrowsError(try ChecksumFileCodec.parse(text, source: "x.csum.csv")) { error in
             XCTAssertEqual(

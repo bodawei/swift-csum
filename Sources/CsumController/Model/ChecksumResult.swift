@@ -37,4 +37,8 @@ public struct ChecksumResult: Sendable, Equatable {
     public func relativePath(of entry: ChecksumEntry) -> String {
         CanonicalPath.relativePath(of: entry.path, root: metadata.root)
     }
+
+    public func absolutePath(of entry: ChecksumEntry) -> String {
+        CanonicalPath.absolutePath(of: entry.path, root: metadata.root)
+    }
 }

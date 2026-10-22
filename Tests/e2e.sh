@@ -71,10 +71,17 @@ expect_contains "$("$BIN" check "$WORK/a/a.txt")" "$(digest_of alpha 256)," "che
 expect_contains "$("$BIN" check -a sha1 "$WORK/a/a.txt")" "$(digest_of alpha 1)," "check -a sha1 agrees with shasum"
 expect_contains "$("$BIN" check -a md5 "$WORK/a/a.txt")" "$(printf '%s' alpha | md5)," "check -a md5 agrees with md5"
 
+SINGLE="$("$BIN" check "$WORK/a/a.txt")"
+expect_contains "$SINGLE" "csum-root $CANONICAL/a" "a single file is checked against the folder holding it"
+expect_contains "$SINGLE" "./a.txt" "a single file's path is relative to that folder"
+expect_lacks "$SINGLE" "$CANONICAL/a/a.txt" "a single file's path drops the root"
+
 "$BIN" check "$WORK/a" > "$WORK/a.csum.csv"
 expect_contains "$(cat "$WORK/a.csum.csv")" "# csum-root" "check writes the root comment"
 expect_contains "$(cat "$WORK/a.csum.csv")" "# csum-algorithm sha256" "check writes the algorithm"
 expect_contains "$(cat "$WORK/a.csum.csv")" "$(digest_of beta 256)" "check walks a folder"
+expect_contains "$(cat "$WORK/a.csum.csv")" "./sub/b.txt" "check writes paths relative to the root"
+expect_lacks "$(cat "$WORK/a.csum.csv")" "$CANONICAL/a/sub/b.txt" "check drops the root from each path"
 
 "$BIN" check -a sha1 "$WORK/a" > "$WORK/a-sha1.csum.csv"
 "$BIN" check "$WORK/a" > "$WORK/a-sha256.csum.csv"
@@ -82,6 +89,8 @@ expect_contains "$(cat "$WORK/a.csum.csv")" "$(digest_of beta 256)" "check walks
 echo "compare"
 expect_contains "$("$BIN" compare "$WORK/a" "$WORK/b")" "# Added" "compare finds an added file"
 expect_contains "$("$BIN" compare "$WORK/a" "$WORK/b")" "# Changed" "compare finds a changed file"
+expect_contains "$("$BIN" compare "$WORK/a" "$WORK/b")" "./c.txt" "compare writes paths relative to each root"
+expect_lacks "$("$BIN" compare "$WORK/a" "$WORK/b")" "$CANONICAL/b/c.txt" "compare drops the root from each path"
 expect_lacks "$("$BIN" compare "$WORK/a" "$WORK/b")" "# Unchanged" "compare omits unchanged by default"
 expect_contains "$("$BIN" compare -u "$WORK/a" "$WORK/b")" "# Unchanged" "compare -u includes unchanged"
 expect_lacks "$("$BIN" compare -c "$WORK/a" "$WORK/b")" "# Added" "compare -c selects only changed"

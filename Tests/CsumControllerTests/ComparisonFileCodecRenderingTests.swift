@@ -5,10 +5,10 @@ import XCTest
 final class ComparisonFileCodecRenderingTests: ComparisonCodecTestCase {
     func testRenderProducesTheDocumentedFormat() {
         let result = comparison(
-            added: [entry("/new/added.txt", "bb", 2)],
+            added: [entry("added.txt", "bb", 2)],
             changed: [
                 MatchedEntry(
-                    old: entry("/old/changed.txt", "dd", 4), new: entry("/new/changed.txt", "ee", 5)
+                    old: entry("changed.txt", "dd", 4), new: entry("changed.txt", "ee", 5)
                 )
             ]
         )
@@ -29,10 +29,10 @@ final class ComparisonFileCodecRenderingTests: ComparisonCodecTestCase {
                 "# csum-second-computed 2025-06-14T11:20:00Z",
                 "# Added",
                 "Checksum,Size,Created,Modified,Path",
-                "bb,2,,,/new/added.txt",
+                "bb,2,,,./added.txt",
                 "# Changed",
                 "Old Checksum,Old Size,Old Created,Old Modified,Old Path,New Checksum,New Size,New Created,New Modified,New Path",
-                "dd,4,,,/old/changed.txt,ee,5,,,/new/changed.txt",
+                "dd,4,,,./changed.txt,ee,5,,,./changed.txt",
             ].joined(separator: "\r\n") + "\r\n"
 
         XCTAssertEqual(
@@ -71,7 +71,7 @@ final class ComparisonFileCodecRenderingTests: ComparisonCodecTestCase {
     }
 
     func testEmptySectionsAreOmitted() {
-        let result = ChecksumComparison(metadata: metadata(), added: [entry("/new/a.txt", "aa", 1)])
+        let result = ChecksumComparison(metadata: metadata(), added: [entry("a.txt", "aa", 1)])
         let text = ComparisonFileCodec.render(result)
 
         XCTAssertTrue(text.contains("# Added"))

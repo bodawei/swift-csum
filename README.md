@@ -37,11 +37,14 @@ through a save panel. The files are named `<file or folder name>.csum.csv`, or
 - `Size` — size in bytes.
 - `Created` / `Modified` — creation and modification dates as Unix epoch seconds
   (long integers); empty if the file has no such date.
-- `Path` — the file's absolute path. It is last because it is the only field whose width
+- `Path` — the file's path relative to the root, written with a leading `./`
+  (`./notes.txt`, `./sub/b.txt`). It is last because it is the only field whose width
   varies wildly: a table of rows is far easier to read with the path out of the way.
 
-Paths are stored absolute and the root is recorded separately, so a checksum file taken
-before the tree was moved still compares as unchanged afterwards.
+Paths are relative, and the root they are relative to is recorded once in the metadata:
+the folder that was checksummed, or the folder holding a single file. A row plus the
+root is the file's absolute path, and a checksum file taken before the tree was moved
+still compares as unchanged afterwards.
 
 ### Comparing
 
@@ -83,6 +86,9 @@ swift run csum-cli check -a sha1 ~/Documents > docs.csum.csv
 Folders are checksummed recursively — every file at every depth (hidden files included),
 sorted by path. A file that cannot be read is recorded as `!cannotOpen` or `!readFailed`
 rather than failing the run.
+
+A single file is recorded against the folder that holds it: `csum-cli check ~/a.txt`
+writes `# csum-root /Users/you` and one row whose path is `./a.txt`.
 
 ### `compare`
 

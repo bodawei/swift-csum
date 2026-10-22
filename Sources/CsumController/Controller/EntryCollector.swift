@@ -9,6 +9,7 @@ enum EntryCollector {
         progress: (@Sendable (Int, Int) -> Void)?,
         isCancelled: (@Sendable () -> Bool)? = nil
     ) throws -> [ChecksumEntry] {
+        let root = CanonicalPath.of(folder.path)
         let files = try files(in: folder)
         var entries: [ChecksumEntry] = []
 
@@ -17,20 +18,20 @@ enum EntryCollector {
                 throw CancellationError()
             }
 
-            entries.append(entry(for: files[index], algorithm: algorithm))
+            entries.append(entry(for: files[index], algorithm: algorithm, root: root))
             progress?(index + 1, files.count)
         }
 
         return entries.sorted { $0.path < $1.path }
     }
 
-    static func entry(for url: URL, algorithm: ChecksumAlgorithm) -> ChecksumEntry {
+    static func entry(for url: URL, algorithm: ChecksumAlgorithm, root: String) -> ChecksumEntry {
         let values = try? url.resourceValues(forKeys: [
             .fileSizeKey, .creationDateKey, .contentModificationDateKey,
         ])
 
         return ChecksumEntry(
-            path: CanonicalPath.of(url.path),
+            path: CanonicalPath.relativePath(of: CanonicalPath.of(url.path), root: root),
             outcome: outcome(for: url, algorithm: algorithm),
             size: Int64(values?.fileSize ?? 0),
             created: values?.creationDate,
