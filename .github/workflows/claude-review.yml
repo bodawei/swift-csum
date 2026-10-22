@@ -19,27 +19,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Check for Claude credentials
-        id: credentials
+      - name: Require a Claude credential
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
-          if [ -n "$ANTHROPIC_API_KEY" ] || [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ]; then
-            echo "available=true" >> "$GITHUB_OUTPUT"
+          if [ -n "$ANTHROPIC_API_KEY" ]; then
+            echo "Reviewing with ANTHROPIC_API_KEY."
+          elif [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ]; then
+            echo "Reviewing with CLAUDE_CODE_OAUTH_TOKEN."
           else
-            echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::No ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN secret is set; skipping the review."
+            echo "::error title=Claude credential is not set::This job cannot review the pull request without a credential. Add ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN as a repository secret under Settings -> Secrets and variables -> Actions -> New repository secret, then re-run this job."
+            exit 1
           fi
 
       - name: Check out the pull request
-        if: steps.credentials.outputs.available == 'true'
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Review with Claude
-        if: steps.credentials.outputs.available == 'true'
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
