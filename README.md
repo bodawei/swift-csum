@@ -135,6 +135,14 @@ bash Tests/e2e.sh  # the CLI against shasum, on a temporary tree
 The app's unit tests (`csumTests`) and UI flow tests (`csumUITests`) run from the `csum`
 scheme in Xcode, or with `xcodebuild test` against a Mac Catalyst destination.
 
+## Pull request review
+
+Pull requests from a branch in this repository get a review from
+`anthropics/claude-code-action` (`.github/workflows/claude-review.yml`). The job needs
+either `ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN` as a repository secret
+(**Settings → Secrets and variables → Actions**), and fails with that instruction
+instead of passing silently when neither is set.
+
 ## Standalone executables
 
 The release CLI is a standalone binary: it links only against macOS system libraries
