@@ -4,7 +4,7 @@ import SwiftUI
 struct DiffRow: Identifiable {
     let id: String
     let symbol: String
-    let tint: Color?
+    let tint: DiffTint?
     let name: AttributedString
     let size: String
     let created: String
@@ -42,7 +42,7 @@ enum DiffRows {
                     $0,
                     source: comparison.metadata.second,
                     symbol: "+",
-                    tint: .green,
+                    tint: .added,
                     emphasis: .none,
                     label: .added,
                     id: "added-\($0.path)"
@@ -54,7 +54,7 @@ enum DiffRows {
                     $0,
                     source: comparison.metadata.first,
                     symbol: "−",
-                    tint: .red,
+                    tint: .removed,
                     emphasis: .none,
                     label: .removed,
                     id: "removed-\($0.path)"
@@ -104,7 +104,7 @@ enum DiffRows {
                 matched.old,
                 source: comparison.metadata.first,
                 symbol: "−",
-                tint: .red,
+                tint: .removed,
                 emphasis: emphasis,
                 label: labels.0,
                 id: "old-\(matched.old.path)"
@@ -113,7 +113,7 @@ enum DiffRows {
                 matched.new,
                 source: comparison.metadata.second,
                 symbol: "+",
-                tint: .green,
+                tint: .added,
                 emphasis: emphasis,
                 label: labels.1,
                 id: "new-\(matched.new.path)"
@@ -125,23 +125,23 @@ enum DiffRows {
         _ entry: ChecksumEntry,
         source: ComparisonSource,
         symbol: String,
-        tint: Color?,
+        tint: DiffTint?,
         emphasis: Emphasis,
         label: Label,
         id: String
     ) -> DiffRow {
         let path = source.relativePath(of: entry)
-        let highlight = tint ?? .accentColor
+        let highlight = tint?.emphasis
 
         var name = AttributedString(path)
 
         switch emphasis {
         case .path:
-            name.backgroundColor = highlight.opacity(0.22)
+            name.backgroundColor = highlight
         case .leaf:
             if let leaf = path.split(separator: "/").last, let range = name.range(of: String(leaf))
             {
-                name[range].backgroundColor = highlight.opacity(0.22)
+                name[range].backgroundColor = highlight
             }
         default:
             break
@@ -150,7 +150,7 @@ enum DiffRows {
         var checksum = AttributedString(Format.checksum(entry))
 
         if case .checksum = emphasis {
-            checksum.backgroundColor = highlight.opacity(0.22)
+            checksum.backgroundColor = highlight
         }
 
         let isolatedPath = Format.isolated(path)
@@ -200,7 +200,7 @@ struct DiffRowView: View {
         HStack(alignment: .top, spacing: 8) {
             Text(verbatim: row.symbol)
                 .fontWeight(.semibold)
-                .foregroundStyle(row.tint ?? Color.secondary)
+                .foregroundStyle(row.tint?.marker ?? Color.secondary)
                 .frame(width: 14, alignment: .leading)
 
             VStack(alignment: .leading, spacing: 3) {
