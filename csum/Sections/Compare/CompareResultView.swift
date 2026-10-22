@@ -76,7 +76,7 @@ struct CompareResultView: View {
                         if expanded.contains(section) {
                             ForEach(DiffRows.rows(for: section, of: comparison)) { row in
                                 DiffRowView(row: row)
-                                    .listRowBackground(row.tint?.opacity(0.08))
+                                    .listRowBackground(row.tint?.background)
                             }
                         }
                     } label: {

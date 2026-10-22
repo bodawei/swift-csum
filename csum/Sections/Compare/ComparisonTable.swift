@@ -137,7 +137,7 @@ struct ComparisonTable: View {
         .padding(.horizontal, Layout.inset)
         .padding(.vertical, Layout.rowPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(row.tint?.opacity(0.08) ?? Color.clear)
+        .background(row.tint?.background ?? Color.clear)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(row.label)
     }
