@@ -16,13 +16,21 @@ final class AppModel {
     let file: FileSectionModel
     let folder: FolderSectionModel
     let compare: CompareSectionModel
+    let featureFlags: FeatureFlagStore
 
-    init(demoMode: Bool = ProcessInfo.processInfo.arguments.contains("-csumUITestMode")) {
+    init(
+        demoMode: Bool = ProcessInfo.processInfo.arguments.contains("-csumUITestMode"),
+        featureFlags: FeatureFlagStore? = nil
+    ) {
         #if DEBUG
             let service: any Checksumming = demoMode ? DemoService() : ControllerService()
         #else
             let service: any Checksumming = ControllerService()
         #endif
+
+        let featureFlags = featureFlags ?? FeatureFlagStore()
+        self.featureFlags = featureFlags
+        featureFlags.start()
 
         file = FileSectionModel(service: service, demoMode: demoMode)
         folder = FolderSectionModel(service: service, demoMode: demoMode)

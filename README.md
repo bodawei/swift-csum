@@ -14,7 +14,8 @@ destination runs the same app on your Mac — no separate macOS target needed.
 The app has three tabs:
 
 - **File** — **Checksum File…** picks one file and shows its checksum, algorithm, size,
-  created and modified dates, and path.
+  created and modified dates, and path. **Copy Checksum** copies the digest (a feature
+  flag, on by default).
 - **Folder** — **Checksum Folder…** picks a folder and checksums it recursively: every
   file at every depth (hidden files included), with a progress bar while it runs and a
   list or table of results afterwards, sorted by path relative to the folder. A file
@@ -190,7 +191,7 @@ Sources/CsumController/  the controller layer
   Format/                the .csum.csv reader and writer, and the CSV primitive
 Sources/csum-cli/        command-line tool (swift-argument-parser)
 csum.xcodeproj/          SwiftUI app project (iPhone, iPad, Mac)
-csum/                    app sources: App, Sections/, Shared/, Demo/
+csum/                    app sources: App, FeatureFlags/, Sections/, Shared/, Demo/
 csumTests/               app unit tests
 csumUITests/             app UI flow tests
 plans/                   project plans
@@ -226,3 +227,24 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318/v1/traces
 
 With no endpoint configured the app keeps the no-op provider and sends nothing. The CLI
 registers no provider either, so `csum-cli` exports nothing.
+
+## Feature flags
+
+Feature flags come from [Harness Feature Management &
+Experimentation](https://www.harness.io/products/feature-management-experimentation) (the
+Split platform) through its iOS SDK. Each flag is declared, with its default, in
+`Sources/CsumController/Model/FeatureFlag.swift`; `csum/FeatureFlags/HarnessFeatureFlags.swift`
+evaluates it through the SDK, and `FeatureFlagStore` publishes the values to the views.
+
+| Flag | Default | Gates |
+|------|---------|-------|
+| `csum.copy-checksum` | on | The **Copy Checksum** button on the File result |
+
+To connect a Harness project, set the client-side SDK key as `HARNESS_FME_CLIENT_KEY`,
+either in the scheme's environment or as a string key in `Info.plist`, and create a flag
+whose name is the flag's raw value. Turning it on or off in Harness changes the app
+without a new build: the store refreshes when the SDK reports ready or an update.
+
+With no key configured the app never contacts Harness and every flag keeps its default,
+so a checkout builds and runs offline. When a key is set the SDK identifies the device
+with a random UUID in `UserDefaults` under `com.djb.csum.installationID`.
