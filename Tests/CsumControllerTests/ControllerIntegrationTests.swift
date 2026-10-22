@@ -171,6 +171,31 @@ final class LoadChecksumResultTests: XCTestCase {
         XCTAssertEqual(loaded, atSecondResolution(computed))
     }
 
+    func testReadsASavedChecksumFile() throws {
+        try tree.text("a.txt", "alpha", modified: wholeSecond, created: wholeSecond)
+
+        let computed = try controller().calculateChecksums(at: tree.url)
+        let saved = tree.url.appendingPathComponent("saved.csum.csv")
+        try Data(ChecksumFileCodec.render(computed).utf8).write(to: saved)
+
+        let read = try controller().readChecksumFile(at: saved)
+
+        XCTAssertEqual(read, atSecondResolution(computed))
+    }
+
+    func testReadingAPlainFileFails() throws {
+        try tree.text("a.txt", "alpha")
+
+        let plain = tree.url.appendingPathComponent("a.txt")
+
+        XCTAssertThrowsError(try controller().readChecksumFile(at: plain)) { error in
+            XCTAssertEqual(
+                error as? CsumError,
+                .malformedFile(path: plain.path, reason: .missingMetadata)
+            )
+        }
+    }
+
     func testComputesForAFolderOnTheSpot() throws {
         try tree.text("a.txt", "alpha")
 

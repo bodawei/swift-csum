@@ -33,6 +33,20 @@
         func compare(first: URL, second: URL) async throws -> ChecksumComparison {
             DemoData.comparison
         }
+
+        func readChecksumFile(at url: URL) async throws -> ChecksumResult {
+            ChecksumResult(
+                metadata: ChecksumMetadata(
+                    formatVersion: CsumFormat.version,
+                    writer: CsumController.appWriter,
+                    toolVersion: CsumFormat.toolVersion,
+                    algorithm: .sha256,
+                    computedAt: DemoData.computedAt,
+                    root: DemoData.folderURL.path
+                ),
+                entries: DemoData.folderEntries
+            )
+        }
     }
 
     enum DemoData {
@@ -41,6 +55,9 @@
         static let copiedFolderURL = URL(
             fileURLWithPath: "/Users/demo/Pictures/2026-copy",
             isDirectory: true
+        )
+        static let savedCsumFileURL = URL(
+            fileURLWithPath: "/Users/demo/Documents/Pictures-2026.csum.csv"
         )
 
         static let computedAt = Date(timeIntervalSince1970: 1_760_000_000)

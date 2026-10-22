@@ -225,6 +225,22 @@
         }
       }
     },
+    "Computed %@ · %@ · Entries: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حُسب في %@ · %@ · عدد المدخلات: %@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "計算於 %@ · %@ · 項目數：%@"
+          }
+        }
+      }
+    },
     "Computed %@ · Format %@ · Entries: %@" : {
       "localizations" : {
         "ar" : {
@@ -449,6 +465,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "尚未選擇"
+          }
+        }
+      }
+    },
+    "Open .csum.csv…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فتح ‎.csum.csv…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "打開 .csum.csv…"
           }
         }
       }
@@ -689,6 +721,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未變更，%@"
+          }
+        }
+      }
+    },
+    "View" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عرض"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檢視"
           }
         }
       }

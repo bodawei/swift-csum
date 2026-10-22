@@ -51,6 +51,9 @@
 		C50000000000000000000146 /* HarnessFeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000142 /* HarnessFeatureFlags.swift */; };
 		C50000000000000000000147 /* FeatureFlagStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000143 /* FeatureFlagStoreTests.swift */; };
 		C5000000000000000000014B /* Split in Frameworks */ = {isa = PBXBuildFile; productRef = C5000000000000000000014A /* Split */; };
+		C50000000000000000000150 /* CsumSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000151 /* CsumSectionView.swift */; };
+		C50000000000000000000152 /* CsumSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000153 /* CsumSectionModel.swift */; };
+		C50000000000000000000154 /* CsumResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000155 /* CsumResultView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +117,9 @@
 		C50000000000000000000141 /* FeatureFlagStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagStore.swift; sourceTree = "<group>"; };
 		C50000000000000000000142 /* HarnessFeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessFeatureFlags.swift; sourceTree = "<group>"; };
 		C50000000000000000000143 /* FeatureFlagStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagStoreTests.swift; sourceTree = "<group>"; };
+		C50000000000000000000151 /* CsumSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionView.swift; sourceTree = "<group>"; };
+		C50000000000000000000153 /* CsumSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionModel.swift; sourceTree = "<group>"; };
+		C50000000000000000000155 /* CsumResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumResultView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +206,7 @@
 			children = (
 				C500000000000000000000C3 /* File */,
 				C500000000000000000000C4 /* Folder */,
+				C5000000000000000000014C /* Csum */,
 				C500000000000000000000C5 /* Compare */,
 			);
 			path = Sections;
@@ -223,6 +230,16 @@
 				C500000000000000000000D4 /* FolderResultView.swift */,
 			);
 			path = Folder;
+			sourceTree = "<group>";
+		};
+		C5000000000000000000014C /* Csum */ = {
+			isa = PBXGroup;
+			children = (
+				C50000000000000000000151 /* CsumSectionView.swift */,
+				C50000000000000000000153 /* CsumSectionModel.swift */,
+				C50000000000000000000155 /* CsumResultView.swift */,
+			);
+			path = Csum;
 			sourceTree = "<group>";
 		};
 		C500000000000000000000C5 /* Compare */ = {
@@ -427,6 +444,7 @@
 				C50000000000000000000121 /* WindowTitleHider.swift in Sources */,
 				C500000000000000000000B4 /* FileSectionView.swift in Sources */,
 				C500000000000000000000B5 /* FolderSectionView.swift in Sources */,
+				C50000000000000000000150 /* CsumSectionView.swift in Sources */,
 				C500000000000000000000B6 /* CompareSectionView.swift in Sources */,
 				C500000000000000000000B7 /* ChecksumService.swift in Sources */,
 				C500000000000000000000B8 /* Formatters.swift in Sources */,
@@ -442,6 +460,8 @@
 				C500000000000000000000101 /* TableHeader.swift in Sources */,
 				C500000000000000000000F4 /* FolderSectionModel.swift in Sources */,
 				C500000000000000000000F5 /* FolderResultView.swift in Sources */,
+				C50000000000000000000152 /* CsumSectionModel.swift in Sources */,
+				C50000000000000000000154 /* CsumResultView.swift in Sources */,
 				C500000000000000000000F6 /* CompareSectionModel.swift in Sources */,
 				C500000000000000000000F7 /* CompareResultView.swift in Sources */,
 				C50000000000000000000130 /* ComparisonTable.swift in Sources */,

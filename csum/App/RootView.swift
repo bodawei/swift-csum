@@ -20,6 +20,12 @@ struct RootView: View {
                 }
                 .tag(AppModel.Section.folder)
 
+            CsumSectionView()
+                .tabItem {
+                    Label("View", systemImage: "tablecells")
+                }
+                .tag(AppModel.Section.csum)
+
             CompareSectionView()
                 .tabItem {
                     Label("Compare", systemImage: "doc.on.doc")

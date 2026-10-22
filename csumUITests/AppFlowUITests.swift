@@ -47,6 +47,21 @@ final class AppFlowUITests: XCTestCase {
         attach(app, name: "folder-result-landscape")
     }
 
+    func testCsumFileFlow() {
+        let app = launch()
+
+        app.buttons["View"].firstMatch.tap()
+        app.buttons["Open .csum.csv…"].tap()
+
+        XCTAssertTrue(app.staticTexts["/Users/demo/Pictures/2026"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["2026-07/IMG_1042.HEIC"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Share"].exists)
+        attach(app, name: "csum-file-result")
+
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["Open .csum.csv…"].waitForExistence(timeout: 5))
+    }
+
     func testCompareFlow() {
         let app = launch()
 

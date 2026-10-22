@@ -33,6 +33,16 @@ public struct CsumController: Sendable {
         }
     }
 
+    public func readChecksumFile(at url: URL) throws -> ChecksumResult {
+        try withScopedAccess(to: url) {
+            guard FileManager.default.fileExists(atPath: url.path) else {
+                throw CsumError.notFound(path: url.path)
+            }
+
+            return try ChecksumFileCodec.parse(contentsOf: url)
+        }
+    }
+
     public func compare(
         first firstURL: URL,
         second secondURL: URL,

@@ -11,7 +11,7 @@ in 1 MB chunks.
 Open `csum.xcodeproj` in Xcode and run the `csum` scheme. Selecting the "Mac"
 destination runs the same app on your Mac — no separate macOS target needed.
 
-The app has three tabs:
+The app has four tabs:
 
 - **File** — **Checksum File…** picks one file and shows its checksum, algorithm, size,
   created and modified dates, and path. **Copy Checksum** copies the digest (a feature
@@ -21,6 +21,9 @@ The app has three tabs:
   list or table of results afterwards, sorted by path relative to the folder. A file
   that cannot be read gets a failure code in its checksum cell instead of a digest, and
   the run carries on.
+- **View** — **Open .csum.csv…** reads a saved checksum file back and shows the metadata
+  it carries (when it was computed, the algorithm, and the root the paths are relative
+  to) with every row in a list or table. Nothing is checksummed again.
 - **Compare** — two sources, each a saved `.csum.csv` or a folder, then **Compare**.
 
 Every result screen has a **Share** button that exports an Excel-ready `.csum.csv` —
@@ -28,7 +31,7 @@ RFC 4180 quoting, CRLF line endings, UTF-8 BOM — led by five `# csum-…` comm
 carrying the format version, the tool, the ISO-8601 date, the algorithm, and the root
 the paths are relative to. On the Mac, **File > Save As…** (⇧⌘S) writes the same text
 through a save panel. The files are named `<file or folder name>.csum.csv`, or
-`Comparison.csum.csv` for a compare. The row format is:
+`Comparison.csum.csv` for a compare; a viewed file keeps its own name. The row format is:
 
 | Checksum | Size | Created | Modified | Path |
 |----------|------|---------|----------|------|
