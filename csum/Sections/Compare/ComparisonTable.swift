@@ -62,7 +62,7 @@ struct ComparisonTable: View {
             Text("Checksum")
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .font(.caption.weight(.semibold))
+        .font(TableHeader.font)
         .foregroundStyle(.secondary)
         .padding(.horizontal, Layout.inset)
         .padding(.vertical, 6)
