@@ -30,6 +30,7 @@
 		C500000000000000000000D7 /* Telemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D6 /* Telemetry.swift */; };
 		C500000000000000000000F1 /* AdaptiveContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000AF /* AdaptiveContent.swift */; };
 		C500000000000000000000F2 /* ChecksumRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D1 /* ChecksumRow.swift */; };
+		C500000000000000000000FB /* DiffTint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E6 /* DiffTint.swift */; };
 		C500000000000000000000F3 /* ChecksumTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D2 /* ChecksumTable.swift */; };
 		C500000000000000000000101 /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000102 /* TableHeader.swift */; };
 		C500000000000000000000F4 /* FolderSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000D3 /* FolderSectionModel.swift */; };
@@ -95,6 +96,7 @@
 		C50000000000000000000131 /* ComparisonTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComparisonTable.swift; sourceTree = "<group>"; };
 		C50000000000000000000133 /* ComparisonSectionDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComparisonSectionDisplay.swift; sourceTree = "<group>"; };
 		C500000000000000000000E3 /* DiffRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffRow.swift; sourceTree = "<group>"; };
+		C500000000000000000000E6 /* DiffTint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTint.swift; sourceTree = "<group>"; };
 		C500000000000000000000E4 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C500000000000000000000E5 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		C50000000000000000000102 /* csumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = csumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -237,6 +239,7 @@
 				C500000000000000000000D2 /* ChecksumTable.swift */,
 				C500000000000000000000102 /* TableHeader.swift */,
 				C500000000000000000000E3 /* DiffRow.swift */,
+				C500000000000000000000E6 /* DiffTint.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -420,6 +423,7 @@
 				C50000000000000000000130 /* ComparisonTable.swift in Sources */,
 				C50000000000000000000132 /* ComparisonSectionDisplay.swift in Sources */,
 				C500000000000000000000F8 /* DiffRow.swift in Sources */,
+				C500000000000000000000FB /* DiffTint.swift in Sources */,
 				C50000000000000000000112 /* DemoService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

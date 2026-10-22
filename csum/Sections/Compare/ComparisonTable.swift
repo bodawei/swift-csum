@@ -105,7 +105,7 @@ struct ComparisonTable: View {
         HStack(spacing: Layout.spacing) {
             Text(verbatim: row.symbol)
                 .fontWeight(.semibold)
-                .foregroundStyle(row.tint ?? Color.secondary)
+                .foregroundStyle(row.tint?.marker ?? Color.secondary)
                 .frame(width: Layout.symbol, alignment: .leading)
 
             Text(row.name)
@@ -138,7 +138,7 @@ struct ComparisonTable: View {
         .padding(.horizontal, Layout.inset)
         .padding(.vertical, Layout.rowPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(row.tint?.opacity(0.08) ?? Color.clear)
+        .background(row.tint?.background ?? Color.clear)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(row.label)
     }
