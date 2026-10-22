@@ -2,15 +2,6 @@ import CsumController
 import SwiftUI
 
 struct ComparisonTable: View {
-    private enum Layout {
-        static let inset: CGFloat = 16
-        static let spacing: CGFloat = 12
-        static let symbol: CGFloat = 14
-        static let size: CGFloat = 80
-        static let date: CGFloat = 120
-        static let rowPadding: CGFloat = 6
-    }
-
     let comparison: ChecksumComparison
 
     @Binding var expanded: Set<ComparisonSection>
@@ -43,28 +34,28 @@ struct ComparisonTable: View {
     }
 
     private var header: some View {
-        HStack(spacing: Layout.spacing) {
+        HStack(spacing: ResultsTableLayout.spacing) {
             Color.clear
-                .frame(width: Layout.symbol, height: 0)
+                .frame(width: ResultsTableLayout.symbol, height: 0)
 
             Text("Name")
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("Size")
-                .frame(width: Layout.size, alignment: .trailing)
+                .frame(width: ResultsTableLayout.size, alignment: .trailing)
 
             Text("Created")
-                .frame(width: Layout.date, alignment: .leading)
+                .frame(width: ResultsTableLayout.date, alignment: .leading)
 
             Text("Modified")
-                .frame(width: Layout.date, alignment: .leading)
+                .frame(width: ResultsTableLayout.date, alignment: .leading)
 
             Text("Checksum")
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
         .font(.caption.weight(.semibold))
         .foregroundStyle(.secondary)
-        .padding(.horizontal, Layout.inset)
+        .padding(.horizontal, ResultsTableLayout.inset)
         .padding(.vertical, 6)
     }
 
@@ -83,7 +74,7 @@ struct ComparisonTable: View {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.secondary)
                     .rotationEffect(.degrees(expanded.contains(section) ? 90 : 0))
-                    .frame(width: Layout.symbol)
+                    .frame(width: ResultsTableLayout.symbol)
 
                 Text(section.displayTitle)
                     .fontWeight(.semibold)
@@ -93,7 +84,7 @@ struct ComparisonTable: View {
 
                 Spacer(minLength: 0)
             }
-            .padding(.horizontal, Layout.inset)
+            .padding(.horizontal, ResultsTableLayout.inset)
             .padding(.vertical, 5)
             .contentShape(Rectangle())
         }
@@ -102,11 +93,11 @@ struct ComparisonTable: View {
     }
 
     private func entryRow(_ row: DiffRow) -> some View {
-        HStack(spacing: Layout.spacing) {
+        HStack(spacing: ResultsTableLayout.spacing) {
             Text(verbatim: row.symbol)
                 .fontWeight(.semibold)
                 .foregroundStyle(row.tint ?? Color.secondary)
-                .frame(width: Layout.symbol, alignment: .leading)
+                .frame(width: ResultsTableLayout.symbol, alignment: .leading)
 
             Text(row.name)
                 .lineLimit(1)
@@ -116,17 +107,17 @@ struct ComparisonTable: View {
             Text(verbatim: row.size)
                 .lineLimit(1)
                 .foregroundStyle(.secondary)
-                .frame(width: Layout.size, alignment: .trailing)
+                .frame(width: ResultsTableLayout.size, alignment: .trailing)
 
             Text(verbatim: row.created)
                 .lineLimit(1)
                 .foregroundStyle(.secondary)
-                .frame(width: Layout.date, alignment: .leading)
+                .frame(width: ResultsTableLayout.date, alignment: .leading)
 
             Text(verbatim: row.date)
                 .lineLimit(1)
                 .foregroundStyle(.secondary)
-                .frame(width: Layout.date, alignment: .leading)
+                .frame(width: ResultsTableLayout.date, alignment: .leading)
 
             Text(row.checksum)
                 .font(.caption.monospaced())
@@ -135,8 +126,8 @@ struct ComparisonTable: View {
                 .truncationMode(.middle)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .padding(.horizontal, Layout.inset)
-        .padding(.vertical, Layout.rowPadding)
+        .padding(.horizontal, ResultsTableLayout.inset)
+        .padding(.vertical, ResultsTableLayout.rowPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(row.tint?.opacity(0.08) ?? Color.clear)
         .accessibilityElement(children: .ignore)

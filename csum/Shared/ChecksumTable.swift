@@ -2,51 +2,81 @@ import CsumController
 import SwiftUI
 
 struct ChecksumTable: View {
-    private struct Row: Identifiable {
-        let entry: ChecksumEntry
-
-        var id: String {
-            entry.path
-        }
-    }
-
     let result: ChecksumResult
 
     var body: some View {
-        Table(of: Row.self) {
-            TableColumn(TableHeader.text("Name")) { row in
-                Text(verbatim: result.relativePath(of: row.entry))
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-            }
+        VStack(spacing: 0) {
+            header
 
-            TableColumn(TableHeader.text("Size")) { row in
-                Text(verbatim: Format.size(row.entry.size))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-            .width(min: 70, ideal: 90, max: 110)
+            Divider()
 
-            TableColumn(TableHeader.text("Created")) { row in
-                Text(verbatim: Format.day(row.entry.created))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .width(min: 90, ideal: 100, max: 130)
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(result.entries, id: \.path) { entry in
+                        row(entry)
 
-            TableColumn(TableHeader.text("Modified")) { row in
-                Text(verbatim: Format.day(row.entry.modified))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .width(min: 90, ideal: 100, max: 130)
-
-            TableColumn(TableHeader.text("Checksum")) { row in
-                Text(verbatim: Format.checksum(row.entry))
-                    .font(.caption.monospaced())
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-        } rows: {
-            ForEach(result.entries, id: \.path) { entry in
-                TableRow(Row(entry: entry))
+                        Divider()
+                    }
+                }
             }
         }
+    }
+
+    private var header: some View {
+        HStack(spacing: ResultsTableLayout.spacing) {
+            Text("Name")
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text("Size")
+                .frame(width: ResultsTableLayout.size, alignment: .trailing)
+
+            Text("Created")
+                .frame(width: ResultsTableLayout.date, alignment: .leading)
+
+            Text("Modified")
+                .frame(width: ResultsTableLayout.date, alignment: .leading)
+
+            Text("Checksum")
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+        .font(.caption.weight(.semibold))
+        .foregroundStyle(.secondary)
+        .padding(.horizontal, ResultsTableLayout.inset)
+        .padding(.vertical, 6)
+    }
+
+    private func row(_ entry: ChecksumEntry) -> some View {
+        HStack(spacing: ResultsTableLayout.spacing) {
+            Text(verbatim: result.relativePath(of: entry))
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(verbatim: Format.size(entry.size))
+                .lineLimit(1)
+                .foregroundStyle(.secondary)
+                .frame(width: ResultsTableLayout.size, alignment: .trailing)
+
+            Text(verbatim: Format.day(entry.created))
+                .lineLimit(1)
+                .foregroundStyle(.secondary)
+                .frame(width: ResultsTableLayout.date, alignment: .leading)
+
+            Text(verbatim: Format.day(entry.modified))
+                .lineLimit(1)
+                .foregroundStyle(.secondary)
+                .frame(width: ResultsTableLayout.date, alignment: .leading)
+
+            Text(verbatim: Format.checksum(entry))
+                .font(.caption.monospaced())
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+        .padding(.horizontal, ResultsTableLayout.inset)
+        .padding(.vertical, ResultsTableLayout.rowPadding)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
     }
 }
