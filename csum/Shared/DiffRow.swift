@@ -200,7 +200,6 @@ struct DiffRowView: View {
         HStack(alignment: .top, spacing: 8) {
             Text(verbatim: row.symbol)
                 .fontWeight(.semibold)
-                .foregroundStyle(row.tint?.marker ?? Color.secondary)
                 .frame(width: 14, alignment: .leading)
 
             VStack(alignment: .leading, spacing: 3) {
