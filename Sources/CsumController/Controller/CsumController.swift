@@ -57,7 +57,9 @@ public struct CsumController: Sendable {
                 Telemetry.Keys.path: .string(url.path),
             ]
         ) { span in
-            let entries = try collectEntries(at: url, progress: progress, isCancelled: isCancelled)
+            let root = rootPath(for: url)
+            let entries = try collectEntries(
+                at: url, root: root, progress: progress, isCancelled: isCancelled)
 
             span.setAttribute(key: Telemetry.Keys.entryCount, value: entries.count)
 
@@ -68,7 +70,7 @@ public struct CsumController: Sendable {
                     toolVersion: CsumFormat.toolVersion,
                     algorithm: algorithm,
                     computedAt: Date(),
-                    root: CanonicalPath.of(url.path)
+                    root: root
                 ),
                 entries: entries
             )
@@ -193,6 +195,7 @@ public struct CsumController: Sendable {
 
     private func collectEntries(
         at url: URL,
+        root: String,
         progress: (@Sendable (Int, Int) -> Void)?,
         isCancelled: (@Sendable () -> Bool)?
     ) throws -> [ChecksumEntry] {
@@ -217,7 +220,14 @@ public struct CsumController: Sendable {
 
         progress?(1, 1)
 
-        return [EntryCollector.entry(for: url, algorithm: algorithm)]
+        return [EntryCollector.entry(for: url, algorithm: algorithm, root: root)]
+    }
+
+    private func rootPath(for url: URL) -> String {
+        let path = CanonicalPath.of(url.path)
+        let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+
+        return isDirectory ? path : (path as NSString).deletingLastPathComponent
     }
 
     private func withScopedAccess<T>(to url: URL, _ body: () throws -> T) rethrows -> T {

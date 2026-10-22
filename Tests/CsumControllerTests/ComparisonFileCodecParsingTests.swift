@@ -36,10 +36,10 @@ final class ComparisonFileCodecParsingTests: ComparisonCodecTestCase {
 
     func testSectionTitlesAreCaseInsensitive() throws {
         let parsed = try ComparisonFileCodec.parse(
-            document(body: ["# added", "Checksum,Size,Created,Modified,Path", "bb,2,,,/new/a.txt"])
+            document(body: ["# added", "Checksum,Size,Created,Modified,Path", "bb,2,,,./a.txt"])
         )
 
-        XCTAssertEqual(parsed.added.map(\.path), ["/new/a.txt"])
+        XCTAssertEqual(parsed.added.map(\.path), ["a.txt"])
     }
 
     func testUnrelatedCommentsAreIgnored() throws {
@@ -49,7 +49,7 @@ final class ComparisonFileCodecParsingTests: ComparisonCodecTestCase {
                     "# Deliberately vague note about the comparison",
                     "# Unchanged",
                     "Checksum,Size,Created,Modified,Path",
-                    "aa,1,,,/new/a.txt",
+                    "aa,1,,,./a.txt",
                 ]
             )
         )
@@ -94,7 +94,7 @@ final class ComparisonFileCodecParsingTests: ComparisonCodecTestCase {
                 body: [
                     "# Moved",
                     "Old Checksum,Old Size,Old Created,Old Modified,Old Path,New Checksum,New Size,New Created,New Modified,New Path",
-                    "ff,6,,,/a,ff,6,,",
+                    "ff,6,,,./a,ff,6,,",
                 ]
             ),
             .wrongFieldCount(section: "moved", row: 0, expected: 10, found: 9)
@@ -110,7 +110,7 @@ final class ComparisonFileCodecParsingTests: ComparisonCodecTestCase {
 
     func testUnusableRowValuesAreRejected() {
         assertMalformed(
-            document(body: ["# Added", "Checksum,Size,Created,Modified,Path", "zz,notanumber,,,/a"]
+            document(body: ["# Added", "Checksum,Size,Created,Modified,Path", "zz,notanumber,,,./a"]
             ),
             .unparsableSize(section: "added", row: 0)
         )

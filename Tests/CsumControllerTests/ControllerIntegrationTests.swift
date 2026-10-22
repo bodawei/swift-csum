@@ -54,9 +54,9 @@ final class CalculateChecksumsTests: XCTestCase {
         let result = try controller().calculateChecksums(
             at: tree.url.appendingPathComponent("one.txt"))
 
-        XCTAssertEqual(result.metadata.root, tree.path("one.txt"))
+        XCTAssertEqual(result.metadata.root, tree.root)
         XCTAssertEqual(result.entries.count, 1)
-        XCTAssertEqual(result.entries[0].path, tree.path("one.txt"))
+        XCTAssertEqual(result.entries[0].path, "one.txt")
         XCTAssertEqual(
             result.entries[0].outcome, .digest(digest(of: Data("one".utf8), using: .sha256)))
         XCTAssertEqual(result.entries[0].size, 3)
@@ -71,7 +71,7 @@ final class CalculateChecksumsTests: XCTestCase {
         let result = try controller().calculateChecksums(at: tree.url)
 
         XCTAssertEqual(result.metadata.root, tree.root)
-        XCTAssertEqual(result.entries.map(\.path), [tree.path("a.txt"), tree.path("sub/b.txt")])
+        XCTAssertEqual(result.entries.map(\.path), ["a.txt", "sub/b.txt"])
     }
 
     func testMetadataRecordsTheToolAndAlgorithm() throws {
@@ -186,7 +186,7 @@ final class LoadChecksumResultTests: XCTestCase {
         let loaded = try controller().loadChecksumResult(
             at: tree.url.appendingPathComponent("a.txt"))
 
-        XCTAssertEqual(loaded.metadata.root, tree.path("a.txt"))
+        XCTAssertEqual(loaded.metadata.root, tree.root)
         XCTAssertEqual(loaded.entries.count, 1)
     }
 

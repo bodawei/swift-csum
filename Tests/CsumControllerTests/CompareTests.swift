@@ -39,8 +39,7 @@ final class CompareTests: XCTestCase {
 
         let comparison = try controller().compare(first: saved, second: tree.url)
 
-        XCTAssertEqual(
-            comparison.unchanged.map(\.path), [tree.path("a.txt"), tree.path("sub/b.txt")])
+        XCTAssertEqual(comparison.unchanged.map(\.path), ["a.txt", "sub/b.txt"])
         XCTAssertTrue(comparison.added.isEmpty)
         XCTAssertTrue(comparison.removed.isEmpty)
         XCTAssertTrue(comparison.moved.isEmpty)
@@ -109,11 +108,11 @@ final class CompareTests: XCTestCase {
 
         let comparison = try controller().compare(first: tree.url, second: other.url)
 
-        XCTAssertEqual(comparison.unchanged.map(\.path), [other.path("a.txt")])
+        XCTAssertEqual(comparison.unchanged.map(\.path), ["a.txt"])
         XCTAssertEqual(comparison.changed.count, 1)
-        XCTAssertEqual(comparison.changed[0].old.path, tree.path("sub/b.txt"))
-        XCTAssertEqual(comparison.changed[0].new.path, other.path("sub/b.txt"))
-        XCTAssertEqual(comparison.added.map(\.path), [other.path("c.txt")])
+        XCTAssertEqual(comparison.changed[0].old.path, "sub/b.txt")
+        XCTAssertEqual(comparison.changed[0].new.path, "sub/b.txt")
+        XCTAssertEqual(comparison.added.map(\.path), ["c.txt"])
         XCTAssertTrue(comparison.removed.isEmpty)
     }
 

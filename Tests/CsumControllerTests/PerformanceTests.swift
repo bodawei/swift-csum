@@ -5,10 +5,10 @@ import XCTest
 final class PerformanceTests: XCTestCase {
     private let count = 100_000
 
-    private func entries(root: String) -> [ChecksumEntry] {
+    private func entries() -> [ChecksumEntry] {
         (0..<count).map { index in
             ChecksumEntry(
-                path: "\(root)/folder/file-\(index).bin",
+                path: "folder/file-\(index).bin",
                 outcome: .digest(String(format: "%064x", index)),
                 size: Int64(index) * 1024,
                 created: Date(timeIntervalSince1970: 0),
@@ -27,7 +27,7 @@ final class PerformanceTests: XCTestCase {
                 computedAt: Date(timeIntervalSince1970: 2),
                 root: root
             ),
-            entries: entries(root: root)
+            entries: entries()
         )
     }
 

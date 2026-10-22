@@ -27,25 +27,25 @@ class ComparisonCodecTestCase: XCTestCase {
     func fullComparison(root: String = "") -> ChecksumComparison {
         ChecksumComparison(
             metadata: metadata(firstRoot: "/old\(root)", secondRoot: "/new\(root)"),
-            unchanged: [entry("/new\(root)/keep.txt", "aa", 1)],
-            added: [entry("/new\(root)/added.txt", "bb", 2)],
-            removed: [entry("/old\(root)/removed.txt", "cc", 3)],
+            unchanged: [entry("keep.txt", "aa", 1)],
+            added: [entry("added.txt", "bb", 2)],
+            removed: [entry("removed.txt", "cc", 3)],
             changed: [
                 MatchedEntry(
-                    old: entry("/old\(root)/changed.txt", "dd", 4),
-                    new: entry("/new\(root)/changed.txt", "ee", 5)
+                    old: entry("changed.txt", "dd", 4),
+                    new: entry("changed.txt", "ee", 5)
                 )
             ],
             moved: [
                 MatchedEntry(
-                    old: entry("/old\(root)/moved/f.txt", "ff", 6),
-                    new: entry("/new\(root)/elsewhere/f.txt", "ff", 6)
+                    old: entry("moved/f.txt", "ff", 6),
+                    new: entry("elsewhere/f.txt", "ff", 6)
                 )
             ],
             renamed: [
                 MatchedEntry(
-                    old: entry("/old\(root)/sub/g.txt", "11", 7),
-                    new: entry("/new\(root)/sub/h.txt", "11", 7)
+                    old: entry("sub/g.txt", "11", 7),
+                    new: entry("sub/h.txt", "11", 7)
                 )
             ]
         )

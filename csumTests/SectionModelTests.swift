@@ -30,7 +30,7 @@ final class SectionModelTests: XCTestCase {
 
     private func makeResult() -> ChecksumResult {
         let entry = ChecksumEntry(
-            path: "/tmp/a.txt",
+            path: "a.txt",
             outcome: .digest("abc"),
             size: 3,
             created: Date(timeIntervalSince1970: 0),
