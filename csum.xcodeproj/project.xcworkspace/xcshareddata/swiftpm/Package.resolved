@@ -1,5 +1,5 @@
 {
-  "originHash" : "8215957eea693378e19eb0d7182ec4ad754e363c251f5d8e70691da338f0b86b",
+  "originHash" : "6c674835d9e2f846eec1164d465343f79ec0a6a58e0956c4ce94df69aaaeac58",
   "pins" : [
     {
       "identity" : "grpc-swift",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "65d0084f6d7db34b0dfcb1c956b8dd8da8ef9d23",
         "version" : "1.27.6"
+      }
+    },
+    {
+      "identity" : "ios-client",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/splitio/ios-client",
+      "state" : {
+        "revision" : "9e2aafeb1fdda2d969a28a13f5484a6c25d3d539",
+        "version" : "3.7.1"
       }
     },
     {

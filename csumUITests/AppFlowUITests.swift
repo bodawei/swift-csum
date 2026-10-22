@@ -11,6 +11,7 @@ final class AppFlowUITests: XCTestCase {
         app.buttons["Checksum File…"].tap()
 
         XCTAssertTrue(app.staticTexts["Algorithm"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["copyChecksum"].exists)
         attach(app, name: "file-result")
 
         app.navigationBars.buttons.element(boundBy: 0).tap()
