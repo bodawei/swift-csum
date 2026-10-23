@@ -30,6 +30,7 @@ struct KeyValueCard: View {
                         .frame(maxWidth: .infinity, alignment: .trailing)
                         .textSelection(.enabled)
                 }
+                .copyRowMenu(rows[index].value)
             }
         }
         .padding(16)

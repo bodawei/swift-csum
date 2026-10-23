@@ -32,7 +32,8 @@ RFC 4180 quoting, CRLF line endings, UTF-8 BOM — led by five `# csum-…` comm
 carrying the format version, the tool, the ISO-8601 date, the algorithm, and the root
 the paths are relative to. On the Mac, **File > Save As…** (⇧⌘S) writes the same text
 through a save panel. The files are named `<file or folder name>.csum.csv`, or
-`Comparison.csum.csv` for a compare; a viewed file keeps its own name. The row format is:
+`Comparison.csum.csv` for a compare; a viewed file keeps its own name. Long-press any row
+(or right-click it on the Mac) to copy that row as a CSV line. The row format is:
 
 | Checksum | Size | Created | Modified | Path |
 |----------|------|---------|----------|------|
