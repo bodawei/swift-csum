@@ -1,5 +1,5 @@
 {
-  "originHash" : "6c674835d9e2f846eec1164d465343f79ec0a6a58e0956c4ce94df69aaaeac58",
+  "originHash" : "c2631be8af7af7b96fefe9700a31858c0cf7fcb8f010f1532d435dae12947959",
   "pins" : [
     {
       "identity" : "grpc-swift",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "65d0084f6d7db34b0dfcb1c956b8dd8da8ef9d23",
         "version" : "1.27.6"
-      }
-    },
-    {
-      "identity" : "ios-client",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/splitio/ios-client",
-      "state" : {
-        "revision" : "9e2aafeb1fdda2d969a28a13f5484a6c25d3d539",
-        "version" : "3.7.1"
       }
     },
     {
@@ -44,6 +35,15 @@
       "state" : {
         "revision" : "18c1a35ca966236cee0c5a714a51a73ff33384c1",
         "version" : "0.5.2"
+      }
+    },
+    {
+      "identity" : "posthog-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/PostHog/posthog-ios",
+      "state" : {
+        "revision" : "544f019bf5fed4f681522b06d2f50b780225084e",
+        "version" : "3.92.3"
       }
     },
     {
