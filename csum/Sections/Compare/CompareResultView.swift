@@ -72,23 +72,15 @@ struct CompareResultView: View {
         List {
             ForEach(ComparisonSection.allCases, id: \.self) { section in
                 if section.count(in: comparison) > 0 {
-                    DisclosureGroup(isExpanded: binding(for: section)) {
+                    Section {
                         if expanded.contains(section) {
                             ForEach(DiffRows.rows(for: section, of: comparison)) { row in
                                 DiffRowView(row: row)
                                     .listRowBackground(row.tint?.background)
                             }
                         }
-                    } label: {
-                        HStack {
-                            Text(section.displayTitle)
-
-                            Spacer()
-
-                            Text(Format.count(section.count(in: comparison)))
-                                .foregroundStyle(.secondary)
-                        }
-                        .accessibilityElement(children: .combine)
+                    } header: {
+                        header(for: section, in: comparison)
                     }
                 }
             }
@@ -96,17 +88,37 @@ struct CompareResultView: View {
         .listStyle(.plain)
     }
 
-    private func binding(for section: ComparisonSection) -> Binding<Bool> {
-        Binding(
-            get: { expanded.contains(section) },
-            set: { isExpanded in
-                if isExpanded {
-                    expanded.insert(section)
-                } else {
+    private func header(for section: ComparisonSection, in comparison: ChecksumComparison)
+        -> some View
+    {
+        Button {
+            withAnimation(.snappy) {
+                if expanded.contains(section) {
                     expanded.remove(section)
+                } else {
+                    expanded.insert(section)
                 }
             }
-        )
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .rotationEffect(.degrees(expanded.contains(section) ? 90 : 0))
+                    .frame(width: 14, alignment: .leading)
+
+                Text(section.displayTitle)
+                    .fontWeight(.semibold)
+
+                Spacer(minLength: 0)
+
+                Text(Format.count(section.count(in: comparison)))
+                    .foregroundStyle(.secondary)
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("section-\(section.rawValue)")
     }
 
     private func isIdentical(_ comparison: ChecksumComparison) -> Bool {

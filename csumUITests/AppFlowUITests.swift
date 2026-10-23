@@ -76,7 +76,7 @@ final class AppFlowUITests: XCTestCase {
         XCTAssertTrue(app.buttons["compareButton"].isEnabled)
         app.buttons["compareButton"].tap()
 
-        XCTAssertTrue(app.staticTexts["Added"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["section-added"].waitForExistence(timeout: 5))
         attach(app, name: "compare-result")
     }
 
