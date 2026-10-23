@@ -21,7 +21,7 @@ final class AppFlowUITests: XCTestCase {
     func testFolderFlow() {
         let app = launch()
 
-        app.tabBars.buttons["Folder"].tap()
+        app.buttons["Folder"].firstMatch.tap()
         app.buttons["Checksum Folder…"].tap()
 
         XCTAssertTrue(app.staticTexts["2026-07/IMG_1042.HEIC"].waitForExistence(timeout: 5))
@@ -31,7 +31,7 @@ final class AppFlowUITests: XCTestCase {
     func testFolderResultKeepsDetailsInLandscape() {
         let app = launch()
 
-        app.tabBars.buttons["Folder"].tap()
+        app.buttons["Folder"].firstMatch.tap()
         app.buttons["Checksum Folder…"].tap()
 
         XCTAssertTrue(app.staticTexts["2026-07/IMG_1042.HEIC"].waitForExistence(timeout: 5))
@@ -65,7 +65,7 @@ final class AppFlowUITests: XCTestCase {
     func testCompareFlow() {
         let app = launch()
 
-        app.tabBars.buttons["Compare"].tap()
+        app.buttons["Compare"].firstMatch.tap()
         app.buttons["chooseFirst"].tap()
         app.buttons["chooseSecond"].tap()
 

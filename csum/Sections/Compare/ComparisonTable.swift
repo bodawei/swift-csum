@@ -52,15 +52,19 @@ struct ComparisonTable: View {
 
             Text("Size")
                 .frame(width: Layout.size, alignment: .trailing)
+                .columnDivider(spacing: Layout.spacing)
 
             Text("Created")
                 .frame(width: Layout.date, alignment: .leading)
+                .columnDivider(spacing: Layout.spacing)
 
             Text("Modified")
                 .frame(width: Layout.date, alignment: .leading)
+                .columnDivider(spacing: Layout.spacing)
 
             Text("Checksum")
                 .frame(maxWidth: .infinity, alignment: .trailing)
+                .columnDivider(spacing: Layout.spacing)
         }
         .font(TableHeader.font)
         .foregroundStyle(.secondary)

@@ -2,14 +2,23 @@ import SwiftUI
 
 enum TableHeader {
     static let font = Font.footnote.weight(.semibold)
+}
 
-    static func text(_ title: LocalizedStringKey) -> Text {
-        let text = Text(title).font(font)
+struct TableColumnDivider: View {
+    @Environment(\.displayScale) private var displayScale
 
-        #if targetEnvironment(macCatalyst)
-            return text.foregroundStyle(Color.secondary)
-        #else
-            return text
-        #endif
+    var body: some View {
+        Rectangle()
+            .fill(.separator)
+            .frame(width: 1 / displayScale, height: 12)
+    }
+}
+
+extension View {
+    func columnDivider(spacing: CGFloat = 12) -> some View {
+        overlay(alignment: .leading) {
+            TableColumnDivider()
+                .offset(x: -spacing / 2)
+        }
     }
 }
