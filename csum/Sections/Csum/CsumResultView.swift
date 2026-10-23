@@ -24,23 +24,33 @@ struct CsumResultView: View {
                 .controlSize(.large)
         case .loaded(let result):
             CsumFileContents(result: result)
+        case .loadedTable(let table):
+            CsvTableContents(table: table, fileName: model.fileName ?? "")
         case .failed(let message):
             ErrorStateView(message: message)
         }
     }
 
-    @ViewBuilder
     private var share: some View {
-        if let export = model.export {
-            ShareLink(item: export, preview: SharePreview(export.fileName)) {
-                Label("Share", systemImage: "square.and.arrow.up")
-            }
-        } else {
-            Button {
-            } label: {
-                Label("Share", systemImage: "square.and.arrow.up")
-            }
-            .disabled(true)
+        ExportShareLink(export: model.export)
+    }
+}
+
+private struct CsvTableContents: View {
+    let table: CsvTable
+    let fileName: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            MetadataStrip(
+                path: fileName,
+                detail:
+                    "Format \(CsumFormat.version) · Rows: \(Format.count(table.rows.count))"
+            )
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+
+            CsvTableView(table: table)
         }
     }
 }

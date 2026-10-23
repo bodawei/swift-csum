@@ -42,7 +42,7 @@ final class FolderSectionModel {
     var path: [Route] = []
     var isChoosingSource = false
     private(set) var progress: (done: Int, total: Int)?
-    private(set) var export: CsumCSVFile?
+    private(set) var export: CsumExport?
 
     private let service: any Checksumming
     private let demoMode: Bool
@@ -103,9 +103,10 @@ final class FolderSectionModel {
 
                 phase = .loaded(result)
                 progress = nil
-                export = CsumCSVFile(
+                export = CsumExport(
                     text: ChecksumFileCodec.render(result),
-                    fileName: url.lastPathComponent + ".csum.csv"
+                    fileName: url.lastPathComponent + ".\(CsumFormat.checksumFileExtension)",
+                    kind: .checksums
                 )
             } catch is CancellationError {
                 return

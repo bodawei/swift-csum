@@ -46,7 +46,7 @@ final class AppModel {
         #endif
     }
 
-    var currentExport: CsumCSVFile? {
+    var currentExport: CsumExport? {
         switch selectedSection {
         case .file:
             return file.export

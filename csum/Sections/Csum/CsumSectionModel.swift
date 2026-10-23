@@ -9,6 +9,7 @@ final class CsumSectionModel {
         case idle
         case running
         case loaded(ChecksumResult)
+        case loadedTable(CsvTable)
         case failed(String)
     }
 
@@ -19,7 +20,8 @@ final class CsumSectionModel {
     private(set) var phase: Phase = .idle
     var path: [Route] = []
     var isChoosingSource = false
-    private(set) var export: CsumCSVFile?
+    private(set) var fileName: String?
+    private(set) var export: CsumExport?
 
     private let service: any Checksumming
     private let demoMode: Bool
@@ -33,7 +35,8 @@ final class CsumSectionModel {
     func chooseFile() {
         #if DEBUG
             if demoMode {
-                fileChosen(DemoData.savedCsumFileURL)
+                let compares = ProcessInfo.processInfo.arguments.contains("-csumUITestCompareFile")
+                fileChosen(compares ? DemoData.savedComparisonFileURL : DemoData.savedCsumFileURL)
                 return
             }
         #endif
@@ -50,12 +53,14 @@ final class CsumSectionModel {
         task?.cancel()
         task = nil
         phase = .idle
+        fileName = nil
         export = nil
     }
 
     private func start(_ url: URL) {
         task?.cancel()
         phase = .running
+        fileName = url.lastPathComponent
         export = nil
 
         task = Task { [weak self] in
@@ -64,17 +69,33 @@ final class CsumSectionModel {
             }
 
             do {
-                let result = try await service.readChecksumFile(at: url)
-                phase = .loaded(result)
-                export = CsumCSVFile(
-                    text: ChecksumFileCodec.render(result),
-                    fileName: url.lastPathComponent
-                )
+                let contents = try await service.readFile(at: url)
+                load(contents, from: url)
             } catch is CancellationError {
                 return
             } catch {
                 phase = .failed(error.localizedDescription)
             }
+        }
+    }
+
+    private func load(_ contents: CsumFileContents, from url: URL) {
+        switch contents {
+        case .checksums(let result):
+            phase = .loaded(result)
+            export = CsumExport(
+                text: ChecksumFileCodec.render(result),
+                fileName: url.lastPathComponent,
+                kind: .checksums
+            )
+
+        case .table(let table):
+            phase = .loadedTable(table)
+            export = CsumExport(
+                text: table.text,
+                fileName: url.lastPathComponent,
+                kind: .comparison
+            )
         }
     }
 }

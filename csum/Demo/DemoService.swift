@@ -47,6 +47,19 @@
                 entries: DemoData.folderEntries
             )
         }
+
+        func readFile(at url: URL) async throws -> CsumFileContents {
+            guard url.path.hasSuffix(CsumFormat.comparisonFileExtension) else {
+                return .checksums(try await readChecksumFile(at: url))
+            }
+
+            return .table(
+                try CsvTable(
+                    parsing: ComparisonFileCodec.render(DemoData.comparison),
+                    source: url.path
+                )
+            )
+        }
     }
 
     enum DemoData {
@@ -58,6 +71,9 @@
         )
         static let savedCsumFileURL = URL(
             fileURLWithPath: "/Users/demo/Documents/Pictures-2026.csum.csv"
+        )
+        static let savedComparisonFileURL = URL(
+            fileURLWithPath: "/Users/demo/Documents/Comparison.csum-compare.csv"
         )
 
         static let computedAt = Date(timeIntervalSince1970: 1_760_000_000)

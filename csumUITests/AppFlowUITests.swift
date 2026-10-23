@@ -51,7 +51,7 @@ final class AppFlowUITests: XCTestCase {
         let app = launch()
 
         app.buttons["View"].firstMatch.tap()
-        app.buttons["Open .csum.csv…"].tap()
+        app.buttons["Open csum file…"].tap()
 
         XCTAssertTrue(app.staticTexts["/Users/demo/Pictures/2026"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["2026-07/IMG_1042.HEIC"].waitForExistence(timeout: 5))
@@ -59,7 +59,22 @@ final class AppFlowUITests: XCTestCase {
         attach(app, name: "csum-file-result")
 
         app.navigationBars.buttons.element(boundBy: 0).tap()
-        XCTAssertTrue(app.buttons["Open .csum.csv…"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Open csum file…"].waitForExistence(timeout: 5))
+    }
+
+    func testComparisonFileFlow() {
+        let app = launch(arguments: ["-csumUITestCompareFile"])
+
+        app.buttons["View"].firstMatch.tap()
+        app.buttons["Open csum file…"].tap()
+
+        XCTAssertTrue(app.staticTexts["# Added"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["./2026-10/scan-0003.pdf"].exists)
+        XCTAssertTrue(app.buttons["Share"].exists)
+        attach(app, name: "csum-compare-file-view")
+
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["Open csum file…"].waitForExistence(timeout: 5))
     }
 
     func testCompareFlow() {
