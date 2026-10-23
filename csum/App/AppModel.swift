@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import UIKit
 
 @MainActor
 @Observable
@@ -67,6 +68,18 @@ final class AppModel {
         currentExport != nil
     }
 
+    var canCopyResults: Bool {
+        currentExport != nil
+    }
+
+    func copyResults() {
+        guard let export = currentExport else {
+            return
+        }
+
+        UIPasteboard.general.string = export.text
+    }
+
     func saveAs() {
         guard canSaveAs else {
             return
@@ -74,4 +87,9 @@ final class AppModel {
 
         isPresentingSaveAs = true
     }
+}
+
+@MainActor
+enum AppModelHolder {
+    static weak var shared: AppModel?
 }

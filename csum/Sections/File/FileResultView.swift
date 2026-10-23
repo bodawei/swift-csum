@@ -16,6 +16,9 @@ struct FileResultView: View {
                     }
                 }
                 ToolbarItem(placement: .primaryAction) {
+                    CopyResultsButton()
+                }
+                ToolbarItem(placement: .primaryAction) {
                     share
                 }
             }

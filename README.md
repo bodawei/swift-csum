@@ -31,7 +31,9 @@ Every result screen has a **Share** button that exports an Excel-ready `.csum.cs
 RFC 4180 quoting, CRLF line endings, UTF-8 BOM — led by five `# csum-…` comment lines
 carrying the format version, the tool, the ISO-8601 date, the algorithm, and the root
 the paths are relative to. On the Mac, **File > Save As…** (⇧⌘S) writes the same text
-through a save panel. The files are named `<file or folder name>.csum.csv`, or
+through a save panel. **Copy Results** puts that text on the clipboard, and on the Mac
+**Edit > Copy** (⌘C) does the same whenever no text is selected — so a result page can be
+copied without opening the share sheet. The files are named `<file or folder name>.csum.csv`, or
 `Comparison.csum.csv` for a compare; a viewed file keeps its own name. The row format is:
 
 | Checksum | Size | Created | Modified | Path |

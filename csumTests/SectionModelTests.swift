@@ -315,6 +315,34 @@ final class SectionModelTests: XCTestCase {
         XCTAssertNotNil(model.export)
     }
 
+    func testCopyResultsDoesNothingWithoutAnExport() {
+        let model = AppModel()
+        UIPasteboard.general.string = "unchanged"
+
+        model.copyResults()
+
+        XCTAssertFalse(model.canCopyResults)
+        XCTAssertEqual(UIPasteboard.general.string, "unchanged")
+    }
+
+    func testCopyResultsCopiesTheCurrentExport() async throws {
+        let model = AppModel(demoMode: true)
+
+        model.file.fileChosen(DemoData.fileURL)
+
+        await waitUntil {
+            model.canCopyResults
+        }
+
+        model.copyResults()
+
+        let copied = try? XCTUnwrap(UIPasteboard.general.string)
+
+        XCTAssertTrue(copied?.hasPrefix("# csum-format 1.0") == true)
+        XCTAssertTrue(copied?.contains("Checksum,Size,Created,Modified,Path") == true)
+        XCTAssertTrue(copied?.contains("./archive.zip") == true)
+    }
+
     func testSaveAsDoesNothingWithoutAnExport() {
         let model = AppModel()
 

@@ -9,6 +9,9 @@ struct FolderResultView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
+                    CopyResultsButton()
+                }
+                ToolbarItem(placement: .primaryAction) {
                     share
                 }
             }

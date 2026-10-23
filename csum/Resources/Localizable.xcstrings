@@ -273,6 +273,22 @@
         }
       }
     },
+    "Copy Results" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نسخ النتائج"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拷貝結果"
+          }
+        }
+      }
+    },
     "Copy Checksum" : {
       "localizations" : {
         "ar" : {
