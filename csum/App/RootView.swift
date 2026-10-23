@@ -20,17 +20,24 @@ struct RootView: View {
                 }
                 .tag(AppModel.Section.folder)
 
-            CsumSectionView()
-                .tabItem {
-                    Label("View", systemImage: "tablecells")
-                }
-                .tag(AppModel.Section.csum)
+            if model.showsViewTab {
+                CsumSectionView()
+                    .tabItem {
+                        Label("View", systemImage: "tablecells")
+                    }
+                    .tag(AppModel.Section.view)
+            }
 
             CompareSectionView()
                 .tabItem {
                     Label("Compare", systemImage: "doc.on.doc")
                 }
                 .tag(AppModel.Section.compare)
+        }
+        .onChange(of: model.showsViewTab) { _, shows in
+            if !shows, model.selectedSection == .view {
+                model.selectedSection = .file
+            }
         }
         .fileExporter(
             isPresented: $model.isPresentingSaveAs,

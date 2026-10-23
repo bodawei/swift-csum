@@ -25,4 +25,16 @@ final class FeatureFlagTests: XCTestCase {
 
         XCTAssertTrue(values.isOn(.copyChecksum))
     }
+
+    func testTheViewTabUsesItsDashboardNameAndDefaultsOn() {
+        XCTAssertEqual(FeatureFlag.viewTab.rawValue, "view_tab")
+        XCTAssertTrue(FeatureFlag.viewTab.isOnByDefault)
+        XCTAssertTrue(FeatureFlagValues().isOn(.viewTab))
+    }
+
+    func testAnOffTreatmentHidesTheViewTab() {
+        let values = FeatureFlagValues(treatments: [.viewTab: "off"])
+
+        XCTAssertFalse(values.isOn(.viewTab))
+    }
 }

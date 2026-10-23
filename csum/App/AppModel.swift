@@ -7,7 +7,7 @@ final class AppModel {
     enum Section: String, CaseIterable, Hashable {
         case file
         case folder
-        case csum
+        case view
         case compare
     }
 
@@ -52,11 +52,15 @@ final class AppModel {
             return file.export
         case .folder:
             return folder.export
-        case .csum:
+        case .view:
             return csum.export
         case .compare:
             return compare.export
         }
+    }
+
+    var showsViewTab: Bool {
+        featureFlags.isOn(.viewTab)
     }
 
     var canSaveAs: Bool {

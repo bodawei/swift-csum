@@ -23,7 +23,8 @@ The app has four tabs:
   the run carries on.
 - **View** — **Open .csum.csv…** reads a saved checksum file back and shows the metadata
   it carries (when it was computed, the algorithm, and the root the paths are relative
-  to) with every row in a list or table. Nothing is checksummed again.
+  to) with every row in a list or table. Nothing is checksummed again (a feature flag,
+  on by default).
 - **Compare** — two sources, each a saved `.csum.csv` or a folder, then **Compare**.
 
 Every result screen has a **Share** button that exports an Excel-ready `.csum.csv` —
@@ -242,6 +243,7 @@ evaluates it through the SDK, and `FeatureFlagStore` publishes the values to the
 | Flag | Default | Gates |
 |------|---------|-------|
 | `csum.copy-checksum` | on | The **Copy Checksum** button on the File result |
+| `view_tab` | on | The **View** tab, which reads a saved `.csum.csv` |
 
 To connect a Harness project, set the client-side SDK key as `HARNESS_FME_CLIENT_KEY`,
 either in the scheme's environment or as a string key in `Info.plist`, and create a flag
