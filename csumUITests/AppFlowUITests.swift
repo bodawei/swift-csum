@@ -28,6 +28,23 @@ final class AppFlowUITests: XCTestCase {
         attach(app, name: "folder-result")
     }
 
+    func testRowLongPressOffersACopy() {
+        let app = launch()
+
+        app.tabBars.buttons["Folder"].tap()
+        app.buttons["Checksum Folder…"].tap()
+
+        let row = app.staticTexts["2026-07/IMG_1042.HEIC"]
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+
+        row.press(forDuration: 1)
+
+        XCTAssertTrue(app.buttons["Copy"].waitForExistence(timeout: 5))
+        attach(app, name: "row-copy-menu")
+
+        app.buttons["Copy"].tap()
+    }
+
     func testFolderResultKeepsDetailsInLandscape() {
         let app = launch()
 

@@ -66,6 +66,7 @@ private struct CsumFileContents: View {
                         checksum: Format.checksum(entry),
                         date: Format.day(entry.modified)
                     )
+                    .copyRowMenu(ChecksumRowText.line(for: entry))
                 }
                 .listStyle(.plain)
             } wide: {

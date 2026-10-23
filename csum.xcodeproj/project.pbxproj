@@ -50,6 +50,7 @@
 		C50000000000000000000145 /* FeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000141 /* FeatureFlagStore.swift */; };
 		C50000000000000000000146 /* HarnessFeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000142 /* HarnessFeatureFlags.swift */; };
 		C50000000000000000000147 /* FeatureFlagStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000143 /* FeatureFlagStoreTests.swift */; };
+		C50000000000000000000157 /* RowCopyMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000156 /* RowCopyMenu.swift */; };
 		C5000000000000000000014B /* Split in Frameworks */ = {isa = PBXBuildFile; productRef = C5000000000000000000014A /* Split */; };
 		C50000000000000000000150 /* CsumSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000151 /* CsumSectionView.swift */; };
 		C50000000000000000000152 /* CsumSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000153 /* CsumSectionModel.swift */; };
@@ -120,6 +121,7 @@
 		C50000000000000000000151 /* CsumSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionView.swift; sourceTree = "<group>"; };
 		C50000000000000000000153 /* CsumSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionModel.swift; sourceTree = "<group>"; };
 		C50000000000000000000155 /* CsumResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumResultView.swift; sourceTree = "<group>"; };
+		C50000000000000000000156 /* RowCopyMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowCopyMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,6 +269,7 @@
 				C500000000000000000000D2 /* ChecksumTable.swift */,
 				C500000000000000000000102 /* TableHeader.swift */,
 				C500000000000000000000E3 /* DiffRow.swift */,
+				C50000000000000000000156 /* RowCopyMenu.swift */,
 				C500000000000000000000E6 /* DiffTint.swift */,
 			);
 			path = Shared;
@@ -467,6 +470,7 @@
 				C50000000000000000000130 /* ComparisonTable.swift in Sources */,
 				C50000000000000000000145 /* FeatureFlagStore.swift in Sources */,
 				C50000000000000000000146 /* HarnessFeatureFlags.swift in Sources */,
+				C50000000000000000000157 /* RowCopyMenu.swift in Sources */,
 				C50000000000000000000144 /* FeatureFlagProviding.swift in Sources */,
 				C50000000000000000000132 /* ComparisonSectionDisplay.swift in Sources */,
 				C500000000000000000000F8 /* DiffRow.swift in Sources */,
