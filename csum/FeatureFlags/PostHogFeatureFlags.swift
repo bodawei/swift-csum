@@ -2,11 +2,63 @@ import CsumController
 import Foundation
 import PostHog
 
-final class PostHogFeatureFlags: FeatureFlagProviding, @unchecked Sendable {
-    private static let projectTokenKey = "POSTHOG_PROJECT_TOKEN"
-    private static let hostKey = "POSTHOG_HOST"
-    private static let defaultHost = "https://us.i.posthog.com"
+struct PostHogConfiguration: Sendable {
+    static let projectTokenKey = "POSTHOG_PROJECT_TOKEN"
+    static let hostKey = "POSTHOG_HOST"
+    static let defaultHost = "https://us.i.posthog.com"
 
+    let projectToken: String
+    let host: String
+
+    static func from(
+        bundle: Bundle = .main,
+        environment: [String: String] = ProcessInfo.processInfo.environment
+    ) -> PostHogConfiguration? {
+        guard
+            let projectToken = value(for: projectTokenKey, bundle: bundle, environment: environment)
+        else {
+            return nil
+        }
+
+        let host = value(for: hostKey, bundle: bundle, environment: environment) ?? defaultHost
+
+        return PostHogConfiguration(projectToken: projectToken, host: host)
+    }
+
+    var tracesEndpoint: URL? {
+        guard var components = URLComponents(string: host) else {
+            return nil
+        }
+
+        let path = components.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+
+        components.path = path.isEmpty ? "/i/v1/traces" : "/\(path)/i/v1/traces"
+
+        return components.url
+    }
+
+    var tracesHeaders: [(String, String)] {
+        [("Authorization", "Bearer \(projectToken)")]
+    }
+
+    private static func value(
+        for key: String,
+        bundle: Bundle,
+        environment: [String: String]
+    ) -> String? {
+        let configured =
+            environment[key]
+            ?? bundle.object(forInfoDictionaryKey: key) as? String
+
+        guard let configured, !configured.isEmpty else {
+            return nil
+        }
+
+        return configured
+    }
+}
+
+final class PostHogFeatureFlags: FeatureFlagProviding, @unchecked Sendable {
     private let isConfigured: Bool
 
     private init(isConfigured: Bool) {
@@ -18,16 +70,13 @@ final class PostHogFeatureFlags: FeatureFlagProviding, @unchecked Sendable {
         environment: [String: String] = ProcessInfo.processInfo.environment
     ) -> PostHogFeatureFlags {
         guard
-            let projectToken = configuredValue(
-                for: projectTokenKey, bundle: bundle, environment: environment)
+            let configuration = PostHogConfiguration.from(bundle: bundle, environment: environment)
         else {
             return PostHogFeatureFlags(isConfigured: false)
         }
 
-        let host =
-            configuredValue(for: hostKey, bundle: bundle, environment: environment) ?? defaultHost
-
-        let config = PostHogConfig(projectToken: projectToken, host: host)
+        let config = PostHogConfig(
+            projectToken: configuration.projectToken, host: configuration.host)
         config.captureApplicationLifecycleEvents = false
         config.captureScreenViews = false
         config.captureElementInteractions = false
@@ -71,21 +120,5 @@ final class PostHogFeatureFlags: FeatureFlagProviding, @unchecked Sendable {
         default:
             return nil
         }
-    }
-
-    private static func configuredValue(
-        for key: String,
-        bundle: Bundle,
-        environment: [String: String]
-    ) -> String? {
-        let configured =
-            environment[key]
-            ?? bundle.object(forInfoDictionaryKey: key) as? String
-
-        guard let configured, !configured.isEmpty else {
-            return nil
-        }
-
-        return configured
     }
 }

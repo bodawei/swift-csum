@@ -50,6 +50,7 @@
 		C50000000000000000000145 /* FeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000141 /* FeatureFlagStore.swift */; };
 		C50000000000000000000146 /* PostHogFeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000142 /* PostHogFeatureFlags.swift */; };
 		C50000000000000000000147 /* FeatureFlagStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000143 /* FeatureFlagStoreTests.swift */; };
+		C50000000000000000000161 /* TelemetryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000160 /* TelemetryTests.swift */; };
 		C5000000000000000000014B /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = C5000000000000000000014A /* PostHog */; };
 		C50000000000000000000150 /* CsumSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000151 /* CsumSectionView.swift */; };
 		C50000000000000000000152 /* CsumSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000153 /* CsumSectionModel.swift */; };
@@ -120,6 +121,7 @@
 		C50000000000000000000151 /* CsumSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionView.swift; sourceTree = "<group>"; };
 		C50000000000000000000153 /* CsumSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionModel.swift; sourceTree = "<group>"; };
 		C50000000000000000000155 /* CsumResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumResultView.swift; sourceTree = "<group>"; };
+		C50000000000000000000160 /* TelemetryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,6 +298,7 @@
 			children = (
 				C50000000000000000000103 /* SectionModelTests.swift */,
 				C50000000000000000000143 /* FeatureFlagStoreTests.swift */,
+				C50000000000000000000160 /* TelemetryTests.swift */,
 			);
 			path = csumTests;
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 			files = (
 				C50000000000000000000104 /* SectionModelTests.swift in Sources */,
 				C50000000000000000000147 /* FeatureFlagStoreTests.swift in Sources */,
+				C50000000000000000000161 /* TelemetryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

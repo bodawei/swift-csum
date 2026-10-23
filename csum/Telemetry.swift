@@ -15,11 +15,14 @@ enum Telemetry {
 
         isStarted = true
 
-        guard let endpoint = tracesEndpoint() else {
+        guard let destination = destination() else {
             return
         }
 
-        let exporter = OtlpHttpTraceExporter(endpoint: endpoint)
+        let exporter = OtlpHttpTraceExporter(
+            endpoint: destination.endpoint,
+            envVarHeaders: destination.headers.isEmpty ? nil : destination.headers
+        )
         let processor = BatchSpanProcessor(spanExporter: exporter)
 
         let provider = TracerProviderBuilder()
@@ -35,10 +38,38 @@ enum Telemetry {
         OpenTelemetry.registerTracerProvider(tracerProvider: provider)
     }
 
-    private static func tracesEndpoint() -> URL? {
+    struct Destination: Equatable {
+        let endpoint: URL
+        let headers: [(String, String)]
+
+        static func == (lhs: Destination, rhs: Destination) -> Bool {
+            lhs.endpoint == rhs.endpoint && lhs.headers.map(\.0) == rhs.headers.map(\.0)
+                && lhs.headers.map(\.1) == rhs.headers.map(\.1)
+        }
+    }
+
+    static func destination(
+        bundle: Bundle = .main,
+        environment: [String: String] = ProcessInfo.processInfo.environment
+    ) -> Destination? {
+        if let endpoint = explicitEndpoint(bundle: bundle, environment: environment) {
+            return Destination(endpoint: endpoint, headers: [])
+        }
+
+        guard
+            let configuration = PostHogConfiguration.from(bundle: bundle, environment: environment),
+            let endpoint = configuration.tracesEndpoint
+        else {
+            return nil
+        }
+
+        return Destination(endpoint: endpoint, headers: configuration.tracesHeaders)
+    }
+
+    private static func explicitEndpoint(bundle: Bundle, environment: [String: String]) -> URL? {
         let configured =
-            ProcessInfo.processInfo.environment[endpointKey]
-            ?? Bundle.main.object(forInfoDictionaryKey: endpointKey) as? String
+            environment[endpointKey]
+            ?? bundle.object(forInfoDictionaryKey: endpointKey) as? String
 
         guard let configured, !configured.isEmpty, let url = URL(string: configured) else {
             return nil
