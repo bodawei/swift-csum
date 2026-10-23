@@ -136,10 +136,13 @@ struct CompareSectionView: View {
                     Text("Folder")
                         .tag(CompareSectionModel.Kind.folder)
                 }
-                .pickerStyle(.menu)
+                .pickerStyle(.segmented)
                 .labelsHidden()
+                .frame(width: 190)
 
                 Button("Choose…", action: choose)
+                    .buttonStyle(.bordered)
+                    .tint(.primary)
                     .accessibilityIdentifier(chooseIdentifier)
 
                 Spacer()
