@@ -27,6 +27,10 @@ final class SectionModelTests: XCTestCase {
 
             return try comparison.get()
         }
+
+        func readChecksumFile(at url: URL) async throws -> ChecksumResult {
+            try result.get()
+        }
     }
 
     private func makeResult() -> ChecksumResult {
@@ -158,6 +162,66 @@ final class SectionModelTests: XCTestCase {
 
         XCTAssertNil(model.progress)
         XCTAssertNotNil(model.export)
+    }
+
+    func testACsumFileSelectionLoadsAndExports() async {
+        let model = CsumSectionModel(service: StubService(result: .success(makeResult())))
+
+        model.fileChosen(URL(fileURLWithPath: "/tmp/docs.csum.csv"))
+
+        XCTAssertEqual(model.path, [.result])
+
+        await waitUntil {
+            if case .loaded = model.phase {
+                return true
+            }
+
+            return false
+        }
+
+        guard case .loaded(let result) = model.phase else {
+            return XCTFail("expected the loaded phase")
+        }
+
+        XCTAssertEqual(result.entries.count, 1)
+        XCTAssertEqual(model.export?.fileName, "docs.csum.csv")
+        XCTAssertTrue(model.export?.text.contains("# csum-format 1.0") == true)
+    }
+
+    func testACsumFileFailureLeavesNoExport() async {
+        let model = CsumSectionModel(
+            service: StubService(
+                result: .failure(CsumError.sourceUnreadable(path: "/tmp/docs.csum.csv")))
+        )
+
+        model.fileChosen(URL(fileURLWithPath: "/tmp/docs.csum.csv"))
+
+        await waitUntil {
+            if case .failed = model.phase {
+                return true
+            }
+
+            return false
+        }
+
+        guard case .failed = model.phase else {
+            return XCTFail("expected the failed phase")
+        }
+
+        XCTAssertNil(model.export)
+    }
+
+    func testLeavingTheCsumSectionCancelsAndResets() {
+        let model = CsumSectionModel(service: StubService(result: .success(makeResult())))
+
+        model.fileChosen(URL(fileURLWithPath: "/tmp/docs.csum.csv"))
+        model.returned()
+
+        guard case .idle = model.phase else {
+            return XCTFail("expected the idle phase")
+        }
+
+        XCTAssertNil(model.export)
     }
 
     func testCompareIsOnlyAvailableWithBothSources() {

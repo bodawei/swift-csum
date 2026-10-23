@@ -59,6 +59,21 @@ final class FeatureFlagStoreTests: XCTestCase {
         XCTAssertFalse(store.isOn(.copyChecksum))
     }
 
+    func testTheViewTabShowsWithoutATreatment() {
+        let model = AppModel(featureFlags: FeatureFlagStore(provider: StubFeatureFlags()))
+
+        XCTAssertTrue(model.showsViewTab)
+    }
+
+    func testTheViewTabCanBeTurnedOff() {
+        let flags = StubFeatureFlags()
+        flags.treatments[.viewTab] = "off"
+
+        let model = AppModel(featureFlags: FeatureFlagStore(provider: flags))
+
+        XCTAssertFalse(model.showsViewTab)
+    }
+
     private func waitUntil(timeout: TimeInterval = 2, _ condition: () -> Bool) async {
         let deadline = Date().addingTimeInterval(timeout)
 

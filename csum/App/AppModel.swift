@@ -7,6 +7,7 @@ final class AppModel {
     enum Section: String, CaseIterable, Hashable {
         case file
         case folder
+        case view
         case compare
     }
 
@@ -15,6 +16,7 @@ final class AppModel {
 
     let file: FileSectionModel
     let folder: FolderSectionModel
+    let csum: CsumSectionModel
     let compare: CompareSectionModel
     let featureFlags: FeatureFlagStore
 
@@ -34,6 +36,7 @@ final class AppModel {
 
         file = FileSectionModel(service: service, demoMode: demoMode)
         folder = FolderSectionModel(service: service, demoMode: demoMode)
+        csum = CsumSectionModel(service: service, demoMode: demoMode)
         compare = CompareSectionModel(service: service, demoMode: demoMode)
 
         #if DEBUG
@@ -49,9 +52,15 @@ final class AppModel {
             return file.export
         case .folder:
             return folder.export
+        case .view:
+            return csum.export
         case .compare:
             return compare.export
         }
+    }
+
+    var showsViewTab: Bool {
+        featureFlags.isOn(.viewTab)
     }
 
     var canSaveAs: Bool {

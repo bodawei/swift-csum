@@ -1,9 +1,13 @@
 public enum FeatureFlag: String, CaseIterable, Sendable {
     case copyChecksum = "csum.copy-checksum"
+    case viewTab = "view_tab"
 
     public var isOnByDefault: Bool {
         switch self {
         case .copyChecksum:
+            return true
+
+        case .viewTab:
             return true
         }
     }

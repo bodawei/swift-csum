@@ -8,6 +8,8 @@ protocol Checksumming: Sendable {
     ) async throws -> ChecksumResult
 
     func compare(first: URL, second: URL) async throws -> ChecksumComparison
+
+    func readChecksumFile(at url: URL) async throws -> ChecksumResult
 }
 
 struct ControllerService: Checksumming {
@@ -38,6 +40,14 @@ struct ControllerService: Checksumming {
                 second: second,
                 isCancelled: { Task.isCancelled }
             )
+        }
+    }
+
+    func readChecksumFile(at url: URL) async throws -> ChecksumResult {
+        let controller = CsumController(algorithm: algorithm, writer: writer)
+
+        return try await run {
+            try controller.readChecksumFile(at: url)
         }
     }
 
