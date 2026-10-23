@@ -234,22 +234,25 @@ registers no provider either, so `csum-cli` exports nothing.
 
 ## Feature flags
 
-Feature flags come from [Harness Feature Management &
-Experimentation](https://www.harness.io/products/feature-management-experimentation) (the
-Split platform) through its iOS SDK. Each flag is declared, with its default, in
-`Sources/CsumController/Model/FeatureFlag.swift`; `csum/FeatureFlags/HarnessFeatureFlags.swift`
-evaluates it through the SDK, and `FeatureFlagStore` publishes the values to the views.
+Feature flags come from [PostHog](https://posthog.com) through its iOS SDK. Each flag is
+declared, with its default, in `Sources/CsumController/Model/FeatureFlag.swift`;
+`csum/FeatureFlags/PostHogFeatureFlags.swift` evaluates it in PostHog, and
+`FeatureFlagStore` publishes the values to the views.
 
 | Flag | Default | Gates |
 |------|---------|-------|
 | `csum.copy-checksum` | on | The **Copy Checksum** button on the File result |
 | `view_tab` | on | The **View** tab, which reads a saved `.csum.csv` |
 
-To connect a Harness project, set the client-side SDK key as `HARNESS_FME_CLIENT_KEY`,
-either in the scheme's environment or as a string key in `Info.plist`, and create a flag
-whose name is the flag's raw value. Turning it on or off in Harness changes the app
-without a new build: the store refreshes when the SDK reports ready or an update.
+To connect a PostHog project, set the project token (the `phc_…` key) as
+`POSTHOG_PROJECT_TOKEN`, either in the scheme's environment or as a string key in
+`Info.plist`, and create a boolean flag whose key is the flag's raw value and which
+returns `true` for everyone you want to see the feature. `POSTHOG_HOST` picks the
+ingestion host and defaults to `https://us.i.posthog.com`; set it to the EU host if the
+project lives there. Turning a flag on or off in PostHog changes the app without a new
+build: the store refreshes when the SDK reports that the flags have loaded.
 
-With no key configured the app never contacts Harness and every flag keeps its default,
-so a checkout builds and runs offline. When a key is set the SDK identifies the device
-with a random UUID in `UserDefaults` under `com.djb.csum.installationID`.
+With no token configured the app never contacts PostHog and every flag keeps its default,
+so a checkout builds and runs offline. When a token is set, PostHog identifies the device
+with the anonymous distinct ID its SDK generates and keeps, so a flag rollout can be
+narrowed or widened for a particular install.

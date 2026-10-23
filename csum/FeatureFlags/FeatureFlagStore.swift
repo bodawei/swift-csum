@@ -8,7 +8,7 @@ final class FeatureFlagStore {
 
     private let provider: any FeatureFlagProviding
 
-    init(provider: any FeatureFlagProviding = HarnessFeatureFlags.makeFromConfiguration()) {
+    init(provider: any FeatureFlagProviding = PostHogFeatureFlags.makeFromConfiguration()) {
         self.provider = provider
     }
 
