@@ -13,6 +13,9 @@ struct CompareResultView: View {
                 ToolbarItem(placement: .primaryAction) {
                     share
                 }
+                ToolbarItem(placement: .primaryAction) {
+                    HelpButton()
+                }
             }
     }
 

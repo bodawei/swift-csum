@@ -11,6 +11,9 @@ struct CsumResultView: View {
                 ToolbarItem(placement: .primaryAction) {
                     share
                 }
+                ToolbarItem(placement: .primaryAction) {
+                    HelpButton()
+                }
             }
     }
 

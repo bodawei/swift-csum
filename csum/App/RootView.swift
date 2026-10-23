@@ -45,6 +45,9 @@ struct RootView: View {
             contentTypes: [.commaSeparatedText],
             defaultFilename: model.currentExport?.fileName
         ) { _ in }
+        .sheet(isPresented: $model.isPresentingHelp) {
+            HelpView()
+        }
         #if targetEnvironment(macCatalyst)
             .background(WindowTitleHider())
         #endif

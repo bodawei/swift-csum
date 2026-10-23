@@ -62,6 +62,28 @@ final class AppFlowUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Open .csum.csv…"].waitForExistence(timeout: 5))
     }
 
+    func testHelpFlow() {
+        let app = launch()
+
+        app.buttons["Checksum File…"].tap()
+        XCTAssertTrue(app.staticTexts["Algorithm"].waitForExistence(timeout: 5))
+
+        app.buttons["help"].tap()
+
+        XCTAssertTrue(app.navigationBars["Help"].waitForExistence(timeout: 5))
+        attach(app, name: "help-topics")
+
+        app.buttons["help-topic-view"].tap()
+
+        let paragraph =
+            "Use View to read a checksum file back without checksumming anything again."
+        XCTAssertTrue(app.staticTexts[paragraph].waitForExistence(timeout: 5))
+        attach(app, name: "help-view-topic")
+
+        app.buttons["doneHelp"].tap()
+        XCTAssertTrue(app.staticTexts["Algorithm"].waitForExistence(timeout: 5))
+    }
+
     func testCompareFlow() {
         let app = launch()
 

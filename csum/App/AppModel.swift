@@ -13,6 +13,7 @@ final class AppModel {
 
     var selectedSection: Section = .file
     var isPresentingSaveAs = false
+    var isPresentingHelp = false
 
     let file: FileSectionModel
     let folder: FolderSectionModel
@@ -73,5 +74,9 @@ final class AppModel {
         }
 
         isPresentingSaveAs = true
+    }
+
+    func showHelp() {
+        isPresentingHelp = true
     }
 }
