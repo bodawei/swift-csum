@@ -110,10 +110,10 @@ struct CompareResultView: View {
                 Text(section.displayTitle)
                     .fontWeight(.semibold)
 
-                Spacer(minLength: 0)
-
                 Text(Format.count(section.count(in: comparison)))
                     .foregroundStyle(.secondary)
+
+                Spacer(minLength: 0)
             }
             .contentShape(Rectangle())
         }
