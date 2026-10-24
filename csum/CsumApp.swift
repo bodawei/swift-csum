@@ -6,17 +6,13 @@ import SwiftUI
 
 @main
 struct CsumApp: App {
-    @State private var model: AppModel
+    @State private var model = AppModel()
 
     #if targetEnvironment(macCatalyst)
         @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     #endif
 
     init() {
-        let model = AppModel()
-        _model = State(initialValue: model)
-        AppModelHolder.shared = model
-
         #if os(macOS)
             NSWindow.allowsAutomaticWindowTabbing = false
         #endif
@@ -28,6 +24,11 @@ struct CsumApp: App {
         WindowGroup {
             RootView()
                 .environment(model)
+                #if targetEnvironment(macCatalyst)
+                    .onAppear {
+                        appDelegate.attach(model: model)
+                    }
+                #endif
         }
         .commands {
             CommandGroup(replacing: .saveItem) {

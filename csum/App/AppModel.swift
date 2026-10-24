@@ -101,8 +101,3 @@ final class AppModel {
         isPresentingHelp = true
     }
 }
-
-@MainActor
-enum AppModelHolder {
-    static weak var shared: AppModel?
-}
