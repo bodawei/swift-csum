@@ -1,6 +1,7 @@
 import CsumController
 import Foundation
 import Observation
+import PostHog
 
 @MainActor
 @Observable
@@ -137,6 +138,22 @@ final class CompareSectionModel {
 
             do {
                 let comparison = try await service.compare(first: first, second: second)
+                PostHogSDK.shared.capture(
+                    "checksum_comparison_completed",
+                    properties: [
+                        "first_source_type": firstKind.rawValue,
+                        "second_source_type": secondKind.rawValue,
+                        "added_count": comparison.added.count,
+                        "removed_count": comparison.removed.count,
+                        "changed_count": comparison.changed.count,
+                        "moved_count": comparison.moved.count,
+                        "renamed_count": comparison.renamed.count,
+                    ]
+                )
+                PostHogLogs.checksumComparisonCompleted(
+                    firstSourceType: firstKind.rawValue,
+                    secondSourceType: secondKind.rawValue
+                )
                 phase = .loaded(comparison)
                 export = CsumExport(
                     text: ComparisonFileCodec.render(comparison),

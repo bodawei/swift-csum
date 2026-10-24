@@ -18,6 +18,7 @@ struct CsumApp: App {
         #endif
 
         Telemetry.start()
+        PostHogAnalytics.start()
     }
 
     var body: some Scene {

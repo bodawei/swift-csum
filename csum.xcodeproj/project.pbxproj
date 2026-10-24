@@ -140,6 +140,7 @@
 				C50000000000000000000096 /* OpenTelemetrySdk in Frameworks */,
 				C50000000000000000000097 /* OpenTelemetryProtocolExporterHTTP in Frameworks */,
 				C5000000000000000000014B /* Split in Frameworks */,
+				C50000000000000000000165 /* PostHog in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,6 +359,7 @@
 				C50000000000000000000093 /* OpenTelemetrySdk */,
 				C50000000000000000000094 /* OpenTelemetryProtocolExporterHTTP */,
 				C5000000000000000000014A /* Split */,
+				C50000000000000000000167 /* PostHog */,
 			);
 			productName = csum;
 			productReference = C50000000000000000000014 /* csum.app */;
@@ -426,6 +428,7 @@
 				C50000000000000000000090 /* XCRemoteSwiftPackageReference "opentelemetry-swift-core" */,
 				C50000000000000000000091 /* XCRemoteSwiftPackageReference "opentelemetry-swift" */,
 				C50000000000000000000149 /* XCRemoteSwiftPackageReference "ios-client" */,
+				C50000000000000000000166 /* XCRemoteSwiftPackageReference "posthog-ios" */,
 			);
 			productRefGroup = C50000000000000000000042 /* Products */;
 			projectDirPath = "";
@@ -881,6 +884,14 @@
 				minimumVersion = 3.7.1;
 			};
 		};
+		C50000000000000000000166 /* XCRemoteSwiftPackageReference "posthog-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PostHog/posthog-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.59.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -908,6 +919,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C50000000000000000000149 /* XCRemoteSwiftPackageReference "ios-client" */;
 			productName = Split;
+		};
+		C50000000000000000000167 /* PostHog */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C50000000000000000000166 /* XCRemoteSwiftPackageReference "posthog-ios" */;
+			productName = PostHog;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

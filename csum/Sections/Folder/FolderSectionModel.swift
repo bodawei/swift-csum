@@ -1,6 +1,7 @@
 import CsumController
 import Foundation
 import Observation
+import PostHog
 
 @MainActor
 @Observable
@@ -101,6 +102,11 @@ final class FolderSectionModel {
                     }
                 }
 
+                PostHogSDK.shared.capture(
+                    "checksum_folder_completed",
+                    properties: ["entry_count": result.entries.count]
+                )
+                PostHogLogs.checksumFolderCompleted(entryCount: result.entries.count)
                 phase = .loaded(result)
                 progress = nil
                 export = CsumExport(
