@@ -53,8 +53,8 @@
 		C50000000000000000000158 /* HelpTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000158 /* 
     */; };
 		C50000000000000000000157 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000156 /* HelpView.swift */; };
-		C50000000000000000000159 /* CsvTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000158 /* CsvTableView.swift */; };
-		C50000000000000000000160 /* ExportShareLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000156 /* ExportShareLink.swift */; };
+		C50000000000000000000159 /* CsvTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000159 /* CsvTableView.swift */; };
+		C50000000000000000000160 /* ExportShareLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000160 /* ExportShareLink.swift */; };
 		C5000000000000000000014B /* Split in Frameworks */ = {isa = PBXBuildFile; productRef = C5000000000000000000014A /* Split */; };
 		C50000000000000000000150 /* CsumSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000151 /* CsumSectionView.swift */; };
 		C50000000000000000000152 /* CsumSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000153 /* CsumSectionModel.swift */; };
@@ -126,7 +126,7 @@
 		C50000000000000000000153 /* CsumSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionModel.swift; sourceTree = "<group>"; };
 		C50000000000000000000155 /* CsumResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumResultView.swift; sourceTree = "<group>"; };
 		C50000000000000000000158 /* HelpTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTopic.swift; sourceTree = "<group>"; };
-		C50000000000000000000156 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+		C50000000000000000000157 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		C50000000000000000000159 /* CsvTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvTableView.swift; sourceTree = "<group>"; };
 		C50000000000000000000160 /* ExportShareLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportShareLink.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -277,8 +277,8 @@
 				C500000000000000000000D2 /* ChecksumTable.swift */,
 				C500000000000000000000102 /* TableHeader.swift */,
 				C500000000000000000000E3 /* DiffRow.swift */,
-				C50000000000000000000158 /* CsvTableView.swift */,
-				C50000000000000000000156 /* ExportShareLink.swift */,
+				C50000000000000000000159 /* CsvTableView.swift */,
+				C50000000000000000000160 /* ExportShareLink.swift */,
 				C500000000000000000000E6 /* DiffTint.swift */,
 			);
 			path = Shared;
@@ -287,7 +287,7 @@
 		C5000000000000000000015A /* Help */ = {
 			isa = PBXGroup;
 			children = (
-				C50000000000000000000156 /* HelpView.swift */,
+				C50000000000000000000157 /* HelpView.swift */,
 				C50000000000000000000158 /* HelpTopic.swift */,
 			);
 			path = Help;
