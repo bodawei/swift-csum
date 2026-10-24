@@ -409,6 +409,7 @@ final class SectionModelTests: XCTestCase {
             model.canCopyResults
         }
 
+        UIPasteboard.general.string = "unchanged"
         model.copyResults()
 
         let export = try XCTUnwrap(model.currentExport)
