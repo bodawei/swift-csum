@@ -74,11 +74,15 @@ final class AppModel {
     }
 
     var canCopyResults: Bool {
-        currentExport != nil
+        guard currentExport != nil else {
+            return false
+        }
+
+        return !isPresentingHelp && !isPresentingSaveAs
     }
 
     func copyResults() {
-        guard let export = currentExport else {
+        guard canCopyResults, let export = currentExport else {
             return
         }
 

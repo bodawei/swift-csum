@@ -366,6 +366,40 @@ final class SectionModelTests: XCTestCase {
         XCTAssertEqual(UIPasteboard.general.string, "unchanged")
     }
 
+    func testCopyResultsIsUnavailableWhileHelpIsOpen() async {
+        let model = AppModel(demoMode: true)
+
+        model.file.fileChosen(DemoData.fileURL)
+
+        await waitUntil {
+            model.canCopyResults
+        }
+
+        model.showHelp()
+        UIPasteboard.general.string = "unchanged"
+        model.copyResults()
+
+        XCTAssertFalse(model.canCopyResults)
+        XCTAssertEqual(UIPasteboard.general.string, "unchanged")
+    }
+
+    func testCopyResultsIsUnavailableWhileSaveAsIsOpen() async {
+        let model = AppModel(demoMode: true)
+
+        model.file.fileChosen(DemoData.fileURL)
+
+        await waitUntil {
+            model.canCopyResults
+        }
+
+        model.saveAs()
+        UIPasteboard.general.string = "unchanged"
+        model.copyResults()
+
+        XCTAssertFalse(model.canCopyResults)
+        XCTAssertEqual(UIPasteboard.general.string, "unchanged")
+    }
+
     func testCopyResultsCopiesTheCurrentExport() async throws {
         let model = AppModel(demoMode: true)
 
