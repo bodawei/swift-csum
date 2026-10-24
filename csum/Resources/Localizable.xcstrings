@@ -609,18 +609,18 @@
         }
       }
     },
-    "Every result page offers Share, Copy Results, and — on the Mac — File > Save As… (⇧⌘S). Long-press a row to copy just that row." : {
+    "Every result page offers Share, and — on the Mac — File > Save As… (⇧⌘S). To copy, press ⌘C on the Mac for the whole result, or long-press a row for just that row." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "توفّر كل صفحة نتائج «مشاركة» و«نسخ النتائج»، وعلى Mac «ملف > حفظ باسم…» (⇧⌘S). اضغط مطولًا على صف لنسخ ذلك الصف وحده."
+            "value" : "توفّر كل صفحة نتائج «مشاركة»، وعلى Mac «ملف > حفظ باسم…» (⇧⌘S). وللنسخ، اضغط ⌘C على Mac لنسخ النتيجة كاملة، أو اضغط مطولًا على صف لنسخ ذلك الصف وحده."
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "每個結果頁面都提供「分享」與「拷貝結果」，在 Mac 上還有「檔案 > 儲存為…」(⇧⌘S)。長按某一列即可只拷貝該列。"
+            "value" : "每個結果頁面都提供「分享」，在 Mac 上還有「檔案 > 儲存為…」(⇧⌘S)。若要拷貝，在 Mac 上按 ⌘C 可拷貝整份結果，或長按某一列只拷貝該列。"
           }
         }
       }

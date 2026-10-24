@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import UIKit
 
 @MainActor
 @Observable
@@ -70,6 +71,28 @@ final class AppModel {
 
     var canSaveAs: Bool {
         currentExport != nil
+    }
+
+    var canCopyResults: Bool {
+        currentExport != nil && !isPresentingSheet
+    }
+
+    private var isPresentingSheet: Bool {
+        isPresentingHelp
+            || isPresentingSaveAs
+            || file.isChoosingSource
+            || folder.isChoosingSource
+            || csum.isChoosingSource
+            || compare.isChoosingFirst
+            || compare.isChoosingSecond
+    }
+
+    func copyResults() {
+        guard canCopyResults, let export = currentExport else {
+            return
+        }
+
+        UIPasteboard.general.string = export.text
     }
 
     func saveAs() {

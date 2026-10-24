@@ -24,6 +24,11 @@ struct CsumApp: App {
         WindowGroup {
             RootView()
                 .environment(model)
+                #if targetEnvironment(macCatalyst)
+                    .onAppear {
+                        appDelegate.attach(model: model)
+                    }
+                #endif
         }
         .commands {
             CommandGroup(replacing: .saveItem) {
