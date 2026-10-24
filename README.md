@@ -32,8 +32,6 @@ Every result page has a **Help** button, and the Mac menu bar has **Help > csum 
 Help explains what the app is for, what each tab does step by step, and how to read a
 result, one topic per tab.
 
-Every result screen has a **Share** button that exports an Excel-ready `.csum.csv` —
-RFC 4180 quoting, CRLF line endings, UTF-8 BOM — led by five `# csum-…` comment lines
 Every result screen has a **Share** button that exports an Excel-ready CSV file — RFC
 4180 quoting, CRLF line endings, UTF-8 BOM — led by five `# csum-…` comment lines
 carrying the format version, the tool, the ISO-8601 date, the algorithm, and the root
