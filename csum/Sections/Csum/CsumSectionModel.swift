@@ -1,6 +1,7 @@
 import CsumController
 import Foundation
 import Observation
+import PostHog
 
 @MainActor
 @Observable
@@ -65,6 +66,10 @@ final class CsumSectionModel {
 
             do {
                 let result = try await service.readChecksumFile(at: url)
+                PostHogSDK.shared.capture(
+                    "checksum_file_viewed",
+                    properties: ["entry_count": result.entries.count]
+                )
                 phase = .loaded(result)
                 export = CsumCSVFile(
                     text: ChecksumFileCodec.render(result),

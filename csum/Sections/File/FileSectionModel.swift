@@ -1,6 +1,7 @@
 import CsumController
 import Foundation
 import Observation
+import PostHog
 import UIKit
 
 @MainActor
@@ -73,6 +74,7 @@ final class FileSectionModel {
         }
 
         UIPasteboard.general.string = checksum
+        PostHogSDK.shared.capture("checksum_copied")
     }
 
     func returned() {
@@ -106,6 +108,11 @@ final class FileSectionModel {
 
             do {
                 let result = try await service.checksum(at: url) { _, _ in }
+                PostHogSDK.shared.capture(
+                    "checksum_file_completed",
+                    properties: ["entry_count": result.entries.count]
+                )
+                PostHogLogs.checksumFileCompleted(entryCount: result.entries.count)
                 phase = .loaded(result)
                 export = CsumCSVFile(
                     text: ChecksumFileCodec.render(result),
