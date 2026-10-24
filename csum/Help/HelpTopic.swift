@@ -3,7 +3,7 @@ import SwiftUI
 struct HelpTopic: Identifiable {
     let id: String
     let title: LocalizedStringKey
-    let paragraphs: [String]
+    let paragraphs: [LocalizedStringKey]
 
     static let all: [HelpTopic] = [
         HelpTopic(

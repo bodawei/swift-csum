@@ -44,6 +44,10 @@ final class AppModel {
             if ProcessInfo.processInfo.arguments.contains("-csumUITestSaveAs") {
                 file.fileChosen(DemoData.fileURL)
             }
+
+            if ProcessInfo.processInfo.arguments.contains("-csumUITestHelp") {
+                isPresentingHelp = true
+            }
         #endif
     }
 

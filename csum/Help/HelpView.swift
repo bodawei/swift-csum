@@ -35,7 +35,7 @@ private struct HelpTopicView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                ForEach(topic.paragraphs, id: \.self) { paragraph in
+                ForEach(Array(topic.paragraphs.enumerated()), id: \.offset) { _, paragraph in
                     Text(paragraph)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .textSelection(.enabled)

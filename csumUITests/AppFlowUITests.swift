@@ -84,6 +84,42 @@ final class AppFlowUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Algorithm"].waitForExistence(timeout: 5))
     }
 
+    func testHelpIsTranslated() {
+        let arabic = launch(arguments: [
+            "-csumUITestHelp",
+            "-AppleLanguages", "(ar)",
+            "-AppleLocale", "ar",
+        ])
+
+        XCTAssertTrue(arabic.buttons["help-topic-overview"].waitForExistence(timeout: 5))
+        arabic.buttons["help-topic-overview"].tap()
+
+        XCTAssertTrue(
+            arabic.staticTexts.containing(
+                NSPredicate(format: "label CONTAINS %@", "المجاميع الاختبارية")
+            ).firstMatch.waitForExistence(timeout: 5)
+        )
+        attach(arabic, name: "help-arabic")
+
+        arabic.terminate()
+
+        let chinese = launch(arguments: [
+            "-csumUITestHelp",
+            "-AppleLanguages", "(zh-Hant)",
+            "-AppleLocale", "zh_Hant_TW",
+        ])
+
+        XCTAssertTrue(chinese.buttons["help-topic-overview"].waitForExistence(timeout: 5))
+        chinese.buttons["help-topic-overview"].tap()
+
+        XCTAssertTrue(
+            chinese.staticTexts.containing(
+                NSPredicate(format: "label CONTAINS %@", "檢查碼")
+            ).firstMatch.waitForExistence(timeout: 5)
+        )
+        attach(chinese, name: "help-traditional-chinese")
+    }
+
     func testCompareFlow() {
         let app = launch()
 
