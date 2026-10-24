@@ -29,6 +29,24 @@
 				</array>
 			</dict>
 		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.comma-separated-values-text</string>
+			<string>public.text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>csum comparison results</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.djb.csum.csum-compare-csv</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>csum-compare.csv</string>
+				</array>
+			</dict>
+		</dict>
 	</array>
 	<key>CFBundleDocumentTypes</key>
 	<array>
@@ -40,6 +58,16 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.djb.csum.csum-csv</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>csum comparison results</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.djb.csum.csum-compare-csv</string>
 			</array>
 		</dict>
 	</array>

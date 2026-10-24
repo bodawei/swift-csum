@@ -21,20 +21,31 @@ The app has four tabs:
   list or table of results afterwards, sorted by path relative to the folder. A file
   that cannot be read gets a failure code in its checksum cell instead of a digest, and
   the run carries on.
-- **View** — **Open .csum.csv…** reads a saved checksum file back and shows the metadata
-  it carries (when it was computed, the algorithm, and the root the paths are relative
-  to) with every row in a list or table. Nothing is checksummed again (a feature flag,
-  on by default).
+- **View** — **Open csum file…** reads a saved checksum file or a saved comparison back.
+  A `.csum.csv` shows the metadata it carries (when it was computed, the algorithm, and
+  the root the paths are relative to) with every row in a list or table. A
+  `.csum-compare.csv` shows the file's rows as they are, its `#` comment lines included
+  in the first column. Nothing is checksummed again (a feature flag, on by default).
 - **Compare** — two sources, each a saved `.csum.csv` or a folder, then **Compare**.
 
-Every result screen has a **Share** button that exports an Excel-ready `.csum.csv` —
-RFC 4180 quoting, CRLF line endings, UTF-8 BOM — led by five `# csum-…` comment lines
+Every result page has a **Help** button, and the Mac menu bar has **Help > csum Help** (⌘?).
+Help explains what the app is for, what each tab does step by step, and how to read a
+result, one topic per tab.
+
+Every result screen has a **Share** button that exports an Excel-ready CSV file — RFC
+4180 quoting, CRLF line endings, UTF-8 BOM — led by five `# csum-…` comment lines
 carrying the format version, the tool, the ISO-8601 date, the algorithm, and the root
 the paths are relative to. On the Mac, **File > Save As…** (⇧⌘S) writes the same text
-through a save panel. **Copy Results** puts that text on the clipboard, and on the Mac
-**Edit > Copy** (⌘C) does the same whenever no text is selected — so a result page can be
-copied without opening the share sheet. The files are named `<file or folder name>.csum.csv`, or
-`Comparison.csum.csv` for a compare; a viewed file keeps its own name. The row format is:
+through a save panel. **Edit > Copy** (⌘C) on the Mac puts that text on the clipboard
+whenever no text is selected, so a result page can be copied without opening the share
+sheet.
+
+Checksums are saved as `.csum.csv`, a type this app owns
+(`com.djb.csum.csum-csv`). Comparison results are saved as `.csum-compare.csv`, a
+separate owned type (`com.djb.csum.csum-compare-csv`), so the two never get mixed up in
+a folder. The files are named `<file or folder name>.csum.csv`, or
+`Comparison.csum-compare.csv` for a compare; a viewed file keeps its own name. The
+checksum row format is:
 
 | Checksum | Size | Created | Modified | Path |
 |----------|------|---------|----------|------|

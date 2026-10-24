@@ -11,10 +11,10 @@ struct CompareResultView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    CopyResultsButton()
+                    share
                 }
                 ToolbarItem(placement: .primaryAction) {
-                    share
+                    HelpButton()
                 }
             }
     }
@@ -34,19 +34,8 @@ struct CompareResultView: View {
         }
     }
 
-    @ViewBuilder
     private var share: some View {
-        if let export = model.export {
-            ShareLink(item: export, preview: SharePreview(export.fileName)) {
-                Label("Share", systemImage: "square.and.arrow.up")
-            }
-        } else {
-            Button {
-            } label: {
-                Label("Share", systemImage: "square.and.arrow.up")
-            }
-            .disabled(true)
-        }
+        ExportShareLink(export: model.export)
     }
 
     private func results(_ comparison: ChecksumComparison) -> some View {

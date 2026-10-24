@@ -10,6 +10,7 @@ final class SectionModelTests: XCTestCase {
     private struct StubService: Checksumming {
         var result: Result<ChecksumResult, Error>
         var comparison: Result<ChecksumComparison, Error>?
+        var table: CsvTable?
 
         func checksum(
             at url: URL,
@@ -30,6 +31,14 @@ final class SectionModelTests: XCTestCase {
 
         func readChecksumFile(at url: URL) async throws -> ChecksumResult {
             try result.get()
+        }
+
+        func readFile(at url: URL) async throws -> CsumFileContents {
+            if let table {
+                return .table(table)
+            }
+
+            return .checksums(try result.get())
         }
     }
 
@@ -312,7 +321,39 @@ final class SectionModelTests: XCTestCase {
             return XCTFail("expected the loaded phase")
         }
 
-        XCTAssertNotNil(model.export)
+        XCTAssertEqual(model.export?.fileName, "Comparison.csum-compare.csv")
+        XCTAssertEqual(model.export?.contentType, .csumComparison)
+    }
+
+    func testAComparisonFileSelectionLoadsATableAndKeepsItsName() async throws {
+        let table = try CsvTable(
+            parsing: "# Added\nChecksum,Size,Created,Modified,Path\nabc,3,0,100,./a.txt\n"
+        )
+        let model = CsumSectionModel(
+            service: StubService(result: .success(makeResult()), table: table)
+        )
+
+        model.fileChosen(URL(fileURLWithPath: "/tmp/Comparison.csum-compare.csv"))
+
+        XCTAssertEqual(model.path, [.result])
+
+        await waitUntil {
+            if case .loadedTable = model.phase {
+                return true
+            }
+
+            return false
+        }
+
+        guard case .loadedTable(let loaded) = model.phase else {
+            return XCTFail("expected the loaded table phase")
+        }
+
+        XCTAssertEqual(loaded.rows.count, 3)
+        XCTAssertEqual(model.fileName, "Comparison.csum-compare.csv")
+        XCTAssertEqual(model.export?.fileName, "Comparison.csum-compare.csv")
+        XCTAssertEqual(model.export?.contentType, .csumComparison)
+        XCTAssertTrue(model.export?.text.contains("# Added") == true)
     }
 
     func testCopyResultsDoesNothingWithoutAnExport() {
@@ -382,8 +423,12 @@ final class SectionModelTests: XCTestCase {
             try? FileManager.default.removeItem(at: directory)
         }
 
-        let export = CsumCSVFile(text: "sha256  1  a.txt\n", fileName: "a.txt.csum.csv")
-        let url = try await export.export(to: directory, contentType: .commaSeparatedText)
+        let export = CsumExport(
+            text: "sha256  1  a.txt\n",
+            fileName: "a.txt.csum.csv",
+            kind: .checksums
+        ).csvFile
+        let url = try await export.export(to: directory, contentType: .csumChecksums)
 
         XCTAssertEqual(url.lastPathComponent, "a.txt.csum.csv")
         XCTAssertEqual(try String(contentsOf: url, encoding: .utf8), "sha256  1  a.txt\n")

@@ -14,6 +14,7 @@ final class AppModel {
 
     var selectedSection: Section = .file
     var isPresentingSaveAs = false
+    var isPresentingHelp = false
 
     let file: FileSectionModel
     let folder: FolderSectionModel
@@ -44,10 +45,14 @@ final class AppModel {
             if ProcessInfo.processInfo.arguments.contains("-csumUITestSaveAs") {
                 file.fileChosen(DemoData.fileURL)
             }
+
+            if ProcessInfo.processInfo.arguments.contains("-csumUITestHelp") {
+                isPresentingHelp = true
+            }
         #endif
     }
 
-    var currentExport: CsumCSVFile? {
+    var currentExport: CsumExport? {
         switch selectedSection {
         case .file:
             return file.export
@@ -86,6 +91,10 @@ final class AppModel {
         }
 
         isPresentingSaveAs = true
+    }
+
+    func showHelp() {
+        isPresentingHelp = true
     }
 }
 
