@@ -13,6 +13,7 @@ final class AppModel {
 
     var selectedSection: Section = .file
     var isPresentingSaveAs = false
+    var isPresentingHelp = false
 
     let file: FileSectionModel
     let folder: FolderSectionModel
@@ -42,6 +43,10 @@ final class AppModel {
         #if DEBUG
             if ProcessInfo.processInfo.arguments.contains("-csumUITestSaveAs") {
                 file.fileChosen(DemoData.fileURL)
+            }
+
+            if ProcessInfo.processInfo.arguments.contains("-csumUITestHelp") {
+                isPresentingHelp = true
             }
         #endif
     }
@@ -73,5 +78,9 @@ final class AppModel {
         }
 
         isPresentingSaveAs = true
+    }
+
+    func showHelp() {
+        isPresentingHelp = true
     }
 }

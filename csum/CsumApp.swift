@@ -33,6 +33,13 @@ struct CsumApp: App {
                 .keyboardShortcut("s", modifiers: [.command, .shift])
                 .disabled(!model.canSaveAs)
             }
+
+            CommandGroup(replacing: .help) {
+                Button("csum Help") {
+                    model.showHelp()
+                }
+                .keyboardShortcut("?", modifiers: .command)
+            }
         }
     }
 }

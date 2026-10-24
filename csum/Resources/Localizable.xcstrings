@@ -1,6 +1,246 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "1. Open the Compare tab." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏1. افتح علامة التبويب «مقارنة»."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. 開啟「比較」標籤頁。"
+          }
+        }
+      }
+    },
+    "1. Open the File tab." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏1. افتح علامة التبويب «ملف»."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. 開啟「檔案」標籤頁。"
+          }
+        }
+      }
+    },
+    "1. Open the Folder tab." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏1. افتح علامة التبويب «مجلد»."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. 開啟「資料夾」標籤頁。"
+          }
+        }
+      }
+    },
+    "1. Open the View tab." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏1. افتح علامة التبويب «عرض»."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. 開啟「檢視」標籤頁。"
+          }
+        }
+      }
+    },
+    "2. For each side, choose the source type — a saved .csum.csv, or a folder to checksum on the spot." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏2. اختر لكل جهة نوع المصدر — ملف ‎.csum.csv محفوظ، أو مجلد يُحسب في الحال."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. 為每一側選擇來源類型——已儲存的 .csum.csv，或要立即計算的資料夾。"
+          }
+        }
+      }
+    },
+    "2. Tap Checksum File… and choose a file." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏2. اضغط «حساب مجموع الملف…» واختر ملفًا."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. 點一下「計算檔案檢查碼…」，然後選擇檔案。"
+          }
+        }
+      }
+    },
+    "2. Tap Checksum Folder… and choose a folder." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏2. اضغط «حساب مجموع المجلد…» واختر مجلدًا."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. 點一下「計算資料夾檢查碼…」，然後選擇資料夾。"
+          }
+        }
+      }
+    },
+    "2. Tap Open csum file… and choose a .csum.csv or a .csum-compare.csv." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏2. اضغط «فتح ملف ‎csum…» واختر ملف ‎.csum.csv أو ‎.csum-compare.csv."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. 點一下「打開 csum 檔…」，然後選擇 .csum.csv 或 .csum-compare.csv。"
+          }
+        }
+      }
+    },
+    "3. A progress bar shows how far the run has got. Afterwards every file is listed, sorted by its path relative to the folder." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏3. يُظهر شريط التقدم مقدار ما أُنجز. وبعد ذلك تُدرج كل الملفات، مرتبةً بحسب مسارها نسبةً إلى المجلد."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. 進度列會顯示執行進度。完成後會列出每個檔案，並依相對於資料夾的路徑排序。"
+          }
+        }
+      }
+    },
+    "3. Tap Choose… and pick the file or folder." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏3. اضغط «اختيار…» وحدّد الملف أو المجلد."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. 點一下「選擇…」，然後挑選檔案或資料夾。"
+          }
+        }
+      }
+    },
+    "3. The result shows the checksum, the algorithm, the size, the created and modified dates, and the full path." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏3. تُظهر النتيجة المجموع الاختباري والخوارزمية والحجم وتاريخَي الإنشاء والتعديل والمسار الكامل."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. 結果會顯示檢查碼、演算法、大小、建立與修改日期，以及完整路徑。"
+          }
+        }
+      }
+    },
+    "4. Tap Compare. Every entry is grouped into Added, Removed, Changed, Moved, Renamed and Unchanged. Changed, Moved and Renamed show both sides — old and new path, size and times — with the part that differs highlighted." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏4. اضغط «مقارنة». تُجمَّع كل المدخلات في مضاف ومحذوف ومتغير ومنقول ومعاد تسميته ودون تغيير. وتُظهر متغير ومنقول ومعاد تسميته الجانبين — المسار والحجم والوقت القديم والجديد — مع تمييز الجزء المختلف."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. 點一下「比較」。每個項目會分組為已新增、已移除、已變更、已移動、已重新命名與未變更。已變更、已移動與已重新命名會顯示兩側——舊與新的路徑、大小與時間——並標示出不同的部分。"
+          }
+        }
+      }
+    },
+    "A checksum cell holding !cannotOpen or !readFailed means the file could not be read, and is not a digest." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خلية المجموع الاختباري التي تحوي ‎!cannotOpen أو ‎!readFailed تعني أن الملف تعذّرت قراءته، وليست بصمة."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檢查碼欄位若顯示 !cannotOpen 或 !readFailed，表示無法讀取該檔案，那個值並不是摘要。"
+          }
+        }
+      }
+    },
+    "A checksum is a fingerprint of a file's contents. Two files with the same checksum have the same contents. If the fingerprint changes, the contents changed — even if the file's name and size did not." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المجموع الاختباري بصمة لمحتوى الملف. الملفان اللذان لهما المجموع نفسه لهما المحتوى نفسه. وإذا تغيّرت البصمة فقد تغيّر المحتوى — حتى لو بقي اسم الملف وحجمه كما هما."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "檢查碼是檔案內容的指紋。檢查碼相同的兩個檔案，內容也相同。指紋一旦改變，就表示內容改變了——即使檔名與大小都沒有變。"
+          }
+        }
+      }
+    },
+    "A file that cannot be read is recorded as !cannotOpen or !readFailed and the run carries on, so one unreadable file does not cost you the rest of the results." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يُسجَّل الملف الذي تعذّرت قراءته بـ ‎!cannotOpen أو ‎!readFailed ويستمر التشغيل، فلا يفقدك ملفٌّ تعذّرت قراءته بقية النتائج."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法讀取的檔案會記錄為 !cannotOpen 或 !readFailed，執行仍會繼續，因此一個無法讀取的檔案不會讓你失去其餘結果。"
+          }
+        }
+      }
+    },
     "Added" : {
       "localizations" : {
         "ar" : {
@@ -45,6 +285,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "演算法"
+          }
+        }
+      }
+    },
+    "Because entries are matched on their path relative to each root, a folder that has moved since its checksums were taken compares as unchanged, not as all-moved." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لأن المدخلات تُطابَق بمساراتها نسبةً إلى كل جذر، فإن مجلدًا نُقل بعد أخذ مجاميعه الاختبارية يُقارَن على أنه دون تغيير، لا على أن كله منقول."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "由於項目是依相對於各自根目錄的路徑來配對，因此自取得檢查碼後才搬移的資料夾，比較時會顯示為未變更，而不是全部已移動。"
           }
         }
       }
@@ -209,18 +465,18 @@
         }
       }
     },
-    "Computed %@ · Format %@" : {
+    "Computed %@ and %@ · Format %@" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "حُسب في %@ · التنسيق %@"
+            "value" : "حُسب في %@ و %@ · التنسيق %@"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "計算於 %@ · 格式 %@"
+            "value" : "計算於 %@ 與 %@ · 格式 %@"
           }
         }
       }
@@ -241,6 +497,22 @@
         }
       }
     },
+    "Computed %@ · Format %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حُسب في %@ · التنسيق %@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "計算於 %@ · 格式 %@"
+          }
+        }
+      }
+    },
     "Computed %@ · Format %@ · Entries: %@" : {
       "localizations" : {
         "ar" : {
@@ -253,22 +525,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "計算於 %@ · 格式 %@ · 項目數：%@"
-          }
-        }
-      }
-    },
-    "Computed %@ and %@ · Format %@" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "حُسب في %@ و %@ · التنسيق %@"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "計算於 %@ 與 %@ · 格式 %@"
           }
         }
       }
@@ -289,6 +545,22 @@
         }
       }
     },
+    "Copy Checksum copies just the digest. Share — or File > Save As… (⇧⌘S) on the Mac — saves the result as a .csum.csv file." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ينسخ «نسخ المجموع الاختباري» الملخّص وحده. أما «مشاركة» — أو «ملف > حفظ باسم…» (⇧⌘S) على Mac — فتحفظ النتيجة في ملف ‎.csum.csv."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「拷貝檢查碼」只會拷貝摘要值。「分享」——或在 Mac 上使用「檔案 > 儲存為…」(⇧⌘S)——會將結果儲存為 .csum.csv 檔案。"
+          }
+        }
+      }
+    },
     "Created" : {
       "localizations" : {
         "ar" : {
@@ -301,6 +573,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "建立時間"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成"
+          }
+        }
+      }
+    },
+    "Each row is Checksum, Size, Created, Modified, Path. Dates are Unix epoch seconds, empty when a file has no such date. Path is relative to the recorded root, with a leading ./." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كل صف هو: المجموع الاختباري، الحجم، الإنشاء، التعديل، المسار. التواريخ بالثواني منذ بداية عصر يونكس، وتكون فارغة إذا لم يكن للملف ذلك التاريخ. والمسار نسبةً إلى الجذر المسجَّل، ويبدأ بـ ‎./."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每一列依序是檢查碼、大小、建立、修改、路徑。日期是 Unix 紀元秒數，若檔案沒有該日期則留空。路徑相對於所記錄的根目錄，並以 ./ 開頭。"
+          }
+        }
+      }
+    },
+    "Every result page offers Share, Copy Results, and — on the Mac — File > Save As… (⇧⌘S). Long-press a row to copy just that row." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "توفّر كل صفحة نتائج «مشاركة» و«نسخ النتائج»، وعلى Mac «ملف > حفظ باسم…» (⇧⌘S). اضغط مطولًا على صف لنسخ ذلك الصف وحده."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每個結果頁面都提供「分享」與「拷貝結果」，在 Mac 上還有「檔案 > 儲存為…」(⇧⌘S)。長按某一列即可只拷貝該列。"
           }
         }
       }
@@ -365,6 +685,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "資料夾"
+          }
+        }
+      }
+    },
+    "For a .csum.csv the page shows when it was computed, the algorithm, the root the paths are relative to, and every row. For a .csum-compare.csv it shows the rows exactly as the file has them, with the # comment lines in the first column." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "في ملف ‎.csum.csv تُظهر الصفحة وقت الحساب والخوارزمية والجذر الذي تُنسب إليه المسارات وكل صف. وفي ملف ‎.csum-compare.csv تُعرض الصفوف كما هي في الملف تمامًا، مع أسطر التعليقات ‎# في العمود الأول."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "若是 .csum.csv，頁面會顯示計算時間、演算法、路徑所相對的根目錄，以及每一列。若是 .csum-compare.csv，則完全依照檔案內容顯示各列，並將 # 註解行放在第一欄。"
+          }
+        }
+      }
+    },
+    "Help" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مساعدة"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輔助說明"
           }
         }
       }
@@ -597,6 +949,22 @@
         }
       }
     },
+    "Results" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "النتائج"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "結果"
+          }
+        }
+      }
+    },
     "Save As…" : {
       "localizations" : {
         "ar" : {
@@ -609,6 +977,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "儲存為…"
+          }
+        }
+      }
+    },
+    "Saved files are Excel-ready CSV: RFC 4180 quoting, CRLF line endings, and a UTF-8 BOM, led by # csum-… comment lines recording the format, the tool, when it was computed, the algorithm, and the root the paths are relative to. Checksums are saved as .csum.csv and comparisons as .csum-compare.csv." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الملفات المحفوظة هي CSV جاهزة لـ Excel: اقتباس وفق ‎RFC 4180، ونهايات أسطر ‎CRLF، وعلامة ‎UTF-8 BOM، تسبقها أسطر تعليقات ‎# csum-… تسجّل التنسيق والأداة ووقت الحساب والخوارزمية والجذر الذي تُنسب إليه المسارات. تُحفظ المجاميع الاختبارية بامتداد ‎.csum.csv والمقارنات بامتداد ‎.csum-compare.csv."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "儲存的檔案是 Excel 可直接開啟的 CSV：符合 RFC 4180 的引號規則、CRLF 換行，以及 UTF-8 BOM，開頭是 # csum-… 註解行，記錄格式、工具、計算時間、演算法，以及路徑所相對的根目錄。檢查碼儲存為 .csum.csv，比較結果儲存為 .csum-compare.csv。"
           }
         }
       }
@@ -693,6 +1077,54 @@
         }
       }
     },
+    "Swap exchanges the two sides, which flips Added and Removed." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«تبديل» يبادل بين الجهتين، فينقلب مضاف ومحذوف."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「交換」會對調兩側，已新增與已移除也會隨之對調。"
+          }
+        }
+      }
+    },
+    "The rows hold paths relative to the folder, and the folder itself is recorded once in the file's metadata. That is why a checksum file taken before the tree was moved still compares as unchanged afterwards." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحتوي الصفوف على مسارات نسبةً إلى المجلد، ويُسجَّل المجلد نفسه مرة واحدة في بيانات الملف الوصفية. ولهذا يظل ملف المجاميع الاختبارية المأخوذ قبل نقل الشجرة يُقارَن على أنه دون تغيير بعد النقل."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每一列記錄的是相對於資料夾的路徑，資料夾本身只在檔案的附加資訊中記錄一次。因此，在搬移整個目錄之前取得的檢查碼檔案，之後比較時仍會顯示為未變更。"
+          }
+        }
+      }
+    },
+    "This is the way to inspect a results file someone sent you, or one you kept from a folder that is no longer at hand." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هذه طريقة فحص ملف نتائج أرسله إليك أحدهم، أو ملف أبقيتَه من مجلد لم يعد في متناول يدك."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "這是查看別人寄給你的結果檔案，或查看從已不在手邊的資料夾留下的檔案的方法。"
+          }
+        }
+      }
+    },
     "Unchanged" : {
       "localizations" : {
         "ar" : {
@@ -725,6 +1157,70 @@
         }
       }
     },
+    "Use Compare to see what changed between two folders, two saved checksum files, or one of each." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استخدم «مقارنة» لمعرفة ما تغيّر بين مجلدين، أو بين ملفَي مجاميع اختبارية محفوظين، أو بين أحدهما والآخر."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用「比較」可查看兩個資料夾、兩個已儲存的檢查碼檔案，或其中之一為資料夾時，兩者之間有什麼變更。"
+          }
+        }
+      }
+    },
+    "Use File when you want the checksum of a single file, to check a download or to record what you sent to someone." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استخدم «ملف» عندما تريد المجموع الاختباري لملف واحد، للتحقق من تنزيل أو لتسجيل ما أرسلته إلى أحدهم."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "當你需要單一檔案的檢查碼時——例如確認下載的檔案，或記錄你傳給別人的檔案——請使用「檔案」。"
+          }
+        }
+      }
+    },
+    "Use Folder to checksum everything inside a folder, at every depth, hidden files included." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استخدم «مجلد» لحساب المجاميع الاختبارية لكل ما داخل مجلد، في كل مستوى، بما في ذلك الملفات المخفية."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "當你需要計算資料夾內所有項目的檢查碼時——包含每一層與隱藏檔案——請使用「資料夾」。"
+          }
+        }
+      }
+    },
+    "Use View to read a checksum file back without checksumming anything again." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استخدم «عرض» لقراءة ملف مجاميع اختبارية من جديد دون إعادة حساب أي شيء."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用「檢視」可重新讀取檢查碼檔案，而不會重新計算任何檢查碼。"
+          }
+        }
+      }
+    },
     "View" : {
       "localizations" : {
         "ar" : {
@@ -737,6 +1233,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檢視"
+          }
+        }
+      }
+    },
+    "What csum Does" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ما الذي يفعله ‎csum"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "csum 的功能"
+          }
+        }
+      }
+    },
+    "csum Help" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مساعدة ‎csum"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "csum 輔助說明"
+          }
+        }
+      }
+    },
+    "csum computes SHA-256 checksums for one file or for every file in a folder, and compares two sets of checksums to show what changed. Everything runs on this device: nothing is uploaded, and no network connection is needed." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحسب ‎csum المجاميع الاختبارية SHA-256 لملف واحد أو لكل ملف في مجلد، ويقارن مجموعتين من المجاميع الاختبارية لبيان ما تغيّر. كل شيء يجري على هذا الجهاز: لا يُرفع أي شيء، ولا حاجة إلى اتصال بالشبكة."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "csum 會為單一檔案或資料夾中的每個檔案計算 SHA-256 檢查碼，並比較兩組檢查碼以顯示有哪些變更。所有運算都在這部裝置上進行：不會上傳任何內容，也不需要網路連線。"
           }
         }
       }

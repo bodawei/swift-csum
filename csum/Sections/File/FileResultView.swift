@@ -18,6 +18,9 @@ struct FileResultView: View {
                 ToolbarItem(placement: .primaryAction) {
                     share
                 }
+                ToolbarItem(placement: .primaryAction) {
+                    HelpButton()
+                }
             }
             .onChange(of: model.showsSpinner) { _, shows in
                 guard shows else {
