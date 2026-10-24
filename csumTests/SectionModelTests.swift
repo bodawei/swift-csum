@@ -356,6 +356,108 @@ final class SectionModelTests: XCTestCase {
         XCTAssertTrue(model.export?.text.contains("# Added") == true)
     }
 
+    func testCopyResultsDoesNothingWithoutAnExport() {
+        let model = AppModel()
+        UIPasteboard.general.string = "unchanged"
+
+        model.copyResults()
+
+        XCTAssertFalse(model.canCopyResults)
+        XCTAssertEqual(UIPasteboard.general.string, "unchanged")
+    }
+
+    func testCopyResultsIsUnavailableWhileHelpIsOpen() async {
+        let model = AppModel(demoMode: true)
+
+        model.file.fileChosen(DemoData.fileURL)
+
+        await waitUntil {
+            model.canCopyResults
+        }
+
+        model.showHelp()
+        UIPasteboard.general.string = "unchanged"
+        model.copyResults()
+
+        XCTAssertFalse(model.canCopyResults)
+        XCTAssertEqual(UIPasteboard.general.string, "unchanged")
+    }
+
+    func testCopyResultsIsUnavailableWhileSaveAsIsOpen() async {
+        let model = AppModel(demoMode: true)
+
+        model.file.fileChosen(DemoData.fileURL)
+
+        await waitUntil {
+            model.canCopyResults
+        }
+
+        model.saveAs()
+        UIPasteboard.general.string = "unchanged"
+        model.copyResults()
+
+        XCTAssertFalse(model.canCopyResults)
+        XCTAssertEqual(UIPasteboard.general.string, "unchanged")
+    }
+
+    func testCopyResultsIsUnavailableWhileAFilePickerIsOpen() async {
+        let model = AppModel(demoMode: true)
+
+        model.file.fileChosen(DemoData.fileURL)
+
+        await waitUntil {
+            model.canCopyResults
+        }
+
+        model.file.isChoosingSource = true
+        UIPasteboard.general.string = "unchanged"
+        model.copyResults()
+
+        XCTAssertFalse(model.canCopyResults)
+        XCTAssertEqual(UIPasteboard.general.string, "unchanged")
+
+        model.file.isChoosingSource = false
+        model.folder.isChoosingSource = true
+        XCTAssertFalse(model.canCopyResults)
+
+        model.folder.isChoosingSource = false
+        model.csum.isChoosingSource = true
+        XCTAssertFalse(model.canCopyResults)
+
+        model.csum.isChoosingSource = false
+        model.compare.isChoosingFirst = true
+        XCTAssertFalse(model.canCopyResults)
+
+        model.compare.isChoosingFirst = false
+        model.compare.isChoosingSecond = true
+        XCTAssertFalse(model.canCopyResults)
+
+        model.compare.isChoosingSecond = false
+        XCTAssertTrue(model.canCopyResults)
+    }
+
+    func testCopyResultsCopiesTheCurrentExportWithoutItsByteOrderMark() async throws {
+        let model = AppModel(demoMode: true)
+
+        model.file.fileChosen(DemoData.fileURL)
+
+        await waitUntil {
+            model.canCopyResults
+        }
+
+        UIPasteboard.general.string = "unchanged"
+        model.copyResults()
+
+        let export = try XCTUnwrap(model.currentExport)
+        let copied = try XCTUnwrap(UIPasteboard.general.string)
+
+        XCTAssertTrue(export.text.hasPrefix("\u{FEFF}"))
+        XCTAssertEqual(copied, String(export.text.dropFirst()))
+        XCTAssertTrue(copied.hasPrefix("# csum-format 1.0"))
+        XCTAssertTrue(copied.contains("Checksum,Size,Created,Modified,Path"))
+        XCTAssertTrue(copied.contains("./archive.zip"))
+    }
+
     func testSaveAsDoesNothingWithoutAnExport() {
         let model = AppModel()
 

@@ -65,7 +65,7 @@ struct HelpTopic: Identifiable {
             id: "results",
             title: "Results",
             paragraphs: [
-                "Every result page offers Share, Copy Results, and — on the Mac — File > Save As… (⇧⌘S). Long-press a row to copy just that row.",
+                "Every result page offers Share, and — on the Mac — File > Save As… (⇧⌘S). To copy, press ⌘C on the Mac for the whole result, or long-press a row for just that row.",
                 "Saved files are Excel-ready CSV: RFC 4180 quoting, CRLF line endings, and a UTF-8 BOM, led by # csum-… comment lines recording the format, the tool, when it was computed, the algorithm, and the root the paths are relative to. Checksums are saved as .csum.csv and comparisons as .csum-compare.csv.",
                 "Each row is Checksum, Size, Created, Modified, Path. Dates are Unix epoch seconds, empty when a file has no such date. Path is relative to the recorded root, with a leading ./.",
                 "A checksum cell holding !cannotOpen or !readFailed means the file could not be read, and is not a digest.",

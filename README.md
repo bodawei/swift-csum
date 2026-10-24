@@ -36,7 +36,9 @@ Every result screen has a **Share** button that exports an Excel-ready CSV file 
 4180 quoting, CRLF line endings, UTF-8 BOM — led by five `# csum-…` comment lines
 carrying the format version, the tool, the ISO-8601 date, the algorithm, and the root
 the paths are relative to. On the Mac, **File > Save As…** (⇧⌘S) writes the same text
-through a save panel.
+through a save panel. **Edit > Copy** (⌘C) on the Mac puts that text on the clipboard
+whenever no text is selected, so a result page can be copied without opening the share
+sheet.
 
 Checksums are saved as `.csum.csv`, a type this app owns
 (`com.djb.csum.csum-csv`). Comparison results are saved as `.csum-compare.csv`, a
