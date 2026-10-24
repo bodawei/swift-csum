@@ -4,8 +4,6 @@ public struct CsumController: Sendable {
     public static let cliWriter = "csum-cli"
     public static let appWriter = "csum"
 
-    private static let fileSuffix = ".csum.csv"
-
     private let algorithm: ChecksumAlgorithm
     private let writer: String
 
@@ -40,6 +38,20 @@ public struct CsumController: Sendable {
             }
 
             return try ChecksumFileCodec.parse(contentsOf: url)
+        }
+    }
+
+    public func readFile(at url: URL) throws -> CsumFileContents {
+        try withScopedAccess(to: url) {
+            guard FileManager.default.fileExists(atPath: url.path) else {
+                throw CsumError.notFound(path: url.path)
+            }
+
+            if isComparisonFile(url) {
+                return .table(try CsvTable(contentsOf: url))
+            }
+
+            return .checksums(try ChecksumFileCodec.parse(contentsOf: url))
         }
     }
 
@@ -200,7 +212,11 @@ public struct CsumController: Sendable {
     }
 
     private func isChecksumFile(_ url: URL) -> Bool {
-        url.path.lowercased().hasSuffix(Self.fileSuffix)
+        url.path.lowercased().hasSuffix(".\(CsumFormat.checksumFileExtension)")
+    }
+
+    private func isComparisonFile(_ url: URL) -> Bool {
+        url.path.lowercased().hasSuffix(".\(CsumFormat.comparisonFileExtension)")
     }
 
     private func collectEntries(

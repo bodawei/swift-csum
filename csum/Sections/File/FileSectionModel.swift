@@ -23,7 +23,7 @@ final class FileSectionModel {
     var path: [Route] = []
     var isChoosingSource = false
     private(set) var showsSpinner = false
-    private(set) var export: CsumCSVFile?
+    private(set) var export: CsumExport?
 
     private let service: any Checksumming
     private let sleep: Sleeper
@@ -107,9 +107,10 @@ final class FileSectionModel {
             do {
                 let result = try await service.checksum(at: url) { _, _ in }
                 phase = .loaded(result)
-                export = CsumCSVFile(
+                export = CsumExport(
                     text: ChecksumFileCodec.render(result),
-                    fileName: url.lastPathComponent + ".csum.csv"
+                    fileName: url.lastPathComponent + ".\(CsumFormat.checksumFileExtension)",
+                    kind: .checksums
                 )
             } catch is CancellationError {
                 spinner.cancel()

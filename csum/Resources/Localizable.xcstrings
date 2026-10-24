@@ -821,18 +821,18 @@
         }
       }
     },
-    "Open .csum.csv…" : {
+    "Open csum file…" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "فتح ‎.csum.csv…"
+            "value" : "فتح ملف ‎csum…"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "打開 .csum.csv…"
+            "value" : "打開 csum 檔…"
           }
         }
       }
