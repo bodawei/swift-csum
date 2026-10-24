@@ -74,11 +74,17 @@ final class AppModel {
     }
 
     var canCopyResults: Bool {
-        guard currentExport != nil else {
-            return false
-        }
+        currentExport != nil && !isPresentingSheet
+    }
 
-        return !isPresentingHelp && !isPresentingSaveAs
+    private var isPresentingSheet: Bool {
+        isPresentingHelp
+            || isPresentingSaveAs
+            || file.isChoosingSource
+            || folder.isChoosingSource
+            || csum.isChoosingSource
+            || compare.isChoosingFirst
+            || compare.isChoosingSecond
     }
 
     func copyResults() {

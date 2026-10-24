@@ -400,6 +400,42 @@ final class SectionModelTests: XCTestCase {
         XCTAssertEqual(UIPasteboard.general.string, "unchanged")
     }
 
+    func testCopyResultsIsUnavailableWhileAFilePickerIsOpen() async {
+        let model = AppModel(demoMode: true)
+
+        model.file.fileChosen(DemoData.fileURL)
+
+        await waitUntil {
+            model.canCopyResults
+        }
+
+        model.file.isChoosingSource = true
+        UIPasteboard.general.string = "unchanged"
+        model.copyResults()
+
+        XCTAssertFalse(model.canCopyResults)
+        XCTAssertEqual(UIPasteboard.general.string, "unchanged")
+
+        model.file.isChoosingSource = false
+        model.folder.isChoosingSource = true
+        XCTAssertFalse(model.canCopyResults)
+
+        model.folder.isChoosingSource = false
+        model.csum.isChoosingSource = true
+        XCTAssertFalse(model.canCopyResults)
+
+        model.csum.isChoosingSource = false
+        model.compare.isChoosingFirst = true
+        XCTAssertFalse(model.canCopyResults)
+
+        model.compare.isChoosingFirst = false
+        model.compare.isChoosingSecond = true
+        XCTAssertFalse(model.canCopyResults)
+
+        model.compare.isChoosingSecond = false
+        XCTAssertTrue(model.canCopyResults)
+    }
+
     func testCopyResultsCopiesTheCurrentExportWithoutItsByteOrderMark() async throws {
         let model = AppModel(demoMode: true)
 
