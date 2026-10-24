@@ -400,7 +400,7 @@ final class SectionModelTests: XCTestCase {
         XCTAssertEqual(UIPasteboard.general.string, "unchanged")
     }
 
-    func testCopyResultsCopiesTheCurrentExport() async throws {
+    func testCopyResultsCopiesTheCurrentExportWithoutItsByteOrderMark() async throws {
         let model = AppModel(demoMode: true)
 
         model.file.fileChosen(DemoData.fileURL)
@@ -411,11 +411,14 @@ final class SectionModelTests: XCTestCase {
 
         model.copyResults()
 
-        let copied = try? XCTUnwrap(UIPasteboard.general.string)
+        let export = try XCTUnwrap(model.currentExport)
+        let copied = try XCTUnwrap(UIPasteboard.general.string)
 
-        XCTAssertTrue(copied?.hasPrefix("# csum-format 1.0") == true)
-        XCTAssertTrue(copied?.contains("Checksum,Size,Created,Modified,Path") == true)
-        XCTAssertTrue(copied?.contains("./archive.zip") == true)
+        XCTAssertTrue(export.text.hasPrefix("\u{FEFF}"))
+        XCTAssertEqual(copied, String(export.text.dropFirst()))
+        XCTAssertTrue(copied.hasPrefix("# csum-format 1.0"))
+        XCTAssertTrue(copied.contains("Checksum,Size,Created,Modified,Path"))
+        XCTAssertTrue(copied.contains("./archive.zip"))
     }
 
     func testSaveAsDoesNothingWithoutAnExport() {
