@@ -29,7 +29,7 @@ final class CompareSectionModel {
     var isChoosingSecond = false
     var path: [Route] = []
     private(set) var phase: Phase = .idle
-    private(set) var export: CsumCSVFile?
+    private(set) var export: CsumExport?
 
     private let service: any Checksumming
     private let demoMode: Bool
@@ -138,9 +138,10 @@ final class CompareSectionModel {
             do {
                 let comparison = try await service.compare(first: first, second: second)
                 phase = .loaded(comparison)
-                export = CsumCSVFile(
+                export = CsumExport(
                     text: ComparisonFileCodec.render(comparison),
-                    fileName: "Comparison.csum.csv"
+                    fileName: CsumFormat.comparisonFileName,
+                    kind: .comparison
                 )
             } catch is CancellationError {
                 return

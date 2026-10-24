@@ -41,8 +41,8 @@ struct RootView: View {
         }
         .fileExporter(
             isPresented: $model.isPresentingSaveAs,
-            item: model.currentExport,
-            contentTypes: [.commaSeparatedText],
+            document: CsumTextDocument(text: model.currentExport?.text ?? ""),
+            contentType: model.currentExport?.contentType ?? .csumChecksums,
             defaultFilename: model.currentExport?.fileName
         ) { _ in }
         #if targetEnvironment(macCatalyst)

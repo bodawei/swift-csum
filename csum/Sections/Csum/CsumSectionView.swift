@@ -15,7 +15,7 @@ struct CsumSectionView: View {
         }
         .fileImporter(
             isPresented: $model.isChoosingSource,
-            allowedContentTypes: [.commaSeparatedText],
+            allowedContentTypes: [.csumChecksums, .csumComparison],
             allowsMultipleSelection: false
         ) { result in
             guard case .success(let urls) = result, let url = urls.first else {
@@ -32,7 +32,7 @@ struct CsumSectionView: View {
     }
 
     private var picker: some View {
-        Button("Open .csum.csv…") {
+        Button("Open csum file…") {
             app.csum.chooseFile()
         }
         .buttonStyle(.borderedProminent)
