@@ -138,6 +138,7 @@ struct ComparisonTable: View {
         .padding(.vertical, Layout.rowPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(row.tint?.background ?? Color.clear)
+        .copyRowMenu(row.csv)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(row.label)
     }
