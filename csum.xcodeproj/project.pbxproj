@@ -46,15 +46,18 @@
 		C50000000000000000000112 /* DemoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000111 /* DemoService.swift */; };
 		C50000000000000000000116 /* AppFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000115 /* AppFlowUITests.swift */; };
 		C50000000000000000000121 /* WindowTitleHider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000120 /* WindowTitleHider.swift */; };
+		C50000000000000000000170 /* PostHogFeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000171 /* PostHogFeatureFlags.swift */; };
+		C50000000000000000000172 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = C50000000000000000000174 /* PostHog */; };
 		C50000000000000000000144 /* FeatureFlagProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000140 /* FeatureFlagProviding.swift */; };
 		C50000000000000000000145 /* FeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000141 /* FeatureFlagStore.swift */; };
-		C50000000000000000000146 /* HarnessFeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000142 /* HarnessFeatureFlags.swift */; };
 		C50000000000000000000147 /* FeatureFlagStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000143 /* FeatureFlagStoreTests.swift */; };
+		C50000000000000000000179 /* PostHogStartup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000178 /* PostHogStartup.swift */; };
+		C50000000000000000000183 /* PostHogConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000182 /* PostHogConfiguration.swift */; };
+		C50000000000000000000181 /* PostHogStartupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000180 /* PostHogStartupTests.swift */; };
 		C50000000000000000000161 /* HelpTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000158 /* HelpTopic.swift */; };
 		C50000000000000000000162 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000157 /* HelpView.swift */; };
 		C50000000000000000000163 /* CsvTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000159 /* CsvTableView.swift */; };
 		C50000000000000000000164 /* ExportShareLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000160 /* ExportShareLink.swift */; };
-		C5000000000000000000014B /* Split in Frameworks */ = {isa = PBXBuildFile; productRef = C5000000000000000000014A /* Split */; };
 		C50000000000000000000150 /* CsumSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000151 /* CsumSectionView.swift */; };
 		C50000000000000000000152 /* CsumSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000153 /* CsumSectionModel.swift */; };
 		C50000000000000000000154 /* CsumResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000155 /* CsumResultView.swift */; };
@@ -117,10 +120,13 @@
 		C50000000000000000000114 /* csumUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = csumUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C50000000000000000000115 /* AppFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowUITests.swift; sourceTree = "<group>"; };
 		C50000000000000000000120 /* WindowTitleHider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowTitleHider.swift; sourceTree = "<group>"; };
+		C50000000000000000000171 /* PostHogFeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHogFeatureFlags.swift; sourceTree = "<group>"; };
 		C50000000000000000000140 /* FeatureFlagProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagProviding.swift; sourceTree = "<group>"; };
 		C50000000000000000000141 /* FeatureFlagStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagStore.swift; sourceTree = "<group>"; };
-		C50000000000000000000142 /* HarnessFeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessFeatureFlags.swift; sourceTree = "<group>"; };
 		C50000000000000000000143 /* FeatureFlagStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagStoreTests.swift; sourceTree = "<group>"; };
+		C50000000000000000000178 /* PostHogStartup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHogStartup.swift; sourceTree = "<group>"; };
+		C50000000000000000000182 /* PostHogConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHogConfiguration.swift; sourceTree = "<group>"; };
+		C50000000000000000000180 /* PostHogStartupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHogStartupTests.swift; sourceTree = "<group>"; };
 		C50000000000000000000151 /* CsumSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionView.swift; sourceTree = "<group>"; };
 		C50000000000000000000153 /* CsumSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionModel.swift; sourceTree = "<group>"; };
 		C50000000000000000000155 /* CsumResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumResultView.swift; sourceTree = "<group>"; };
@@ -139,7 +145,7 @@
 				C50000000000000000000095 /* OpenTelemetryApi in Frameworks */,
 				C50000000000000000000096 /* OpenTelemetrySdk in Frameworks */,
 				C50000000000000000000097 /* OpenTelemetryProtocolExporterHTTP in Frameworks */,
-				C5000000000000000000014B /* Split in Frameworks */,
+				C50000000000000000000172 /* PostHog in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +181,8 @@
 			children = (
 				C500000000000000000000A1 /* CsumApp.swift */,
 				C500000000000000000000D6 /* Telemetry.swift */,
+				C50000000000000000000178 /* PostHogStartup.swift */,
+				C50000000000000000000182 /* PostHogConfiguration.swift */,
 				C500000000000000000000C1 /* App */,
 				C5000000000000000000015A /* Help */,
 				C50000000000000000000148 /* FeatureFlags */,
@@ -297,7 +305,7 @@
 			children = (
 				C50000000000000000000140 /* FeatureFlagProviding.swift */,
 				C50000000000000000000141 /* FeatureFlagStore.swift */,
-				C50000000000000000000142 /* HarnessFeatureFlags.swift */,
+				C50000000000000000000171 /* PostHogFeatureFlags.swift */,
 			);
 			path = FeatureFlags;
 			sourceTree = "<group>";
@@ -316,6 +324,7 @@
 			children = (
 				C50000000000000000000103 /* SectionModelTests.swift */,
 				C50000000000000000000143 /* FeatureFlagStoreTests.swift */,
+				C50000000000000000000180 /* PostHogStartupTests.swift */,
 			);
 			path = csumTests;
 			sourceTree = "<group>";
@@ -357,7 +366,7 @@
 				C50000000000000000000092 /* OpenTelemetryApi */,
 				C50000000000000000000093 /* OpenTelemetrySdk */,
 				C50000000000000000000094 /* OpenTelemetryProtocolExporterHTTP */,
-				C5000000000000000000014A /* Split */,
+				C50000000000000000000174 /* PostHog */,
 			);
 			productName = csum;
 			productReference = C50000000000000000000014 /* csum.app */;
@@ -425,7 +434,7 @@
 				C50000000000000000000031 /* XCLocalSwiftPackageReference "." */,
 				C50000000000000000000090 /* XCRemoteSwiftPackageReference "opentelemetry-swift-core" */,
 				C50000000000000000000091 /* XCRemoteSwiftPackageReference "opentelemetry-swift" */,
-				C50000000000000000000149 /* XCRemoteSwiftPackageReference "ios-client" */,
+				C50000000000000000000173 /* XCRemoteSwiftPackageReference "posthog-ios" */,
 			);
 			productRefGroup = C50000000000000000000042 /* Products */;
 			projectDirPath = "";
@@ -459,6 +468,8 @@
 				C500000000000000000000B1 /* CsumApp.swift in Sources */,
 				C5000000000000000000012B /* AppDelegate.swift in Sources */,
 				C500000000000000000000D7 /* Telemetry.swift in Sources */,
+				C50000000000000000000179 /* PostHogStartup.swift in Sources */,
+				C50000000000000000000183 /* PostHogConfiguration.swift in Sources */,
 				C500000000000000000000B2 /* AppModel.swift in Sources */,
 				C500000000000000000000B3 /* RootView.swift in Sources */,
 				C50000000000000000000121 /* WindowTitleHider.swift in Sources */,
@@ -486,7 +497,7 @@
 				C500000000000000000000F7 /* CompareResultView.swift in Sources */,
 				C50000000000000000000130 /* ComparisonTable.swift in Sources */,
 				C50000000000000000000145 /* FeatureFlagStore.swift in Sources */,
-				C50000000000000000000146 /* HarnessFeatureFlags.swift in Sources */,
+				C50000000000000000000170 /* PostHogFeatureFlags.swift in Sources */,
 				C50000000000000000000161 /* HelpTopic.swift in Sources */,
 				C50000000000000000000162 /* HelpView.swift in Sources */,
 				C50000000000000000000163 /* CsvTableView.swift in Sources */,
@@ -505,6 +516,7 @@
 			files = (
 				C50000000000000000000104 /* SectionModelTests.swift in Sources */,
 				C50000000000000000000147 /* FeatureFlagStoreTests.swift in Sources */,
+				C50000000000000000000181 /* PostHogStartupTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -873,12 +885,12 @@
 				minimumVersion = 2.6.0;
 			};
 		};
-		C50000000000000000000149 /* XCRemoteSwiftPackageReference "ios-client" */ = {
+		C50000000000000000000173 /* XCRemoteSwiftPackageReference "posthog-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/splitio/ios-client";
+			repositoryURL = "https://github.com/PostHog/posthog-ios.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 3.7.1;
+				minimumVersion = 3.92.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -904,10 +916,10 @@
 			package = C50000000000000000000091 /* XCRemoteSwiftPackageReference "opentelemetry-swift" */;
 			productName = OpenTelemetryProtocolExporterHTTP;
 		};
-		C5000000000000000000014A /* Split */ = {
+		C50000000000000000000174 /* PostHog */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C50000000000000000000149 /* XCRemoteSwiftPackageReference "ios-client" */;
-			productName = Split;
+			package = C50000000000000000000173 /* XCRemoteSwiftPackageReference "posthog-ios" */;
+			productName = PostHog;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

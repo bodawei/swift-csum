@@ -82,3 +82,29 @@ final class FeatureFlagStoreTests: XCTestCase {
         }
     }
 }
+
+final class PostHogTreatmentTests: XCTestCase {
+    func testAnEnabledFlagIsAnOnTreatment() {
+        XCTAssertEqual(PostHogFeatureFlags.treatment(from: true), "on")
+    }
+
+    func testADisabledFlagIsAnOffTreatment() {
+        XCTAssertEqual(PostHogFeatureFlags.treatment(from: false), "off")
+    }
+
+    func testAVariantIsItsOwnTreatment() {
+        XCTAssertEqual(PostHogFeatureFlags.treatment(from: "control"), "control")
+    }
+
+    func testAnEmptyVariantHasNoTreatment() {
+        XCTAssertNil(PostHogFeatureFlags.treatment(from: ""))
+    }
+
+    func testAFlagThatIsNotLoadedHasNoTreatment() {
+        XCTAssertNil(PostHogFeatureFlags.treatment(from: nil))
+    }
+
+    func testAValueThatIsNeitherABooleanNorAVariantHasNoTreatment() {
+        XCTAssertNil(PostHogFeatureFlags.treatment(from: 3))
+    }
+}
