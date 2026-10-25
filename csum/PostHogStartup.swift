@@ -27,6 +27,7 @@ final class PostHogStartup {
         config.captureScreenViews = false
         config.captureElementInteractions = false
         config.sendFeatureFlagEvent = false
+        config.preloadFeatureFlags = false
 
         PostHogSDK.shared.setup(config)
 
