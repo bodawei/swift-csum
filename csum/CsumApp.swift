@@ -18,6 +18,7 @@ struct CsumApp: App {
         #endif
 
         Telemetry.start()
+        Logger.shared.start()
     }
 
     var body: some Scene {
