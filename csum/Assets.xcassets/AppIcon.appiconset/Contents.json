@@ -1,25 +1,21 @@
 {
   "images" : [
     {
-      "filename" : "icon-40.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "icon-60.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
-      "filename" : "icon-58.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "icon-87.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
@@ -90,7 +86,7 @@
       "size" : "83.5x83.5"
     },
     {
-      "filename" : "AppIcon1024x1024.png",
+      "filename" : "hex_fingerprint_opaque_circle_transparent_edges.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
