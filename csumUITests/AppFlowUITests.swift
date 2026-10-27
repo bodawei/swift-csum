@@ -28,6 +28,39 @@ final class AppFlowUITests: XCTestCase {
         attach(app, name: "folder-result")
     }
 
+    func testRowLongPressOffersACopy() {
+        let app = launch()
+
+        app.tabBars.buttons["Folder"].tap()
+        app.buttons["Checksum Folder…"].tap()
+
+        let row = app.staticTexts["2026-07/IMG_1042.HEIC"]
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+
+        row.press(forDuration: 1)
+
+        XCTAssertTrue(app.buttons["Copy"].waitForExistence(timeout: 5))
+        attach(app, name: "row-copy-menu")
+
+        app.buttons["Copy"].tap()
+    }
+
+    func testFileCardRowOffersACopy() {
+        let app = launch()
+
+        app.buttons["Checksum File…"].tap()
+
+        let checksum = app.staticTexts[DemoChecksums.archive]
+        XCTAssertTrue(checksum.waitForExistence(timeout: 5))
+
+        checksum.press(forDuration: 1)
+
+        XCTAssertTrue(app.buttons["Copy"].waitForExistence(timeout: 5))
+        attach(app, name: "file-card-copy-menu")
+
+        app.buttons["Copy"].tap()
+    }
+
     func testFolderResultKeepsDetailsInLandscape() {
         let app = launch()
 
@@ -191,4 +224,5 @@ final class AppFlowUITests: XCTestCase {
 
 private enum DemoChecksums {
     static let image1042 = "6e789e6aa1b965f4cd73fe3de975ac2663a267815dcaa86a67185c5a5b0de1ab"
+    static let archive = "e220a8397b1dcdaf48218226ff3cd4bf33fe8bd4f9c578631957a7604e215178"
 }

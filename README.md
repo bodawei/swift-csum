@@ -38,7 +38,7 @@ carrying the format version, the tool, the ISO-8601 date, the algorithm, and the
 the paths are relative to. On the Mac, **File > Save As…** (⇧⌘S) writes the same text
 through a save panel. **Edit > Copy** (⌘C) on the Mac puts that text on the clipboard
 whenever no text is selected, so a result page can be copied without opening the share
-sheet.
+sheet. Long-press any row (or right-click it on the Mac) to copy that row as a CSV line.
 
 Checksums are saved as `.csum.csv`, a type this app owns
 (`com.djb.csum.csum-csv`). Comparison results are saved as `.csum-compare.csv`, a

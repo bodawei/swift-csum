@@ -54,11 +54,14 @@
 		C50000000000000000000179 /* PostHogStartup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000178 /* PostHogStartup.swift */; };
 		C50000000000000000000183 /* PostHogConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000182 /* PostHogConfiguration.swift */; };
 		C50000000000000000000181 /* PostHogStartupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000180 /* PostHogStartupTests.swift */; };
+		C50000000000000000000167 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000166 /* Logger.swift */; };
+		C50000000000000000000169 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000168 /* LoggerTests.swift */; };
 		C50000000000000000000177 /* TelemetryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000176 /* TelemetryTests.swift */; };
 		C50000000000000000000161 /* HelpTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000158 /* HelpTopic.swift */; };
 		C50000000000000000000162 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000157 /* HelpView.swift */; };
 		C50000000000000000000163 /* CsvTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000159 /* CsvTableView.swift */; };
 		C50000000000000000000164 /* ExportShareLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000160 /* ExportShareLink.swift */; };
+		C50000000000000000000185 /* RowCopyMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000186 /* RowCopyMenu.swift */; };
 		C50000000000000000000150 /* CsumSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000151 /* CsumSectionView.swift */; };
 		C50000000000000000000152 /* CsumSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000153 /* CsumSectionModel.swift */; };
 		C50000000000000000000154 /* CsumResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000155 /* CsumResultView.swift */; };
@@ -136,6 +139,9 @@
 		C50000000000000000000157 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		C50000000000000000000159 /* CsvTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvTableView.swift; sourceTree = "<group>"; };
 		C50000000000000000000160 /* ExportShareLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportShareLink.swift; sourceTree = "<group>"; };
+		C50000000000000000000166 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		C50000000000000000000168 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
+		C50000000000000000000186 /* RowCopyMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowCopyMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +191,7 @@
 				C500000000000000000000D6 /* Telemetry.swift */,
 				C50000000000000000000178 /* PostHogStartup.swift */,
 				C50000000000000000000182 /* PostHogConfiguration.swift */,
+				C50000000000000000000166 /* Logger.swift */,
 				C500000000000000000000C1 /* App */,
 				C5000000000000000000015A /* Help */,
 				C50000000000000000000148 /* FeatureFlags */,
@@ -288,6 +295,7 @@
 				C500000000000000000000E3 /* DiffRow.swift */,
 				C50000000000000000000159 /* CsvTableView.swift */,
 				C50000000000000000000160 /* ExportShareLink.swift */,
+				C50000000000000000000186 /* RowCopyMenu.swift */,
 				C500000000000000000000E6 /* DiffTint.swift */,
 			);
 			path = Shared;
@@ -327,6 +335,7 @@
 				C50000000000000000000103 /* SectionModelTests.swift */,
 				C50000000000000000000143 /* FeatureFlagStoreTests.swift */,
 				C50000000000000000000180 /* PostHogStartupTests.swift */,
+				C50000000000000000000168 /* LoggerTests.swift */,
 				C50000000000000000000176 /* TelemetryTests.swift */,
 			);
 			path = csumTests;
@@ -473,6 +482,7 @@
 				C500000000000000000000D7 /* Telemetry.swift in Sources */,
 				C50000000000000000000179 /* PostHogStartup.swift in Sources */,
 				C50000000000000000000183 /* PostHogConfiguration.swift in Sources */,
+				C50000000000000000000167 /* Logger.swift in Sources */,
 				C500000000000000000000B2 /* AppModel.swift in Sources */,
 				C500000000000000000000B3 /* RootView.swift in Sources */,
 				C50000000000000000000121 /* WindowTitleHider.swift in Sources */,
@@ -505,6 +515,7 @@
 				C50000000000000000000162 /* HelpView.swift in Sources */,
 				C50000000000000000000163 /* CsvTableView.swift in Sources */,
 				C50000000000000000000164 /* ExportShareLink.swift in Sources */,
+				C50000000000000000000185 /* RowCopyMenu.swift in Sources */,
 				C50000000000000000000144 /* FeatureFlagProviding.swift in Sources */,
 				C50000000000000000000132 /* ComparisonSectionDisplay.swift in Sources */,
 				C500000000000000000000F8 /* DiffRow.swift in Sources */,
@@ -520,6 +531,7 @@
 				C50000000000000000000104 /* SectionModelTests.swift in Sources */,
 				C50000000000000000000147 /* FeatureFlagStoreTests.swift in Sources */,
 				C50000000000000000000181 /* PostHogStartupTests.swift in Sources */,
+				C50000000000000000000169 /* LoggerTests.swift in Sources */,
 				C50000000000000000000177 /* TelemetryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
