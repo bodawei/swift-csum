@@ -60,6 +60,7 @@
 		C50000000000000000000162 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000157 /* HelpView.swift */; };
 		C50000000000000000000163 /* CsvTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000159 /* CsvTableView.swift */; };
 		C50000000000000000000164 /* ExportShareLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000160 /* ExportShareLink.swift */; };
+		C50000000000000000000185 /* RowCopyMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000186 /* RowCopyMenu.swift */; };
 		C50000000000000000000150 /* CsumSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000151 /* CsumSectionView.swift */; };
 		C50000000000000000000152 /* CsumSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000153 /* CsumSectionModel.swift */; };
 		C50000000000000000000154 /* CsumResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000155 /* CsumResultView.swift */; };
@@ -138,6 +139,7 @@
 		C50000000000000000000160 /* ExportShareLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportShareLink.swift; sourceTree = "<group>"; };
 		C50000000000000000000166 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C50000000000000000000168 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
+		C50000000000000000000186 /* RowCopyMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowCopyMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,6 +293,7 @@
 				C500000000000000000000E3 /* DiffRow.swift */,
 				C50000000000000000000159 /* CsvTableView.swift */,
 				C50000000000000000000160 /* ExportShareLink.swift */,
+				C50000000000000000000186 /* RowCopyMenu.swift */,
 				C500000000000000000000E6 /* DiffTint.swift */,
 			);
 			path = Shared;
@@ -509,6 +512,7 @@
 				C50000000000000000000162 /* HelpView.swift in Sources */,
 				C50000000000000000000163 /* CsvTableView.swift in Sources */,
 				C50000000000000000000164 /* ExportShareLink.swift in Sources */,
+				C50000000000000000000185 /* RowCopyMenu.swift in Sources */,
 				C50000000000000000000144 /* FeatureFlagProviding.swift in Sources */,
 				C50000000000000000000132 /* ComparisonSectionDisplay.swift in Sources */,
 				C500000000000000000000F8 /* DiffRow.swift in Sources */,

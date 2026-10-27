@@ -11,6 +11,7 @@ struct DiffRow: Identifiable {
     let checksum: AttributedString
     let date: String
     let label: LocalizedStringKey
+    let csv: String
 }
 
 enum DiffRows {
@@ -188,7 +189,8 @@ enum DiffRows {
             created: Format.day(entry.created),
             checksum: checksum,
             date: Format.day(entry.modified),
-            label: accessibilityLabel
+            label: accessibilityLabel,
+            csv: ChecksumRowText.line(for: entry)
         )
     }
 }
@@ -230,6 +232,7 @@ struct DiffRowView: View {
             }
         }
         .padding(.vertical, 2)
+        .copyRowMenu(row.csv)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(row.label)
     }
