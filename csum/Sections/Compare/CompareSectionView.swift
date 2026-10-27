@@ -46,43 +46,46 @@ struct CompareSectionView: View {
     private var picker: some View {
         ScrollView {
             VStack(spacing: 16) {
-                VStack(spacing: 14) {
-                    source(
-                        label: "First:",
-                        kind: Binding(
-                            get: { app.compare.firstKind },
-                            set: { app.compare.setFirstKind($0) }
-                        ),
-                        url: app.compare.first,
-                        chooseIdentifier: "chooseFirst"
-                    ) {
-                        app.compare.chooseFirst()
+                VStack(spacing: 0) {
+                    HStack {
+                        Spacer()
+
+                        swapButton
                     }
 
-                    Divider()
+                    VStack(spacing: 14) {
+                        source(
+                            label: "First:",
+                            kind: Binding(
+                                get: { app.compare.firstKind },
+                                set: { app.compare.setFirstKind($0) }
+                            ),
+                            url: app.compare.first,
+                            chooseIdentifier: "chooseFirst"
+                        ) {
+                            app.compare.chooseFirst()
+                        }
 
-                    source(
-                        label: "Second:",
-                        kind: Binding(
-                            get: { app.compare.secondKind },
-                            set: { app.compare.setSecondKind($0) }
-                        ),
-                        url: app.compare.second,
-                        chooseIdentifier: "chooseSecond"
-                    ) {
-                        app.compare.chooseSecond()
+                        Divider()
+
+                        source(
+                            label: "Second:",
+                            kind: Binding(
+                                get: { app.compare.secondKind },
+                                set: { app.compare.setSecondKind($0) }
+                            ),
+                            url: app.compare.second,
+                            chooseIdentifier: "chooseSecond"
+                        ) {
+                            app.compare.chooseSecond()
+                        }
                     }
+                    .padding(16)
+                    .background(
+                        Color(.secondarySystemBackground),
+                        in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    )
                 }
-                .padding(16)
-                .background(
-                    Color(.secondarySystemBackground),
-                    in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-                )
-
-                Button("Swap") {
-                    app.compare.swap()
-                }
-                .disabled(app.compare.first == nil && app.compare.second == nil)
 
                 Button("Compare") {
                     app.compare.compareTapped()
@@ -101,6 +104,24 @@ struct CompareSectionView: View {
                 HelpButton()
             }
         }
+    }
+
+    private var swapButton: some View {
+        Button {
+            app.compare.swap()
+        } label: {
+            Image(systemName: "arrow.up.arrow.down")
+                .font(.footnote.weight(.semibold))
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.borderless)
+        .controlSize(.small)
+        .tint(.secondary)
+        .help("Swap")
+        .accessibilityLabel("Swap")
+        .accessibilityIdentifier("swapButton")
+        .disabled(app.compare.first == nil && app.compare.second == nil)
     }
 
     private func source(
