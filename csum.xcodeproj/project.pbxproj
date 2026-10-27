@@ -56,6 +56,7 @@
 		C50000000000000000000181 /* PostHogStartupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000180 /* PostHogStartupTests.swift */; };
 		C50000000000000000000167 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000166 /* Logger.swift */; };
 		C50000000000000000000169 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000168 /* LoggerTests.swift */; };
+		C50000000000000000000177 /* TelemetryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000176 /* TelemetryTests.swift */; };
 		C50000000000000000000161 /* HelpTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000158 /* HelpTopic.swift */; };
 		C50000000000000000000162 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000157 /* HelpView.swift */; };
 		C50000000000000000000163 /* CsvTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000159 /* CsvTableView.swift */; };
@@ -130,6 +131,7 @@
 		C50000000000000000000178 /* PostHogStartup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHogStartup.swift; sourceTree = "<group>"; };
 		C50000000000000000000182 /* PostHogConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHogConfiguration.swift; sourceTree = "<group>"; };
 		C50000000000000000000180 /* PostHogStartupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHogStartupTests.swift; sourceTree = "<group>"; };
+		C50000000000000000000176 /* TelemetryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryTests.swift; sourceTree = "<group>"; };
 		C50000000000000000000151 /* CsumSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionView.swift; sourceTree = "<group>"; };
 		C50000000000000000000153 /* CsumSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumSectionModel.swift; sourceTree = "<group>"; };
 		C50000000000000000000155 /* CsumResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsumResultView.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				C50000000000000000000143 /* FeatureFlagStoreTests.swift */,
 				C50000000000000000000180 /* PostHogStartupTests.swift */,
 				C50000000000000000000168 /* LoggerTests.swift */,
+				C50000000000000000000176 /* TelemetryTests.swift */,
 			);
 			path = csumTests;
 			sourceTree = "<group>";
@@ -529,6 +532,7 @@
 				C50000000000000000000147 /* FeatureFlagStoreTests.swift in Sources */,
 				C50000000000000000000181 /* PostHogStartupTests.swift in Sources */,
 				C50000000000000000000169 /* LoggerTests.swift in Sources */,
+				C50000000000000000000177 /* TelemetryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

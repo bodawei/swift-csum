@@ -15,11 +15,14 @@ enum Telemetry {
 
         isStarted = true
 
-        guard let endpoint = tracesEndpoint() else {
+        guard let endpointConfig = lookupTracesEndpointConfig() else {
             return
         }
 
-        let exporter = OtlpHttpTraceExporter(endpoint: endpoint)
+        let exporter = OtlpHttpTraceExporter(
+            endpoint: endpointConfig.endpoint,
+            envVarHeaders: endpointConfig.headers.isEmpty ? nil : endpointConfig.headers
+        )
         let processor = BatchSpanProcessor(spanExporter: exporter)
 
         let provider = TracerProviderBuilder()
@@ -35,19 +38,58 @@ enum Telemetry {
         OpenTelemetry.registerTracerProvider(tracerProvider: provider)
     }
 
-    private static func tracesEndpoint() -> URL? {
+    static func lookupTracesEndpointConfig(
+        bundle: Bundle = .main,
+        environment: [String: String] = ProcessInfo.processInfo.environment
+    ) -> TracesEndpointConfig? {
         let configured =
-            ProcessInfo.processInfo.environment[endpointKey]
-            ?? Bundle.main.object(forInfoDictionaryKey: endpointKey) as? String
+            environment[endpointKey]
+            ?? bundle.object(forInfoDictionaryKey: endpointKey) as? String
 
-        guard let configured, !configured.isEmpty, let url = URL(string: configured) else {
+        if let configured, !configured.isEmpty, let url = URL(string: configured) {
+            let endpoint =
+                url.path.isEmpty || url.path == "/"
+                ? url.appendingPathComponent("v1/traces")
+                : url
+
+            return TracesEndpointConfig(endpoint: endpoint, headers: [])
+        }
+
+        guard
+            let configuration = PostHogConfiguration.from(bundle: bundle, environment: environment),
+            let endpoint = configuration.tracesEndpoint
+        else {
             return nil
         }
 
-        if url.path.isEmpty || url.path == "/" {
-            return url.appendingPathComponent("v1/traces")
+        return TracesEndpointConfig(endpoint: endpoint, headers: configuration.tracesHeaders)
+    }
+}
+
+struct TracesEndpointConfig: Equatable {
+    let endpoint: URL
+    let headers: [(String, String)]
+
+    static func == (lhs: TracesEndpointConfig, rhs: TracesEndpointConfig) -> Bool {
+        lhs.endpoint == rhs.endpoint && lhs.headers.map(\.0) == rhs.headers.map(\.0)
+            && lhs.headers.map(\.1) == rhs.headers.map(\.1)
+    }
+}
+
+extension PostHogConfiguration {
+    var tracesEndpoint: URL? {
+        guard var components = URLComponents(string: host) else {
+            return nil
         }
 
-        return url
+        let path = components.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+
+        components.path = path.isEmpty ? "/i/v1/traces" : "/\(path)/i/v1/traces"
+
+        return components.url
+    }
+
+    var tracesHeaders: [(String, String)] {
+        [("Authorization", "Bearer \(projectToken)")]
     }
 }

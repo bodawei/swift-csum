@@ -231,19 +231,34 @@ A thrown error is recorded as an exception event and sets the span status to err
 controller depends only on `OpenTelemetryApi`, so the spans are no-ops until the process
 registers a `TracerProvider`.
 
-The app does that in `csum/Telemetry.swift`, exporting over OTLP/HTTP when an endpoint is
-configured, either in the environment or in `Info.plist`. Set
-`OTEL_EXPORTER_OTLP_ENDPOINT` in the scheme's environment for a Mac or simulator run, or
-add it as a string key in `Info.plist` on a device. An endpoint with no path gets
-`/v1/traces` appended, so both of these work:
+The app does that in `csum/Telemetry.swift`, exporting over OTLP/HTTP to [PostHog's OTLP
+endpoint](https://posthog.com/docs/opentelemetry). Two things have to be configured,
+either in the environment or as string keys in `Info.plist`:
+
+- `POSTHOG_PROJECT_TOKEN` — the same `phc_…` token the flags use. Traces go to
+  `/i/v1/traces` on `POSTHOG_HOST` (default `https://us.i.posthog.com`) with that token as
+  a bearer token, and show up under **Tracing** in PostHog.
+- `OTEL_EXPORTER_OTLP_ENDPOINT` — an alternative destination, for a local collector. It
+  wins over the PostHog settings and is sent without an authorization header. An endpoint
+  with no path gets `/v1/traces` appended, so both of these work:
 
 ```
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318/v1/traces
 ```
 
-With no endpoint configured the app keeps the no-op provider and sends nothing. The CLI
+With neither configured the app keeps the no-op provider and sends nothing. The CLI
 registers no provider either, so `csum-cli` exports nothing.
+
+The app can also record its own spans, through `Logger.startSpan(name:attributes:)` and
+`Logger.endSpan(_:)`. They go to whichever provider is registered, so they land beside the
+controller's spans in PostHog. Both do nothing until `Logger.start()` has started PostHog
+with a project token:
+
+```swift
+let span = Logger.shared.startSpan(name: "export_results", attributes: ["entry_count": .int(3)])
+defer { Logger.shared.endSpan(span) }
+```
 
 ## Feature flags
 
