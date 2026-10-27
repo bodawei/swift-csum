@@ -15,13 +15,13 @@ enum Telemetry {
 
         isStarted = true
 
-        guard let destination = destination() else {
+        guard let endpointConfig = lookupTracesEndpointConfig() else {
             return
         }
 
         let exporter = OtlpHttpTraceExporter(
-            endpoint: destination.endpoint,
-            envVarHeaders: destination.headers.isEmpty ? nil : destination.headers
+            endpoint: endpointConfig.endpoint,
+            envVarHeaders: endpointConfig.headers.isEmpty ? nil : endpointConfig.headers
         )
         let processor = BatchSpanProcessor(spanExporter: exporter)
 
@@ -38,17 +38,7 @@ enum Telemetry {
         OpenTelemetry.registerTracerProvider(tracerProvider: provider)
     }
 
-    struct TracesEndpointConfig: Equatable {
-        let endpoint: URL
-        let headers: [(String, String)]
-
-        static func == (lhs: TracesEndpointConfig, rhs: TracesEndpointConfig) -> Bool {
-            lhs.endpoint == rhs.endpoint && lhs.headers.map(\.0) == rhs.headers.map(\.0)
-                && lhs.headers.map(\.1) == rhs.headers.map(\.1)
-        }
-    }
-
-    static func destination(
+    static func lookupTracesEndpointConfig(
         bundle: Bundle = .main,
         environment: [String: String] = ProcessInfo.processInfo.environment
     ) -> TracesEndpointConfig? {
@@ -73,6 +63,16 @@ enum Telemetry {
         }
 
         return TracesEndpointConfig(endpoint: endpoint, headers: configuration.tracesHeaders)
+    }
+}
+
+struct TracesEndpointConfig: Equatable {
+    let endpoint: URL
+    let headers: [(String, String)]
+
+    static func == (lhs: TracesEndpointConfig, rhs: TracesEndpointConfig) -> Bool {
+        lhs.endpoint == rhs.endpoint && lhs.headers.map(\.0) == rhs.headers.map(\.0)
+            && lhs.headers.map(\.1) == rhs.headers.map(\.1)
     }
 }
 
