@@ -38,11 +38,11 @@ enum Telemetry {
         OpenTelemetry.registerTracerProvider(tracerProvider: provider)
     }
 
-    struct Destination: Equatable {
+    struct TracesEndpointConfig: Equatable {
         let endpoint: URL
         let headers: [(String, String)]
 
-        static func == (lhs: Destination, rhs: Destination) -> Bool {
+        static func == (lhs: TracesEndpointConfig, rhs: TracesEndpointConfig) -> Bool {
             lhs.endpoint == rhs.endpoint && lhs.headers.map(\.0) == rhs.headers.map(\.0)
                 && lhs.headers.map(\.1) == rhs.headers.map(\.1)
         }
@@ -51,7 +51,7 @@ enum Telemetry {
     static func destination(
         bundle: Bundle = .main,
         environment: [String: String] = ProcessInfo.processInfo.environment
-    ) -> Destination? {
+    ) -> TracesEndpointConfig? {
         let configured =
             environment[endpointKey]
             ?? bundle.object(forInfoDictionaryKey: endpointKey) as? String
@@ -62,7 +62,7 @@ enum Telemetry {
                 ? url.appendingPathComponent("v1/traces")
                 : url
 
-            return Destination(endpoint: endpoint, headers: [])
+            return TracesEndpointConfig(endpoint: endpoint, headers: [])
         }
 
         guard
@@ -72,7 +72,7 @@ enum Telemetry {
             return nil
         }
 
-        return Destination(endpoint: endpoint, headers: configuration.tracesHeaders)
+        return TracesEndpointConfig(endpoint: endpoint, headers: configuration.tracesHeaders)
     }
 }
 
