@@ -52,7 +52,16 @@ enum Telemetry {
         bundle: Bundle = .main,
         environment: [String: String] = ProcessInfo.processInfo.environment
     ) -> Destination? {
-        if let endpoint = explicitEndpoint(bundle: bundle, environment: environment) {
+        let configured =
+            environment[endpointKey]
+            ?? bundle.object(forInfoDictionaryKey: endpointKey) as? String
+
+        if let configured, !configured.isEmpty, let url = URL(string: configured) {
+            let endpoint =
+                url.path.isEmpty || url.path == "/"
+                ? url.appendingPathComponent("v1/traces")
+                : url
+
             return Destination(endpoint: endpoint, headers: [])
         }
 
@@ -64,22 +73,6 @@ enum Telemetry {
         }
 
         return Destination(endpoint: endpoint, headers: configuration.tracesHeaders)
-    }
-
-    private static func explicitEndpoint(bundle: Bundle, environment: [String: String]) -> URL? {
-        let configured =
-            environment[endpointKey]
-            ?? bundle.object(forInfoDictionaryKey: endpointKey) as? String
-
-        guard let configured, !configured.isEmpty, let url = URL(string: configured) else {
-            return nil
-        }
-
-        if url.path.isEmpty || url.path == "/" {
-            return url.appendingPathComponent("v1/traces")
-        }
-
-        return url
     }
 }
 
