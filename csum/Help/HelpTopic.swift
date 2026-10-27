@@ -57,7 +57,7 @@ struct HelpTopic: Identifiable {
                 "2. For each side, choose the source type — a saved .csum.csv, or a folder to checksum on the spot.",
                 "3. Tap Choose… and pick the file or folder.",
                 "4. Tap Compare. Every entry is grouped into Added, Removed, Changed, Moved, Renamed and Unchanged. Changed, Moved and Renamed show both sides — old and new path, size and times — with the part that differs highlighted.",
-                "Swap exchanges the two sides, which flips Added and Removed.",
+                "The swap button above the two sides exchanges them, which flips Added and Removed.",
                 "Because entries are matched on their path relative to each root, a folder that has moved since its checksums were taken compares as unchanged, not as all-moved.",
             ]
         ),
