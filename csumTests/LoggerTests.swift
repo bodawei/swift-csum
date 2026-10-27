@@ -36,4 +36,16 @@ final class LoggerTests: XCTestCase {
             ["debug", "info", "warning", "error"]
         )
     }
+
+    func testStartingASpanWithoutAProjectTokenGivesNothing() {
+        let logger = Logger(bundle: bundle, environment: [:])
+
+        XCTAssertNil(logger.startSpan(name: "checksum", attributes: ["entry_count": .int(3)]))
+    }
+
+    func testEndingASpanThatWasNeverStartedDoesNothing() {
+        let logger = Logger(bundle: bundle, environment: [:])
+
+        logger.endSpan(logger.startSpan(name: "checksum"))
+    }
 }

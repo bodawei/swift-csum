@@ -1,7 +1,11 @@
+import CsumController
 import Foundation
+import OpenTelemetryApi
 import PostHog
 
 final class Logger {
+    private static let instrumentationName = "com.djb.csum"
+
     enum Priority: String, CaseIterable {
         case debug
         case info
@@ -56,5 +60,28 @@ final class Logger {
         case .error:
             postHog?.error(name, attributes: properties)
         }
+    }
+
+    func startSpan(name: String, attributes: [String: AttributeValue] = [:]) -> (any Span)? {
+        guard startup.hasStarted else {
+            return nil
+        }
+
+        let span =
+            OpenTelemetry.instance.tracerProvider
+            .get(
+                instrumentationName: Self.instrumentationName,
+                instrumentationVersion: CsumFormat.toolVersion
+            )
+            .spanBuilder(spanName: name)
+            .startSpan()
+
+        span.setAttributes(attributes)
+
+        return span
+    }
+
+    func endSpan(_ span: (any Span)?) {
+        span?.end()
     }
 }

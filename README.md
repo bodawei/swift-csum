@@ -250,6 +250,16 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318/v1/traces
 With neither configured the app keeps the no-op provider and sends nothing. The CLI
 registers no provider either, so `csum-cli` exports nothing.
 
+The app can also record its own spans, through `Logger.startSpan(name:attributes:)` and
+`Logger.endSpan(_:)`. They go to whichever provider is registered, so they land beside the
+controller's spans in PostHog. Both do nothing until `Logger.start()` has started PostHog
+with a project token:
+
+```swift
+let span = Logger.shared.startSpan(name: "export_results", attributes: ["entry_count": .int(3)])
+defer { Logger.shared.endSpan(span) }
+```
+
 ## Feature flags
 
 Feature flags come from [PostHog](https://posthog.com) through its iOS SDK. Each flag is
