@@ -14,8 +14,7 @@ destination runs the same app on your Mac — no separate macOS target needed.
 The app has four tabs:
 
 - **File** — **Checksum File…** picks one file and shows its checksum, algorithm, size,
-  created and modified dates, and path. **Copy Checksum** copies the digest (a feature
-  flag, on by default).
+  created and modified dates, and path.
 - **Folder** — **Checksum Folder…** picks a folder and checksums it recursively: every
   file at every depth (hidden files included), with a progress bar while it runs and a
   list or table of results afterwards, sorted by path relative to the folder. A file
@@ -269,7 +268,6 @@ declared, with its default, in `Sources/CsumController/Model/FeatureFlag.swift`;
 
 | Flag | Default | Gates |
 |------|---------|-------|
-| `csum.copy-checksum` | on | The **Copy Checksum** button on the File result |
 | `view_tab` | on | The **View** tab, which reads a saved `.csum.csv` |
 
 To connect a PostHog project, set the project token (the `phc_…` key) as
