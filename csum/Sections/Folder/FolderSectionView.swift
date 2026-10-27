@@ -37,6 +37,10 @@ struct FolderSectionView: View {
         .buttonStyle(.borderedProminent)
         .controlSize(.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .toolbar(.hidden, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                HelpButton()
+            }
+        }
     }
 }

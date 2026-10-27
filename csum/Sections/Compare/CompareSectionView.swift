@@ -96,7 +96,11 @@ struct CompareSectionView: View {
             .frame(maxWidth: 640)
             .frame(maxWidth: .infinity)
         }
-        .toolbar(.hidden, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                HelpButton()
+            }
+        }
     }
 
     private func source(

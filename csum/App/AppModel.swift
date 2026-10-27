@@ -106,4 +106,8 @@ final class AppModel {
     func showHelp() {
         isPresentingHelp = true
     }
+
+    func hideHelp() {
+        isPresentingHelp = false
+    }
 }

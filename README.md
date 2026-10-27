@@ -28,9 +28,9 @@ The app has four tabs:
   in the first column. Nothing is checksummed again (a feature flag, on by default).
 - **Compare** — two sources, each a saved `.csum.csv` or a folder, then **Compare**.
 
-Every result page has a **Help** button, and the Mac menu bar has **Help > csum Help** (⌘?).
-Help explains what the app is for, what each tab does step by step, and how to read a
-result, one topic per tab.
+Every screen has a **Help** button — the four pickers included — and the Mac menu bar
+has **Help > csum Help** (⌘?). Help explains what the app is for, what each tab does
+step by step, and how to read a result, one topic per tab.
 
 Every result screen has a **Share** button that exports an Excel-ready CSV file — RFC
 4180 quoting, CRLF line endings, UTF-8 BOM — led by five `# csum-…` comment lines
