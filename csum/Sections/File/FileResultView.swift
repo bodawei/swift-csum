@@ -4,17 +4,10 @@ import SwiftUI
 struct FileResultView: View {
     let model: FileSectionModel
 
-    @Environment(AppModel.self) private var app
-
     var body: some View {
         content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    if app.featureFlags.isOn(.copyChecksum) {
-                        copy
-                    }
-                }
                 ToolbarItem(placement: .primaryAction) {
                     share
                 }
@@ -49,17 +42,6 @@ struct FileResultView: View {
         case .failed(let message):
             ErrorStateView(message: message)
         }
-    }
-
-    @ViewBuilder
-    private var copy: some View {
-        Button {
-            model.copyChecksum()
-        } label: {
-            Label("Copy Checksum", systemImage: "doc.on.doc")
-        }
-        .accessibilityIdentifier("copyChecksum")
-        .disabled(model.checksum == nil)
     }
 
     private var share: some View {

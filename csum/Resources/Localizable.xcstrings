@@ -545,38 +545,6 @@
         }
       }
     },
-    "Copy Checksum" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "نسخ المجموع الاختباري"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "拷貝檢查碼"
-          }
-        }
-      }
-    },
-    "Copy Checksum copies just the digest. Share — or File > Save As… (⇧⌘S) on the Mac — saves the result as a .csum.csv file." : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ينسخ «نسخ المجموع الاختباري» الملخّص وحده. أما «مشاركة» — أو «ملف > حفظ باسم…» (⇧⌘S) على Mac — فتحفظ النتيجة في ملف ‎.csum.csv."
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "「拷貝檢查碼」只會拷貝摘要值。「分享」——或在 Mac 上使用「檔案 > 儲存為…」(⇧⌘S)——會將結果儲存為 .csum.csv 檔案。"
-          }
-        }
-      }
-    },
     "Created" : {
       "localizations" : {
         "ar" : {
@@ -1009,6 +977,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "儲存的檔案是 Excel 可直接開啟的 CSV：符合 RFC 4180 的引號規則、CRLF 換行，以及 UTF-8 BOM，開頭是 # csum-… 註解行，記錄格式、工具、計算時間、演算法，以及路徑所相對的根目錄。檢查碼儲存為 .csum.csv，比較結果儲存為 .csum-compare.csv。"
+          }
+        }
+      }
+    },
+    "Share — or File > Save As… (⇧⌘S) on the Mac — saves the result as a .csum.csv file." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أما «مشاركة» — أو «ملف > حفظ باسم…» (⇧⌘S) على Mac — فتحفظ النتيجة في ملف ‎.csum.csv."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「分享」——或在 Mac 上使用「檔案 > 儲存為…」(⇧⌘S)——會將結果儲存為 .csum.csv 檔案。"
           }
         }
       }

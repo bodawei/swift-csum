@@ -28,17 +28,17 @@ final class FeatureFlagStoreTests: XCTestCase {
 
         store.start()
 
-        XCTAssertTrue(store.isOn(.copyChecksum))
+        XCTAssertTrue(store.isOn(.viewTab))
     }
 
     func testAnOffTreatmentHidesAFlag() {
         let flags = StubFeatureFlags()
-        flags.treatments[.copyChecksum] = "off"
+        flags.treatments[.viewTab] = "off"
         let store = FeatureFlagStore(provider: flags)
 
         store.start()
 
-        XCTAssertFalse(store.isOn(.copyChecksum))
+        XCTAssertFalse(store.isOn(.viewTab))
     }
 
     func testAChangeNotificationRefreshesTheFlags() async {
@@ -47,22 +47,16 @@ final class FeatureFlagStoreTests: XCTestCase {
 
         store.start()
 
-        XCTAssertTrue(store.isOn(.copyChecksum))
+        XCTAssertTrue(store.isOn(.viewTab))
 
-        flags.treatments[.copyChecksum] = "off"
+        flags.treatments[.viewTab] = "off"
         flags.change()
 
         await waitUntil {
-            !store.isOn(.copyChecksum)
+            !store.isOn(.viewTab)
         }
 
-        XCTAssertFalse(store.isOn(.copyChecksum))
-    }
-
-    func testTheViewTabShowsWithoutATreatment() {
-        let model = AppModel(featureFlags: FeatureFlagStore(provider: StubFeatureFlags()))
-
-        XCTAssertTrue(model.showsViewTab)
+        XCTAssertFalse(store.isOn(.viewTab))
     }
 
     func testTheViewTabCanBeTurnedOff() {

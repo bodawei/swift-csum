@@ -22,7 +22,7 @@ struct HelpTopic: Identifiable {
                 "1. Open the File tab.",
                 "2. Tap Checksum File… and choose a file.",
                 "3. The result shows the checksum, the algorithm, the size, the created and modified dates, and the full path.",
-                "Copy Checksum copies just the digest. Share — or File > Save As… (⇧⌘S) on the Mac — saves the result as a .csum.csv file.",
+                "Share — or File > Save As… (⇧⌘S) on the Mac — saves the result as a .csum.csv file.",
             ]
         ),
         HelpTopic(

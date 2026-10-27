@@ -1,7 +1,6 @@
 import CsumController
 import Foundation
 import Observation
-import UIKit
 
 @MainActor
 @Observable
@@ -40,17 +39,6 @@ final class FileSectionModel {
         self.demoMode = demoMode
     }
 
-    var checksum: String? {
-        guard case .loaded(let result) = phase,
-            let entry = result.entries.first,
-            case .digest(let digest) = entry.outcome
-        else {
-            return nil
-        }
-
-        return digest
-    }
-
     func chooseFile() {
         #if DEBUG
             if demoMode {
@@ -65,14 +53,6 @@ final class FileSectionModel {
     func fileChosen(_ url: URL) {
         path = [.result]
         start(url)
-    }
-
-    func copyChecksum() {
-        guard let checksum else {
-            return
-        }
-
-        UIPasteboard.general.string = checksum
     }
 
     func returned() {

@@ -122,20 +122,6 @@ final class SectionModelTests: XCTestCase {
         XCTAssertNil(model.export)
     }
 
-    func testCopyingTheChecksumWritesItToThePasteboard() async {
-        let model = FileSectionModel(service: StubService(result: .success(makeResult())))
-
-        model.fileChosen(URL(fileURLWithPath: "/tmp/a.txt"))
-
-        await waitUntil {
-            model.checksum != nil
-        }
-
-        model.copyChecksum()
-
-        XCTAssertEqual(UIPasteboard.general.string, "abc")
-    }
-
     func testLeavingTheFileSectionCancelsAndResets() {
         let model = FileSectionModel(service: StubService(result: .success(makeResult())))
 
