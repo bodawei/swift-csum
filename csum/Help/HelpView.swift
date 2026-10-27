@@ -1,13 +1,15 @@
 import SwiftUI
 
 struct HelpView: View {
-    @Environment(\.dismiss) private var dismiss
+    @Environment(AppModel.self) private var app
 
     var body: some View {
         NavigationStack {
             List(HelpTopic.all) { topic in
                 NavigationLink {
-                    HelpTopicView(topic: topic)
+                    HelpTopicView(topic: topic) {
+                        app.hideHelp()
+                    }
                 } label: {
                     Text(topic.title)
                         .font(.body.weight(.medium))
@@ -17,10 +19,9 @@ struct HelpView: View {
             .navigationTitle("Help")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        dismiss()
+                    HelpDoneButton {
+                        app.hideHelp()
                     }
-                    .accessibilityIdentifier("doneHelp")
                 }
             }
         }
@@ -28,9 +29,8 @@ struct HelpView: View {
 }
 
 private struct HelpTopicView: View {
-    @Environment(\.dismiss) private var dismiss
-
     let topic: HelpTopic
+    let close: () -> Void
 
     var body: some View {
         ScrollView {
@@ -48,12 +48,18 @@ private struct HelpTopicView: View {
         .navigationTitle(topic.title)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("Done") {
-                    dismiss()
-                }
-                .accessibilityIdentifier("doneHelp")
+                HelpDoneButton(close: close)
             }
         }
+    }
+}
+
+private struct HelpDoneButton: View {
+    let close: () -> Void
+
+    var body: some View {
+        Button("Done", action: close)
+            .accessibilityIdentifier("doneHelp")
     }
 }
 

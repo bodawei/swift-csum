@@ -113,9 +113,6 @@ final class AppFlowUITests: XCTestCase {
     func testHelpFlow() {
         let app = launch()
 
-        app.buttons["Checksum File…"].tap()
-        XCTAssertTrue(app.staticTexts["Algorithm"].waitForExistence(timeout: 5))
-
         app.buttons["help"].tap()
 
         XCTAssertTrue(app.navigationBars["Help"].waitForExistence(timeout: 5))
@@ -129,7 +126,19 @@ final class AppFlowUITests: XCTestCase {
         attach(app, name: "help-view-topic")
 
         app.buttons["doneHelp"].tap()
-        XCTAssertTrue(app.staticTexts["Algorithm"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Help"].waitForNonExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Checksum File…"].waitForExistence(timeout: 5))
+    }
+
+    func testEveryPickerOffersHelp() {
+        let app = launch()
+
+        for tab in ["File", "Folder", "View", "Compare"] {
+            app.buttons[tab].firstMatch.tap()
+            XCTAssertTrue(app.buttons["help"].waitForExistence(timeout: 5))
+        }
+
+        attach(app, name: "picker-help")
     }
 
     func testHelpIsTranslated() {
