@@ -15,7 +15,7 @@ struct CsumSectionView: View {
         }
         .fileImporter(
             isPresented: $model.isChoosingSource,
-            allowedContentTypes: [.csumChecksums, .csumComparison],
+            allowedContentTypes: [.commaSeparatedText, .csumChecksums, .csumComparison],
             allowsMultipleSelection: false
         ) { result in
             guard case .success(let urls) = result, let url = urls.first else {
