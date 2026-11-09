@@ -18,7 +18,7 @@ extension ChecksumError: LocalizedError {
 }
 
 public enum ChecksumCalculator {
-    private static let chunkSize = 1 << 20
+    static let chunkSize = 1 << 20
 
     public static func checksum(of url: URL, algorithm: ChecksumAlgorithm) throws -> String {
         let descriptor = try openDescriptor(for: url)

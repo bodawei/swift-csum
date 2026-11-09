@@ -19,7 +19,7 @@ struct CsvTableView: View {
                     ForEach(table.rows) { row in
                         rowView(row)
                             .padding(.vertical, 3)
-                            .frame(minWidth: proxy.size.width - 40, alignment: .leading)
+                            .frame(minWidth: max(proxy.size.width - 40, 0), alignment: .leading)
                     }
                 }
                 .padding(.horizontal, 20)

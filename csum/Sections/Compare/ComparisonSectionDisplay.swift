@@ -38,7 +38,7 @@ extension ComparisonSection {
 }
 
 extension Set where Element == ComparisonSection {
-    mutating func toggle(_ section: ComparisonSection) {
+    fileprivate mutating func toggle(_ section: ComparisonSection) {
         if contains(section) {
             remove(section)
         } else {

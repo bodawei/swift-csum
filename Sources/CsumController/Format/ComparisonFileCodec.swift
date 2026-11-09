@@ -53,12 +53,10 @@ public enum ComparisonFileCodec {
             table.rows.append(contentsOf: sectionRows)
         }
 
-        let text = Csv.stringify(
+        return Csv.stringify(
             table,
             options: CsvOptions(dataFormat: .excel, allowLineComments: true, hasHeader: false)
         )
-
-        return text + DataFormat.excel.lineEnding
     }
 
     private static func comments(for metadata: ComparisonMetadata) -> [String] {
