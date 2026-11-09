@@ -38,7 +38,7 @@ struct CsumExport {
         case checksums
         case comparison
 
-        var fileExtension: String {
+        fileprivate var fileExtension: String {
             switch self {
             case .checksums:
                 return CsumFormat.checksumFileExtension
