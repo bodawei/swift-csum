@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import CsumController
 
 final class EntryCollectorTests: XCTestCase {
@@ -58,7 +59,8 @@ final class EntryCollectorTests: XCTestCase {
     func testEmptyFolderYieldsNoEntries() throws {
         try tree.folder("empty")
 
-        XCTAssertEqual(try EntryCollector.entries(in: tree.url, algorithm: .sha256, progress: nil).count, 0)
+        XCTAssertEqual(
+            try EntryCollector.entries(in: tree.url, algorithm: .sha256, progress: nil).count, 0)
     }
 
     func testUnreadableFileBecomesACannotOpenFailure() throws {
@@ -83,11 +85,12 @@ final class EntryCollectorTests: XCTestCase {
     }
 
     func testDigestsMatchTheAlgorithm() throws {
-        let contents = Data((0 ..< 3_000_000).map { UInt8($0 % 251) })
+        let contents = Data((0..<3_000_000).map { UInt8($0 % 251) })
         try tree.file("big.bin", contents: contents)
 
         for algorithm in ChecksumAlgorithm.allCases {
-            let entries = try EntryCollector.entries(in: tree.url, algorithm: algorithm, progress: nil)
+            let entries = try EntryCollector.entries(
+                in: tree.url, algorithm: algorithm, progress: nil)
 
             XCTAssertEqual(entries[0].outcome, .digest(digest(of: contents, using: algorithm)))
         }
@@ -106,8 +109,8 @@ final class EntryCollectorTests: XCTestCase {
     }
 
     func testRecordsSizeAndDates() throws {
-        let created = Date(timeIntervalSince1970: 1600000000)
-        let modified = Date(timeIntervalSince1970: 1700000000)
+        let created = Date(timeIntervalSince1970: 1_600_000_000)
+        let modified = Date(timeIntervalSince1970: 1_700_000_000)
         try tree.text("dated.txt", "1234567", modified: modified, created: created)
 
         let entries = try EntryCollector.entries(in: tree.url, algorithm: .sha256, progress: nil)
@@ -118,7 +121,7 @@ final class EntryCollectorTests: XCTestCase {
     }
 
     func testProgressCountsUpToTheTotal() throws {
-        for index in 0 ..< 5 {
+        for index in 0..<5 {
             try tree.text("file\(index).txt", "\(index)")
         }
 

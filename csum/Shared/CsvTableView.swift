@@ -7,39 +7,46 @@ struct CsvTableView: View {
         static let size: CGFloat = 60
         static let date: CGFloat = 85
         static let path: CGFloat = 170
+        static let spacing: CGFloat = 12
     }
 
     let table: CsvTable
 
     var body: some View {
-        ScrollView([.horizontal, .vertical]) {
-            Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 6) {
-                ForEach(table.rows) { row in
-                    GridRow(alignment: .firstTextBaseline) {
-                        cells(for: row)
+        GeometryReader { proxy in
+            ScrollView([.horizontal, .vertical]) {
+                LazyVStack(alignment: .leading, spacing: 0) {
+                    ForEach(table.rows) { row in
+                        rowView(row)
+                            .padding(.vertical, 3)
+                            .frame(minWidth: max(proxy.size.width - 40, 0), alignment: .leading)
                     }
                 }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 20)
         }
     }
 
     @ViewBuilder
-    private func cells(for row: CsvTable.Row) -> some View {
+    private func rowView(_ row: CsvTable.Row) -> some View {
         if row.isComment {
             Text(verbatim: row.fields.first ?? "")
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(.secondary)
-                .gridCellColumns(max(table.columnCount, 1))
+                .frame(maxWidth: .infinity, alignment: .leading)
         } else {
-            ForEach(Array(row.fields.enumerated()), id: \.offset) { index, field in
-                Text(verbatim: field)
-                    .font(row.fields.first == "Checksum" ? .footnote.weight(.semibold) : .caption)
-                    .foregroundStyle(row.fields.first == "Checksum" ? .secondary : .primary)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-                    .frame(width: width(for: index), alignment: alignment(for: index))
+            let isHeader = row.fields.first == "Checksum"
+
+            HStack(spacing: Layout.spacing) {
+                ForEach(Array(row.fields.enumerated()), id: \.offset) { index, field in
+                    Text(verbatim: field)
+                        .font(isHeader ? .footnote.weight(.semibold) : .caption)
+                        .foregroundStyle(isHeader ? .secondary : .primary)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                        .frame(width: width(for: index), alignment: alignment(for: index))
+                }
             }
         }
     }

@@ -27,8 +27,10 @@ struct ComparisonTable: View {
                         sectionRow(section)
 
                         if expanded.contains(section) {
-                            ForEach(DiffRows.rows(for: section, of: comparison)) { row in
-                                entryRow(row)
+                            let rowCount = DiffRows.rowCount(for: section, of: comparison)
+
+                            ForEach(0..<rowCount, id: \.self) { index in
+                                entryRow(DiffRows.row(at: index, in: section, of: comparison))
                             }
                         }
                     }
@@ -69,36 +71,11 @@ struct ComparisonTable: View {
     }
 
     private func sectionRow(_ section: ComparisonSection) -> some View {
-        Button {
-            withAnimation(.snappy) {
-                if expanded.contains(section) {
-                    expanded.remove(section)
-                } else {
-                    expanded.insert(section)
-                }
-            }
-        } label: {
-            HStack(spacing: 6) {
-                Image(systemName: "chevron.right")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                    .rotationEffect(.degrees(expanded.contains(section) ? 90 : 0))
-                    .frame(width: Layout.symbol)
-
-                Text(section.displayTitle)
-                    .fontWeight(.semibold)
-
-                Text(Format.count(section.count(in: comparison)))
-                    .foregroundStyle(.secondary)
-
-                Spacer(minLength: 0)
-            }
-            .padding(.horizontal, Layout.inset)
-            .padding(.vertical, 5)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .background(Color.primary.opacity(0.05))
+        ComparisonSectionHeader(
+            section: section,
+            count: section.count(in: comparison),
+            expanded: $expanded
+        )
     }
 
     private func entryRow(_ row: DiffRow) -> some View {

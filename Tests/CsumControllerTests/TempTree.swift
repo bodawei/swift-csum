@@ -1,12 +1,14 @@
 import CryptoKit
 import Foundation
+
 @testable import CsumController
 
 final class TempTree {
     let url: URL
 
     init() throws {
-        url = FileManager.default.temporaryDirectory.appendingPathComponent("csum-tests-\(UUID().uuidString)")
+        url = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "csum-tests-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
 

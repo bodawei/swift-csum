@@ -18,15 +18,13 @@ public struct CsvTable: Sendable {
     }
 
     public let rows: [Row]
+    public let columnCount: Int
     public let text: String
 
     public init(rows: [Row], text: String) {
         self.rows = rows
+        self.columnCount = rows.map { $0.fields.count }.max() ?? 0
         self.text = text
-    }
-
-    public var columnCount: Int {
-        rows.map { $0.fields.count }.max() ?? 0
     }
 
     public init(parsing text: String, source: String = "") throws {

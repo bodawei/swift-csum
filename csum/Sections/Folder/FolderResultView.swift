@@ -73,20 +73,7 @@ private struct FolderResults: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
 
-            AdaptiveContent {
-                List(result.entries, id: \.path) { entry in
-                    ChecksumRow(
-                        name: result.relativePath(of: entry),
-                        size: Format.size(entry.size),
-                        checksum: Format.checksum(entry),
-                        date: Format.day(entry.modified)
-                    )
-                    .copyRowMenu(ChecksumRowText.line(for: entry))
-                }
-                .listStyle(.plain)
-            } wide: {
-                ChecksumTable(result: result)
-            }
+            ChecksumEntriesView(result: result)
         }
     }
 }

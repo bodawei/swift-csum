@@ -23,7 +23,7 @@ enum EntryRowCodec {
             String(entry.size),
             timestampText(for: entry.created),
             timestampText(for: entry.modified),
-            writtenPath(entry.path)
+            writtenPath(entry.path),
         ]
     }
 
@@ -97,7 +97,9 @@ enum EntryRowCodec {
         }
     }
 
-    private static func outcome(from text: String, section: String, rowIndex: Int) throws -> ChecksumOutcome {
+    private static func outcome(from text: String, section: String, rowIndex: Int) throws
+        -> ChecksumOutcome
+    {
         if text.hasPrefix("!") {
             guard let code = code(forToken: String(text.dropFirst())) else {
                 throw MalformedFile(reason: .unparsableOutcome(section: section, row: rowIndex))
@@ -121,7 +123,8 @@ enum EntryRowCodec {
         return String(Int64(date.timeIntervalSince1970))
     }
 
-    private static func timestamp(from text: String, section: String, rowIndex: Int) throws -> Date? {
+    private static func timestamp(from text: String, section: String, rowIndex: Int) throws -> Date?
+    {
         if text.isEmpty {
             return nil
         }

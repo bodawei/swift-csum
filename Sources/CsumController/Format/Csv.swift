@@ -34,7 +34,9 @@ public struct CsvOptions {
     public var allowLineComments: Bool
     public var hasHeader: Bool
 
-    public init(dataFormat: DataFormat = .excel, allowLineComments: Bool = false, hasHeader: Bool = false) {
+    public init(
+        dataFormat: DataFormat = .excel, allowLineComments: Bool = false, hasHeader: Bool = false
+    ) {
         self.dataFormat = dataFormat
         self.allowLineComments = allowLineComments
         self.hasHeader = hasHeader
@@ -141,35 +143,43 @@ public enum Csv {
     }
 
     public static func stringify(_ data: TableData, options: CsvOptions) -> String {
-        var lines: [String] = []
-
-        if options.allowLineComments {
-            lines.append(contentsOf: data.leadingComments.map(formatField))
-        }
-
-        if options.hasHeader {
-            lines.append(stringifyLine(data.columns, quoting: options.dataFormat.quoting))
-        }
+        var text = head(comments: data.leadingComments, columns: data.columns, options: options)
 
         for index in data.rows.indices {
             if options.allowLineComments, let block = data.commentsBeforeRow[index] {
-                lines.append(contentsOf: block.map(formatField))
+                text += commentLines(block, options: options)
             }
 
-            lines.append(stringifyLine(data.rows[index], quoting: options.dataFormat.quoting))
+            text += line(data.rows[index], options: options)
         }
 
         if options.allowLineComments, let block = data.commentsBeforeRow[data.rows.count] {
-            lines.append(contentsOf: block.map(formatField))
+            text += commentLines(block, options: options)
         }
 
-        let body = lines.joined(separator: options.dataFormat.lineEnding)
+        return text
+    }
 
-        if options.dataFormat.emitsBOM {
-            return "\u{FEFF}" + body
+    static func head(comments: [String], columns: [String], options: CsvOptions) -> String {
+        var text = options.dataFormat.emitsBOM ? "\u{FEFF}" : ""
+
+        if options.allowLineComments {
+            text += commentLines(comments, options: options)
         }
 
-        return body
+        guard options.hasHeader else {
+            return text
+        }
+
+        return text + line(columns, options: options)
+    }
+
+    static func line(_ values: [String], options: CsvOptions) -> String {
+        stringifyLine(values, quoting: options.dataFormat.quoting) + options.dataFormat.lineEnding
+    }
+
+    private static func commentLines(_ values: [String], options: CsvOptions) -> String {
+        values.map { formatField($0) + options.dataFormat.lineEnding }.joined()
     }
 
     private static func stringifyLine(_ values: [String], quoting: Quoting) -> String {
@@ -180,7 +190,9 @@ public enum Csv {
     }
 
     static func formatField(_ value: String) -> String {
-        if value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r") || value.hasPrefix(" ") || value.hasSuffix(" ") {
+        if value.contains(",") || value.contains("\"") || value.contains("\n")
+            || value.contains("\r") || value.hasPrefix(" ") || value.hasSuffix(" ")
+        {
             return "\"" + value.replacingOccurrences(of: "\"", with: "\"\"") + "\""
         }
 

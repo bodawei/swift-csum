@@ -43,6 +43,7 @@
 		C500000000000000000000F9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E4 /* Localizable.xcstrings */; };
 		C500000000000000000000FA /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C500000000000000000000E5 /* InfoPlist.xcstrings */; };
 		C50000000000000000000104 /* SectionModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000103 /* SectionModelTests.swift */; };
+		C50000000000000000000195 /* DiffRowsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000194 /* DiffRowsTests.swift */; };
 		C50000000000000000000112 /* DemoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000111 /* DemoService.swift */; };
 		C50000000000000000000116 /* AppFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000115 /* AppFlowUITests.swift */; };
 		C50000000000000000000121 /* WindowTitleHider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000120 /* WindowTitleHider.swift */; };
@@ -62,6 +63,7 @@
 		C50000000000000000000163 /* CsvTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000159 /* CsvTableView.swift */; };
 		C50000000000000000000164 /* ExportShareLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000160 /* ExportShareLink.swift */; };
 		C50000000000000000000185 /* RowCopyMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000186 /* RowCopyMenu.swift */; };
+		C50000000000000000000189 /* ChecksumEntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000188 /* ChecksumEntriesView.swift */; };
 		C50000000000000000000150 /* CsumSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000151 /* CsumSectionView.swift */; };
 		C50000000000000000000152 /* CsumSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000153 /* CsumSectionModel.swift */; };
 		C50000000000000000000154 /* CsumResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000155 /* CsumResultView.swift */; };
@@ -120,6 +122,7 @@
 		C500000000000000000000E5 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		C50000000000000000000102 /* csumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = csumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C50000000000000000000103 /* SectionModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionModelTests.swift; sourceTree = "<group>"; };
+		C50000000000000000000194 /* DiffRowsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffRowsTests.swift; sourceTree = "<group>"; };
 		C50000000000000000000111 /* DemoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoService.swift; sourceTree = "<group>"; };
 		C50000000000000000000114 /* csumUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = csumUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C50000000000000000000115 /* AppFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowUITests.swift; sourceTree = "<group>"; };
@@ -142,6 +145,7 @@
 		C50000000000000000000166 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C50000000000000000000168 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		C50000000000000000000186 /* RowCopyMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowCopyMenu.swift; sourceTree = "<group>"; };
+		C50000000000000000000188 /* ChecksumEntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksumEntriesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,6 +300,7 @@
 				C50000000000000000000159 /* CsvTableView.swift */,
 				C50000000000000000000160 /* ExportShareLink.swift */,
 				C50000000000000000000186 /* RowCopyMenu.swift */,
+				C50000000000000000000188 /* ChecksumEntriesView.swift */,
 				C500000000000000000000E6 /* DiffTint.swift */,
 			);
 			path = Shared;
@@ -333,6 +338,7 @@
 			isa = PBXGroup;
 			children = (
 				C50000000000000000000103 /* SectionModelTests.swift */,
+				C50000000000000000000194 /* DiffRowsTests.swift */,
 				C50000000000000000000143 /* FeatureFlagStoreTests.swift */,
 				C50000000000000000000180 /* PostHogStartupTests.swift */,
 				C50000000000000000000168 /* LoggerTests.swift */,
@@ -516,6 +522,7 @@
 				C50000000000000000000163 /* CsvTableView.swift in Sources */,
 				C50000000000000000000164 /* ExportShareLink.swift in Sources */,
 				C50000000000000000000185 /* RowCopyMenu.swift in Sources */,
+				C50000000000000000000189 /* ChecksumEntriesView.swift in Sources */,
 				C50000000000000000000144 /* FeatureFlagProviding.swift in Sources */,
 				C50000000000000000000132 /* ComparisonSectionDisplay.swift in Sources */,
 				C500000000000000000000F8 /* DiffRow.swift in Sources */,
@@ -529,6 +536,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C50000000000000000000104 /* SectionModelTests.swift in Sources */,
+				C50000000000000000000195 /* DiffRowsTests.swift in Sources */,
 				C50000000000000000000147 /* FeatureFlagStoreTests.swift in Sources */,
 				C50000000000000000000181 /* PostHogStartupTests.swift in Sources */,
 				C50000000000000000000169 /* LoggerTests.swift in Sources */,

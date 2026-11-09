@@ -110,7 +110,9 @@ final class ComparisonFileCodecParsingTests: ComparisonCodecTestCase {
 
     func testUnusableRowValuesAreRejected() {
         assertMalformed(
-            document(body: ["# Added", "Checksum,Size,Created,Modified,Path", "zz,notanumber,,,./a"]
+            document(body: [
+                "# Added", "Checksum,Size,Created,Modified,Path", "zz,notanumber,,,./a",
+            ]
             ),
             .unparsableSize(section: "added", row: 0)
         )
