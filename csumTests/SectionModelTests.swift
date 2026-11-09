@@ -484,6 +484,13 @@ final class SectionModelTests: XCTestCase {
             kind: .comparison
         )
         XCTAssertEqual(comparison.savePanelName, "Comparison")
+
+        let shouty = CsumExport(
+            text: "",
+            fileName: "Archive.CSUM.CSV",
+            kind: .checksums
+        )
+        XCTAssertEqual(shouty.savePanelName, "Archive")
     }
 
     func testTheSavePanelNameKeepsANameWithoutTheExtension() {

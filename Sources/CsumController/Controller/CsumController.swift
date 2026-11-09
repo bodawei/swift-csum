@@ -212,11 +212,17 @@ public struct CsumController: Sendable {
     }
 
     private func isChecksumFile(_ url: URL) -> Bool {
-        url.path.lowercased().hasSuffix(".\(CsumFormat.checksumFileExtension)")
+        CsumFormat.strippingFileExtension(
+            CsumFormat.checksumFileExtension,
+            from: url.path
+        ) != nil
     }
 
     private func isComparisonFile(_ url: URL) -> Bool {
-        url.path.lowercased().hasSuffix(".\(CsumFormat.comparisonFileExtension)")
+        CsumFormat.strippingFileExtension(
+            CsumFormat.comparisonFileExtension,
+            from: url.path
+        ) != nil
     }
 
     private func collectEntries(

@@ -54,15 +54,13 @@ struct CsumExport {
     let kind: Kind
 
     var savePanelName: String {
-        let suffix = "." + kind.fileExtension
-
-        guard fileName.hasSuffix(suffix) else {
+        guard let name = CsumFormat.strippingFileExtension(kind.fileExtension, from: fileName),
+            !name.isEmpty
+        else {
             return fileName
         }
 
-        let name = String(fileName.dropLast(suffix.count))
-
-        return name.isEmpty ? fileName : name
+        return name
     }
 
     var contentType: UTType {
