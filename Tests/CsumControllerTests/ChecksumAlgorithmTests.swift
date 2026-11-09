@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import CsumController
 
 final class ChecksumAlgorithmTests: XCTestCase {

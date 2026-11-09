@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import CsumController
 
 final class CsvTests: XCTestCase {
@@ -11,7 +12,7 @@ final class CsvTests: XCTestCase {
             "# written by csum-cli, version 1.0",
             "Checksum,Path",
             "# a note before a row, with commas",
-            "3b1f,/a"
+            "3b1f,/a",
         ].joined(separator: "\r\n")
 
         let table = try Csv.parse(text, options: options())

@@ -1,8 +1,9 @@
 import XCTest
+
 @testable import CsumController
 
 final class ChecksumFileCodecTests: XCTestCase {
-    private let computedAt = Date(timeIntervalSince1970: 1750000000)
+    private let computedAt = Date(timeIntervalSince1970: 1_750_000_000)
 
     private func document(
         format: String = "1.0",
@@ -14,18 +15,21 @@ final class ChecksumFileCodecTests: XCTestCase {
         comments: [String] = [],
         rows: [String] = []
     ) -> String {
-        let lines = [
-            "\u{FEFF}# csum-format \(format)",
-            "# csum-writer \(writer)",
-            "# csum-computed \(computed)",
-            "# csum-algorithm \(algorithm)",
-            "# csum-root \(root)"
-        ] + comments + [columns] + rows
+        let lines =
+            [
+                "\u{FEFF}# csum-format \(format)",
+                "# csum-writer \(writer)",
+                "# csum-computed \(computed)",
+                "# csum-algorithm \(algorithm)",
+                "# csum-root \(root)",
+            ] + comments + [columns] + rows
 
         return lines.joined(separator: "\r\n") + "\r\n"
     }
 
-    private func metadata(root: String = "/tmp/tree", algorithm: ChecksumAlgorithm = .sha256) -> ChecksumMetadata {
+    private func metadata(root: String = "/tmp/tree", algorithm: ChecksumAlgorithm = .sha256)
+        -> ChecksumMetadata
+    {
         ChecksumMetadata(
             formatVersion: CsumFormat.version,
             writer: "csum-cli",
@@ -43,7 +47,9 @@ final class ChecksumFileCodecTests: XCTestCase {
         line: UInt = #line
     ) {
         XCTAssertThrowsError(try ChecksumFileCodec.parse(text), file: file, line: line) { error in
-            XCTAssertEqual(error as? CsumError, .malformedFile(path: "", reason: reason), file: file, line: line)
+            XCTAssertEqual(
+                error as? CsumError, .malformedFile(path: "", reason: reason), file: file,
+                line: line)
         }
     }
 
@@ -58,20 +64,21 @@ final class ChecksumFileCodecTests: XCTestCase {
                     created: computedAt,
                     modified: computedAt
                 ),
-                ChecksumEntry(path: "sub/b.bin", outcome: .failure(.cannotOpen), size: 0)
+                ChecksumEntry(path: "sub/b.bin", outcome: .failure(.cannotOpen), size: 0),
             ]
         )
 
-        let expected = [
-            "\u{FEFF}# csum-format 1.0",
-            "# csum-writer csum-cli 1.0",
-            "# csum-computed 2025-06-15T15:06:40Z",
-            "# csum-algorithm sha256",
-            "# csum-root /tmp/tree",
-            "Checksum,Size,Created,Modified,Path",
-            "3b1f,1234,1750000000,1750000000,./a.txt",
-            "!cannotOpen,0,,,./sub/b.bin"
-        ].joined(separator: "\r\n") + "\r\n"
+        let expected =
+            [
+                "\u{FEFF}# csum-format 1.0",
+                "# csum-writer csum-cli 1.0",
+                "# csum-computed 2025-06-15T15:06:40Z",
+                "# csum-algorithm sha256",
+                "# csum-root /tmp/tree",
+                "Checksum,Size,Created,Modified,Path",
+                "3b1f,1234,1750000000,1750000000,./a.txt",
+                "!cannotOpen,0,,,./sub/b.bin",
+            ].joined(separator: "\r\n") + "\r\n"
 
         XCTAssertEqual(ChecksumFileCodec.render(result), expected)
     }
@@ -85,11 +92,15 @@ final class ChecksumFileCodecTests: XCTestCase {
                     outcome: .digest("AbCdEf0123456789"),
                     size: 0,
                     created: Date(timeIntervalSince1970: 0),
-                    modified: Date(timeIntervalSince1970: 1750000000)
+                    modified: Date(timeIntervalSince1970: 1_750_000_000)
                 ),
-                ChecksumEntry(path: " leading and trailing ", outcome: .failure(.readFailed), size: 7),
-                ChecksumEntry(path: "üñïçø∂é/Ω.txt", outcome: .digest("ff"), size: 42, modified: nil),
-                ChecksumEntry(path: "/tmp/line\nbreak.txt", outcome: .digest("00"), size: 1, created: computedAt)
+                ChecksumEntry(
+                    path: " leading and trailing ", outcome: .failure(.readFailed), size: 7),
+                ChecksumEntry(
+                    path: "üñïçø∂é/Ω.txt", outcome: .digest("ff"), size: 42, modified: nil),
+                ChecksumEntry(
+                    path: "/tmp/line\nbreak.txt", outcome: .digest("00"), size: 1,
+                    created: computedAt),
             ]
         )
 
@@ -106,7 +117,7 @@ final class ChecksumFileCodecTests: XCTestCase {
                     size: 1234,
                     created: computedAt
                 ),
-                ChecksumEntry(path: "b.txt", outcome: .failure(.readFailed), size: 0)
+                ChecksumEntry(path: "b.txt", outcome: .failure(.readFailed), size: 0),
             ]
         )
 
@@ -136,7 +147,7 @@ final class ChecksumFileCodecTests: XCTestCase {
     func testMissingMetadataIsRejected() {
         let text = [
             "# csum-writer csum-cli 1.0",
-            "Checksum,Size,Created,Modified,Path"
+            "Checksum,Size,Created,Modified,Path",
         ].joined(separator: "\r\n")
 
         assertMalformed(text, .missingMetadata)
@@ -144,14 +155,17 @@ final class ChecksumFileCodecTests: XCTestCase {
 
     func testUnusableMetadataValuesAreRejected() {
         assertMalformed(document(algorithm: "crc32"), .unparsableAlgorithm)
-        assertMalformed(document(computed: "yesterday"), .unparsableTimestamp(section: "metadata", row: 0))
+        assertMalformed(
+            document(computed: "yesterday"), .unparsableTimestamp(section: "metadata", row: 0))
         assertMalformed(document(writer: "csum-cli"), .missingMetadata)
         assertMalformed(document(root: ""), .missingMetadata)
     }
 
     func testUnknownFormatVersionIsRejected() {
         XCTAssertThrowsError(try ChecksumFileCodec.parse(document(format: "2.0"))) { error in
-            XCTAssertEqual(error as? CsumError, .unsupportedFormatVersion(found: "2.0", expected: CsumFormat.version))
+            XCTAssertEqual(
+                error as? CsumError,
+                .unsupportedFormatVersion(found: "2.0", expected: CsumFormat.version))
         }
     }
 
@@ -218,7 +232,8 @@ final class ChecksumFileCodecTests: XCTestCase {
         XCTAssertThrowsError(try ChecksumFileCodec.parse(text, source: "x.csum.csv")) { error in
             XCTAssertEqual(
                 error as? CsumError,
-                .malformedFile(path: "x.csum.csv", reason: .unparsableSize(section: "checksum", row: 0))
+                .malformedFile(
+                    path: "x.csum.csv", reason: .unparsableSize(section: "checksum", row: 0))
             )
         }
     }

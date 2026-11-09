@@ -34,7 +34,9 @@ public struct CsvOptions {
     public var allowLineComments: Bool
     public var hasHeader: Bool
 
-    public init(dataFormat: DataFormat = .excel, allowLineComments: Bool = false, hasHeader: Bool = false) {
+    public init(
+        dataFormat: DataFormat = .excel, allowLineComments: Bool = false, hasHeader: Bool = false
+    ) {
         self.dataFormat = dataFormat
         self.allowLineComments = allowLineComments
         self.hasHeader = hasHeader
@@ -197,7 +199,9 @@ public enum Csv {
     }
 
     static func formatField(_ value: String) -> String {
-        if value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r") || value.hasPrefix(" ") || value.hasSuffix(" ") {
+        if value.contains(",") || value.contains("\"") || value.contains("\n")
+            || value.contains("\r") || value.hasPrefix(" ") || value.hasSuffix(" ")
+        {
             return "\"" + value.replacingOccurrences(of: "\"", with: "\"\"") + "\""
         }
 
