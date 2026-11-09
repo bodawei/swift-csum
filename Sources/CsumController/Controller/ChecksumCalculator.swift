@@ -21,65 +21,85 @@ public enum ChecksumCalculator {
     private static let chunkSize = 1 << 20
 
     public static func checksum(of url: URL, algorithm: ChecksumAlgorithm) throws -> String {
-        let handle: FileHandle
+        let descriptor = url.withUnsafeFileSystemRepresentation { path -> Int32 in
+            guard let path else {
+                return -1
+            }
 
-        do {
-            handle = try FileHandle(forReadingFrom: url)
-        } catch {
-            throw ChecksumError.cannotOpen(path: url.path, underlying: error)
+            return open(path, O_RDONLY | O_CLOEXEC)
+        }
+
+        guard descriptor >= 0 else {
+            let code = errno
+
+            throw ChecksumError.cannotOpen(
+                path: url.path,
+                underlying: POSIXError(POSIXErrorCode(rawValue: code) ?? .EIO)
+            )
         }
 
         defer {
-            try? handle.close()
+            close(descriptor)
         }
 
-        let path = url.path
+        let buffer = UnsafeMutableRawPointer.allocate(byteCount: chunkSize, alignment: 16)
 
-        let digest: String
+        defer {
+            buffer.deallocate()
+        }
 
         switch algorithm {
         case .sha256:
-            digest = try digestHex(SHA256(), handle: handle, path: path)
+            return try digestHex(SHA256(), descriptor: descriptor, buffer: buffer, path: url.path)
         case .sha1:
-            digest = try digestHex(Insecure.SHA1(), handle: handle, path: path)
+            return try digestHex(
+                Insecure.SHA1(), descriptor: descriptor, buffer: buffer, path: url.path)
         case .md5:
-            digest = try digestHex(Insecure.MD5(), handle: handle, path: path)
+            return try digestHex(
+                Insecure.MD5(), descriptor: descriptor, buffer: buffer, path: url.path)
         }
-
-        return digest
     }
 
     private static func digestHex<H: HashFunction>(
         _ hasher: H,
-        handle: FileHandle,
+        descriptor: Int32,
+        buffer: UnsafeMutableRawPointer,
         path: String
     ) throws -> String {
         var hasher = hasher
 
-        try updateHasher(&hasher, withContentsOf: handle, path: path)
+        try updateHasher(&hasher, withContentsOf: descriptor, buffer: buffer, path: path)
 
         return hexString(of: hasher.finalize())
     }
 
     private static func updateHasher<H: HashFunction>(
         _ hasher: inout H,
-        withContentsOf handle: FileHandle,
+        withContentsOf descriptor: Int32,
+        buffer: UnsafeMutableRawPointer,
         path: String
     ) throws {
         while true {
-            let chunk: Data?
+            let count = read(descriptor, buffer, chunkSize)
 
-            do {
-                chunk = try handle.read(upToCount: chunkSize)
-            } catch {
-                throw ChecksumError.readFailed(path: path, underlying: error)
+            if count < 0 {
+                let code = errno
+
+                if code == EINTR {
+                    continue
+                }
+
+                throw ChecksumError.readFailed(
+                    path: path,
+                    underlying: POSIXError(POSIXErrorCode(rawValue: code) ?? .EIO)
+                )
             }
 
-            guard let chunk, !chunk.isEmpty else {
+            guard count > 0 else {
                 return
             }
 
-            hasher.update(data: chunk)
+            hasher.update(bufferPointer: UnsafeRawBufferPointer(start: buffer, count: count))
         }
     }
 

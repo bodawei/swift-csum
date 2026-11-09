@@ -36,16 +36,20 @@ public enum ChecksumFileCodec {
     }
 
     public static func render(_ result: ChecksumResult) -> String {
-        var table = TableData(columns: EntryColumns.all)
-        table.leadingComments = comments(for: result.metadata)
-        table.rows = result.entries.map(EntryRowCodec.row(for:))
-
-        let text = Csv.stringify(
-            table,
-            options: CsvOptions(dataFormat: .excel, allowLineComments: true, hasHeader: true)
+        let options = CsvOptions(dataFormat: .excel, allowLineComments: true, hasHeader: true)
+        var text = Csv.head(
+            comments: comments(for: result.metadata),
+            columns: EntryColumns.all,
+            options: options
         )
 
-        return text + DataFormat.excel.lineEnding
+        text.reserveCapacity(text.utf8.count + result.entries.count * 120)
+
+        for entry in result.entries {
+            text += Csv.line(EntryRowCodec.row(for: entry), options: options)
+        }
+
+        return text
     }
 
     private static func comments(for metadata: ChecksumMetadata) -> [String] {

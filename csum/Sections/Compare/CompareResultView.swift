@@ -61,44 +61,48 @@ struct CompareResultView: View {
     }
 
     private func sections(_ comparison: ChecksumComparison) -> some View {
-        List {
-            ForEach(ComparisonSection.allCases, id: \.self) { section in
-                if section.count(in: comparison) > 0 {
-                    DisclosureGroup(isExpanded: binding(for: section)) {
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(ComparisonSection.allCases, id: \.self) { section in
+                    if section.count(in: comparison) > 0 {
+                        ComparisonSectionHeader(
+                            section: section,
+                            count: section.count(in: comparison),
+                            isExpanded: expanded.contains(section),
+                            toggle: {
+                                toggle(section)
+                            }
+                        )
+
                         if expanded.contains(section) {
-                            ForEach(DiffRows.rows(for: section, of: comparison)) { row in
+                            let rowCount = DiffRows.rowCount(for: section, of: comparison)
+
+                            ForEach(0..<rowCount) { index in
+                                let row = DiffRows.row(at: index, in: section, of: comparison)
+
                                 DiffRowView(row: row)
-                                    .listRowBackground(row.tint?.background)
+                                    .padding(.horizontal, 16)
+                                    .background(row.tint?.background)
+                                    .overlay(alignment: .bottom) {
+                                        Divider()
+                                    }
                             }
                         }
-                    } label: {
-                        HStack {
-                            Text(section.displayTitle)
-
-                            Spacer()
-
-                            Text(Format.count(section.count(in: comparison)))
-                                .foregroundStyle(.secondary)
-                        }
-                        .accessibilityElement(children: .combine)
                     }
                 }
             }
+            .padding(.bottom, 16)
         }
-        .listStyle(.plain)
     }
 
-    private func binding(for section: ComparisonSection) -> Binding<Bool> {
-        Binding(
-            get: { expanded.contains(section) },
-            set: { isExpanded in
-                if isExpanded {
-                    expanded.insert(section)
-                } else {
-                    expanded.remove(section)
-                }
+    private func toggle(_ section: ComparisonSection) {
+        withAnimation(.snappy) {
+            if expanded.contains(section) {
+                expanded.remove(section)
+            } else {
+                expanded.insert(section)
             }
-        )
+        }
     }
 
     private func isIdentical(_ comparison: ChecksumComparison) -> Bool {

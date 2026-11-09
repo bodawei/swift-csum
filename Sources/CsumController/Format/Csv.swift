@@ -172,6 +172,23 @@ public enum Csv {
         return body
     }
 
+    static func head(comments: [String], columns: [String], options: CsvOptions) -> String {
+        let lineEnding = options.dataFormat.lineEnding
+        var text = options.dataFormat.emitsBOM ? "\u{FEFF}" : ""
+
+        if options.allowLineComments {
+            for comment in comments {
+                text += formatField(comment) + lineEnding
+            }
+        }
+
+        return text + stringifyLine(columns, quoting: options.dataFormat.quoting) + lineEnding
+    }
+
+    static func line(_ values: [String], options: CsvOptions) -> String {
+        stringifyLine(values, quoting: options.dataFormat.quoting) + options.dataFormat.lineEnding
+    }
+
     private static func stringifyLine(_ values: [String], quoting: Quoting) -> String {
         switch quoting {
         case .doubleQuotes:

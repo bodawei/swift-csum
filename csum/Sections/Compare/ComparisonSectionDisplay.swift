@@ -36,3 +36,40 @@ extension ComparisonSection {
         }
     }
 }
+
+struct ComparisonSectionHeader: View {
+    private enum Layout {
+        static let symbol: CGFloat = 14
+        static let inset: CGFloat = 16
+    }
+
+    let section: ComparisonSection
+    let count: Int
+    let isExpanded: Bool
+    let toggle: () -> Void
+
+    var body: some View {
+        Button(action: toggle) {
+            HStack(spacing: 6) {
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                    .frame(width: Layout.symbol)
+
+                Text(section.displayTitle)
+                    .fontWeight(.semibold)
+
+                Text(Format.count(count))
+                    .foregroundStyle(.secondary)
+
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, Layout.inset)
+            .padding(.vertical, 5)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .background(Color.primary.opacity(0.05))
+    }
+}

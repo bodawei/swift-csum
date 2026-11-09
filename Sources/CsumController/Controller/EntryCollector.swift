@@ -18,7 +18,10 @@ enum EntryCollector {
                 throw CancellationError()
             }
 
-            entries.append(entry(for: files[index], algorithm: algorithm, root: root))
+            autoreleasepool {
+                entries.append(entry(for: files[index], algorithm: algorithm, root: root))
+            }
+
             progress?(index + 1, files.count)
         }
 
@@ -67,16 +70,19 @@ enum EntryCollector {
         }
 
         var files: [URL] = []
+        let keySet = Set(keys)
 
         for case let url as URL in enumerator {
-            guard let values = try? url.resourceValues(forKeys: Set(keys)),
-                values.isSymbolicLink != true,
-                values.isDirectory != true
-            else {
-                continue
-            }
+            autoreleasepool {
+                guard let values = try? url.resourceValues(forKeys: keySet),
+                    values.isSymbolicLink != true,
+                    values.isDirectory != true
+                else {
+                    return
+                }
 
-            files.append(url)
+                files.append(url)
+            }
         }
 
         return files
