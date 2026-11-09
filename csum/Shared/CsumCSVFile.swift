@@ -1,4 +1,5 @@
 import CoreTransferable
+import CsumController
 import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
@@ -36,11 +37,33 @@ struct CsumExport {
     enum Kind: Sendable {
         case checksums
         case comparison
+
+        var fileExtension: String {
+            switch self {
+            case .checksums:
+                return CsumFormat.checksumFileExtension
+
+            case .comparison:
+                return CsumFormat.comparisonFileExtension
+            }
+        }
     }
 
     let text: String
     let fileName: String
     let kind: Kind
+
+    var savePanelName: String {
+        let suffix = "." + kind.fileExtension
+
+        guard fileName.hasSuffix(suffix) else {
+            return fileName
+        }
+
+        let name = String(fileName.dropLast(suffix.count))
+
+        return name.isEmpty ? fileName : name
+    }
 
     var contentType: UTType {
         switch kind {
