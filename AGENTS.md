@@ -2,6 +2,11 @@ Conversation
 ==
 Do not summarize what you did.  This is usually telegraphed before doing it.  At most, just report what you did that wasn't in the original plan.
 
+Commands
+==
+`make check` runs the controller tests, the CLI e2e script, and the format lint.
+`make desk` builds the Mac Catalyst app and copies it to `~/Desktop`.
+
 New system
 ===
 - VS Code

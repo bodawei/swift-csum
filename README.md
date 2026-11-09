@@ -132,6 +132,27 @@ swift run csum-cli compare -u old.csum.csv /Volumes/Backup/Documents
 
 Errors go to stderr with a non-zero exit code.
 
+## Commands
+
+The `Makefile` collects the common commands:
+
+```
+make            # list every target
+make build      # the package: controller and CLI
+make test       # controller tests
+make e2e        # the CLI against shasum
+make check      # test, e2e, and lint together
+make lint:all   # lint every Swift file, not just changed ones
+make fmt:all    # format every Swift file in place
+make app        # Mac Catalyst debug build
+make desk       # Mac Catalyst release build, copied to ~/Desktop
+make release    # universal release CLI
+```
+
+`make lint` and `make fmt` cover the Swift files changed since the branch point,
+so set `BASE=main` to compare against another branch. `make desk` copies
+`csum.app` to `~/Desktop`; set `DESKTOP_DIR` to choose another folder.
+
 ## Building
 
 `swift build` builds only the Swift package (the CLI and the shared library) — it does
