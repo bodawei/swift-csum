@@ -21,22 +21,7 @@ public enum ChecksumCalculator {
     private static let chunkSize = 1 << 20
 
     public static func checksum(of url: URL, algorithm: ChecksumAlgorithm) throws -> String {
-        let descriptor = url.withUnsafeFileSystemRepresentation { path -> Int32 in
-            guard let path else {
-                return -1
-            }
-
-            return open(path, O_RDONLY | O_CLOEXEC)
-        }
-
-        guard descriptor >= 0 else {
-            let code = errno
-
-            throw ChecksumError.cannotOpen(
-                path: url.path,
-                underlying: POSIXError(POSIXErrorCode(rawValue: code) ?? .EIO)
-            )
-        }
+        let descriptor = try openDescriptor(for: url)
 
         defer {
             close(descriptor)
@@ -58,6 +43,28 @@ public enum ChecksumCalculator {
             return try digestHex(
                 Insecure.MD5(), descriptor: descriptor, buffer: buffer, path: url.path)
         }
+    }
+
+    private static func openDescriptor(for url: URL) throws -> Int32 {
+        let (descriptor, code) = url.withUnsafeFileSystemRepresentation {
+            path -> (Int32, Int32) in
+            guard let path else {
+                return (-1, EINVAL)
+            }
+
+            let descriptor = open(path, O_RDONLY | O_CLOEXEC)
+
+            return (descriptor, descriptor >= 0 ? 0 : errno)
+        }
+
+        guard descriptor >= 0 else {
+            throw ChecksumError.cannotOpen(
+                path: url.path,
+                underlying: POSIXError(POSIXErrorCode(rawValue: code) ?? .EIO)
+            )
+        }
+
+        return descriptor
     }
 
     private static func digestHex<H: HashFunction>(

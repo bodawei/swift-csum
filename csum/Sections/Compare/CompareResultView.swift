@@ -68,16 +68,13 @@ struct CompareResultView: View {
                         ComparisonSectionHeader(
                             section: section,
                             count: section.count(in: comparison),
-                            isExpanded: expanded.contains(section),
-                            toggle: {
-                                toggle(section)
-                            }
+                            expanded: $expanded
                         )
 
                         if expanded.contains(section) {
                             let rowCount = DiffRows.rowCount(for: section, of: comparison)
 
-                            ForEach(0..<rowCount) { index in
+                            ForEach(0..<rowCount, id: \.self) { index in
                                 let row = DiffRows.row(at: index, in: section, of: comparison)
 
                                 DiffRowView(row: row)
@@ -92,16 +89,6 @@ struct CompareResultView: View {
                 }
             }
             .padding(.bottom, 16)
-        }
-    }
-
-    private func toggle(_ section: ComparisonSection) {
-        withAnimation(.snappy) {
-            if expanded.contains(section) {
-                expanded.remove(section)
-            } else {
-                expanded.insert(section)
-            }
         }
     }
 

@@ -37,6 +37,16 @@ extension ComparisonSection {
     }
 }
 
+extension Set where Element == ComparisonSection {
+    mutating func toggle(_ section: ComparisonSection) {
+        if contains(section) {
+            remove(section)
+        } else {
+            insert(section)
+        }
+    }
+}
+
 struct ComparisonSectionHeader: View {
     private enum Layout {
         static let symbol: CGFloat = 14
@@ -45,11 +55,19 @@ struct ComparisonSectionHeader: View {
 
     let section: ComparisonSection
     let count: Int
-    let isExpanded: Bool
-    let toggle: () -> Void
+
+    @Binding var expanded: Set<ComparisonSection>
+
+    private var isExpanded: Bool {
+        expanded.contains(section)
+    }
 
     var body: some View {
-        Button(action: toggle) {
+        Button {
+            withAnimation(.snappy) {
+                expanded.toggle(section)
+            }
+        } label: {
             HStack(spacing: 6) {
                 Image(systemName: "chevron.right")
                     .font(.caption.weight(.semibold))

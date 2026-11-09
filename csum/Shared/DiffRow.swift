@@ -33,6 +33,64 @@ enum DiffRows {
         case renamedTo
     }
 
+    private enum Single {
+        case added
+        case removed
+        case unchanged
+
+        func fields(
+            of comparison: ChecksumComparison
+        ) -> (source: ComparisonSource, symbol: String, tint: DiffTint?, label: Label) {
+            switch self {
+            case .added:
+                return (comparison.metadata.second, "+", .added, .added)
+
+            case .removed:
+                return (comparison.metadata.first, "−", .removed, .removed)
+
+            case .unchanged:
+                return (comparison.metadata.first, " ", nil, .unchanged)
+            }
+        }
+    }
+
+    private enum Paired {
+        case changed
+        case moved
+        case renamed
+
+        var emphasis: Emphasis {
+            switch self {
+            case .changed:
+                return .checksum
+
+            case .moved:
+                return .path
+
+            case .renamed:
+                return .leaf
+            }
+        }
+
+        func label(isNew: Bool) -> Label {
+            switch self {
+            case .changed:
+                return isNew ? .changedNew : .changedOld
+
+            case .moved:
+                return isNew ? .movedTo : .movedFrom
+
+            case .renamed:
+                return isNew ? .renamedTo : .renamedFrom
+            }
+        }
+    }
+
+    private enum Rows {
+        case single([ChecksumEntry], Single)
+        case paired([MatchedEntry], Paired)
+    }
+
     static func rowCount(
         for section: ComparisonSection,
         of comparison: ChecksumComparison
@@ -53,100 +111,74 @@ enum DiffRows {
         in section: ComparisonSection,
         of comparison: ChecksumComparison
     ) -> DiffRow {
+        switch rows(for: section, of: comparison) {
+        case .single(let entries, let style):
+            return entryRow(entries[index], as: style, of: comparison)
+
+        case .paired(let pairs, let style):
+            return pairRow(pairs[index / 2], as: style, of: comparison, isNew: index % 2 == 1)
+        }
+    }
+
+    private static func rows(
+        for section: ComparisonSection,
+        of comparison: ChecksumComparison
+    ) -> Rows {
         switch section {
         case .added:
-            return row(
-                comparison.added[index],
-                source: comparison.metadata.second,
-                symbol: "+",
-                tint: .added,
-                emphasis: .none,
-                label: .added
-            )
+            return .single(comparison.added, .added)
 
         case .removed:
-            return row(
-                comparison.removed[index],
-                source: comparison.metadata.first,
-                symbol: "−",
-                tint: .removed,
-                emphasis: .none,
-                label: .removed
-            )
+            return .single(comparison.removed, .removed)
 
         case .unchanged:
-            return row(
-                comparison.unchanged[index],
-                source: comparison.metadata.first,
-                symbol: " ",
-                tint: nil,
-                emphasis: .none,
-                label: .unchanged
-            )
+            return .single(comparison.unchanged, .unchanged)
 
         case .changed:
-            return pairRow(
-                comparison.changed[index / 2],
-                of: comparison,
-                emphasis: .checksum,
-                isNew: index % 2 == 1
-            )
+            return .paired(comparison.changed, .changed)
 
         case .moved:
-            return pairRow(
-                comparison.moved[index / 2],
-                of: comparison,
-                emphasis: .path,
-                isNew: index % 2 == 1
-            )
+            return .paired(comparison.moved, .moved)
 
         case .renamed:
-            return pairRow(
-                comparison.renamed[index / 2],
-                of: comparison,
-                emphasis: .leaf,
-                isNew: index % 2 == 1
-            )
+            return .paired(comparison.renamed, .renamed)
         }
+    }
+
+    private static func entryRow(
+        _ entry: ChecksumEntry,
+        as style: Single,
+        of comparison: ChecksumComparison
+    ) -> DiffRow {
+        let fields = style.fields(of: comparison)
+
+        return row(
+            entry,
+            source: fields.source,
+            symbol: fields.symbol,
+            tint: fields.tint,
+            label: fields.label
+        )
     }
 
     private static func pairRow(
         _ matched: MatchedEntry,
+        as style: Paired,
         of comparison: ChecksumComparison,
-        emphasis: Emphasis,
         isNew: Bool
     ) -> DiffRow {
-        let labels: (Label, Label)
-
-        switch emphasis {
-        case .checksum:
-            labels = (.changedOld, .changedNew)
-        case .path:
-            labels = (.movedFrom, .movedTo)
-        case .leaf:
-            labels = (.renamedFrom, .renamedTo)
-        case .none:
-            labels = (.unchanged, .unchanged)
-        }
-
-        guard isNew else {
-            return row(
-                matched.old,
-                source: comparison.metadata.first,
-                symbol: "−",
-                tint: .removed,
-                emphasis: emphasis,
-                label: labels.0
-            )
-        }
+        let entry = isNew ? matched.new : matched.old
+        let source = isNew ? comparison.metadata.second : comparison.metadata.first
+        let symbol = isNew ? "+" : "−"
+        let tint: DiffTint? = isNew ? .added : .removed
 
         return row(
-            matched.new,
-            source: comparison.metadata.second,
-            symbol: "+",
-            tint: .added,
-            emphasis: emphasis,
-            label: labels.1
+            entry,
+            source: source,
+            symbol: symbol,
+            tint: tint,
+            label: style.label(isNew: isNew),
+            emphasis: style.emphasis
         )
     }
 
@@ -155,8 +187,8 @@ enum DiffRows {
         source: ComparisonSource,
         symbol: String,
         tint: DiffTint?,
-        emphasis: Emphasis,
-        label: Label
+        label: Label,
+        emphasis: Emphasis = .none
     ) -> DiffRow {
         let path = source.relativePath(of: entry)
         let highlight = tint?.emphasis
@@ -171,7 +203,7 @@ enum DiffRows {
             {
                 name[range].backgroundColor = highlight
             }
-        default:
+        case .none, .checksum:
             break
         }
 

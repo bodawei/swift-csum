@@ -29,7 +29,7 @@ struct ComparisonTable: View {
                         if expanded.contains(section) {
                             let rowCount = DiffRows.rowCount(for: section, of: comparison)
 
-                            ForEach(0..<rowCount) { index in
+                            ForEach(0..<rowCount, id: \.self) { index in
                                 entryRow(DiffRows.row(at: index, in: section, of: comparison))
                             }
                         }
@@ -74,16 +74,8 @@ struct ComparisonTable: View {
         ComparisonSectionHeader(
             section: section,
             count: section.count(in: comparison),
-            isExpanded: expanded.contains(section)
-        ) {
-            withAnimation(.snappy) {
-                if expanded.contains(section) {
-                    expanded.remove(section)
-                } else {
-                    expanded.insert(section)
-                }
-            }
-        }
+            expanded: $expanded
+        )
     }
 
     private func entryRow(_ row: DiffRow) -> some View {
