@@ -209,7 +209,13 @@ final class AppFlowUITests: XCTestCase {
 
             app.menuBars.menuItems["Save As…"].click()
 
-            XCTAssertTrue(app.sheets.firstMatch.waitForExistence(timeout: 5))
+            let sheet = app.sheets.firstMatch
+            XCTAssertTrue(sheet.waitForExistence(timeout: 5))
+
+            let name = sheet.textFields["saveAsNameTextField"]
+            XCTAssertTrue(name.waitForExistence(timeout: 5))
+            attach(app, name: "save-as-panel")
+            XCTAssertEqual(name.value as? String, "archive.zip.csum.csv")
         }
     #endif
 

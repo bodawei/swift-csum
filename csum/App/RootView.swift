@@ -43,7 +43,7 @@ struct RootView: View {
             isPresented: $model.isPresentingSaveAs,
             document: CsumTextDocument(text: model.currentExport?.text ?? ""),
             contentType: model.currentExport?.contentType ?? .csumChecksums,
-            defaultFilename: model.currentExport?.fileName
+            defaultFilename: model.currentExport?.savePanelName
         ) { _ in }
         .sheet(isPresented: $model.isPresentingHelp) {
             HelpView()

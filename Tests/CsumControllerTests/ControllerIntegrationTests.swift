@@ -171,6 +171,18 @@ final class LoadChecksumResultTests: XCTestCase {
         XCTAssertEqual(loaded, atSecondResolution(computed))
     }
 
+    func testLoadsASavedChecksumFileWhateverTheCaseOfItsExtension() throws {
+        try tree.text("a.txt", "alpha", modified: wholeSecond, created: wholeSecond)
+
+        let computed = try controller().calculateChecksums(at: tree.url)
+        let saved = tree.url.appendingPathComponent("SAVED.CSUM.CSV")
+        try Data(ChecksumFileCodec.render(computed).utf8).write(to: saved)
+
+        let loaded = try controller().loadChecksumResult(at: saved)
+
+        XCTAssertEqual(loaded, atSecondResolution(computed))
+    }
+
     func testReadsASavedChecksumFile() throws {
         try tree.text("a.txt", "alpha", modified: wholeSecond, created: wholeSecond)
 

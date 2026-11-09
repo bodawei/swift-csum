@@ -7,6 +7,44 @@ final class CsumFormatTests: XCTestCase {
         XCTAssertEqual(CsumFormat.version, "1.0")
         XCTAssertEqual(CsumFormat.toolVersion, "1.0")
     }
+
+    func testStrippingAChecksumExtensionLeavesTheName() {
+        XCTAssertEqual(
+            CsumFormat.strippingFileExtension(
+                CsumFormat.checksumFileExtension, from: "docs.csum.csv"),
+            "docs"
+        )
+    }
+
+    func testStrippingIgnoresTheCaseOfTheExtension() {
+        XCTAssertEqual(
+            CsumFormat.strippingFileExtension(
+                CsumFormat.checksumFileExtension, from: "Archive.CSUM.CSV"),
+            "Archive"
+        )
+    }
+
+    func testStrippingAComparisonExtensionLeavesTheName() {
+        XCTAssertEqual(
+            CsumFormat.strippingFileExtension(
+                CsumFormat.comparisonFileExtension, from: "Comparison.csum-compare.csv"),
+            "Comparison"
+        )
+    }
+
+    func testANameWithoutTheExtensionIsNotStripped() {
+        XCTAssertNil(
+            CsumFormat.strippingFileExtension(CsumFormat.checksumFileExtension, from: "a.txt")
+        )
+    }
+
+    func testANameThatOnlyHasTheExtensionStripsToAnEmptyName() {
+        XCTAssertEqual(
+            CsumFormat.strippingFileExtension(
+                CsumFormat.checksumFileExtension, from: ".csum.csv"),
+            ""
+        )
+    }
 }
 
 final class ChecksumEntryTests: XCTestCase {

@@ -470,6 +470,38 @@ final class SectionModelTests: XCTestCase {
         }
     #endif
 
+    func testTheSavePanelNameLeavesTheExtensionForThePanelToAdd() {
+        let checksums = CsumExport(
+            text: "",
+            fileName: "archive.zip.csum.csv",
+            kind: .checksums
+        )
+        XCTAssertEqual(checksums.savePanelName, "archive.zip")
+
+        let comparison = CsumExport(
+            text: "",
+            fileName: "Comparison.csum-compare.csv",
+            kind: .comparison
+        )
+        XCTAssertEqual(comparison.savePanelName, "Comparison")
+
+        let shouty = CsumExport(
+            text: "",
+            fileName: "Archive.CSUM.CSV",
+            kind: .checksums
+        )
+        XCTAssertEqual(shouty.savePanelName, "Archive")
+    }
+
+    func testTheSavePanelNameKeepsANameWithoutTheExtension() {
+        let export = CsumExport(
+            text: "",
+            fileName: "checksums.txt",
+            kind: .checksums
+        )
+        XCTAssertEqual(export.savePanelName, "checksums.txt")
+    }
+
     func testExportWritesTheTextToTheSuggestedFile() async throws {
         guard #available(iOS 18.2, macCatalyst 18.2, macOS 15.2, *) else {
             throw XCTSkip("export(to:contentType:) is unavailable")
