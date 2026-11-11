@@ -23,7 +23,7 @@ struct FolderResultView: View {
         case .idle:
             Color.clear
         case .running:
-            FolderProgress(progress: model.progress)
+            FolderProgress(name: model.folderName, progress: model.progress)
         case .loaded(let result):
             FolderResults(result: result)
         case .failed(let message):
@@ -37,11 +37,14 @@ struct FolderResultView: View {
 }
 
 private struct FolderProgress: View {
+    let name: String?
     let progress: (done: Int, total: Int)?
 
     var body: some View {
         VStack(spacing: 12) {
-            Text("Checksumming Folder…")
+            Text("Checksumming \(name ?? String(localized: "Folder"))…")
+                .lineLimit(1)
+                .truncationMode(.middle)
 
             if let progress {
                 ProgressView(value: Double(progress.done), total: Double(progress.total))

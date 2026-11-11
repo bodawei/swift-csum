@@ -41,6 +41,7 @@ final class FolderSectionModel {
     private(set) var phase: Phase = .idle
     var path: [Route] = []
     var isChoosingSource = false
+    private(set) var folderName: String?
     private(set) var progress: (done: Int, total: Int)?
     private(set) var export: CsumExport?
 
@@ -73,6 +74,7 @@ final class FolderSectionModel {
         task?.cancel()
         task = nil
         phase = .idle
+        folderName = nil
         progress = nil
         export = nil
     }
@@ -80,6 +82,7 @@ final class FolderSectionModel {
     private func start(_ url: URL) {
         task?.cancel()
         phase = .running
+        folderName = url.lastPathComponent
         progress = nil
         export = nil
 

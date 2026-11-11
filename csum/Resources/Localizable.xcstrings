@@ -401,18 +401,18 @@
         }
       }
     },
-    "Checksumming Folder…" : {
+    "Checksumming %@…" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "جارٍ حساب مجموع المجلد…"
+            "value" : "جارٍ حساب مجموع %@…"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在計算資料夾檢查碼…"
+            "value" : "正在計算 %@ 檢查碼…"
           }
         }
       }
