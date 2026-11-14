@@ -13,6 +13,18 @@ final class ComparisonEngineTests: XCTestCase {
         ChecksumEntry(path: path, outcome: .failure(code), size: size)
     }
 
+    private static let emptyDigest =
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+    private func empty(_ path: String, created: Date?) -> ChecksumEntry {
+        ChecksumEntry(
+            path: path,
+            outcome: .digest(Self.emptyDigest),
+            size: 0,
+            created: created
+        )
+    }
+
     private func result(root: String = "/tree", _ entries: [ChecksumEntry]) -> ChecksumResult {
         ChecksumResult(
             metadata: ChecksumMetadata(
@@ -200,6 +212,182 @@ final class ComparisonEngineTests: XCTestCase {
             XCTAssertTrue(comparison.added.isEmpty)
             XCTAssertTrue(comparison.removed.isEmpty)
         }
+    }
+
+    func testEmptyFilesPairByCreationDate() {
+        let early = Date(timeIntervalSince1970: 1_700_000_000)
+        let late = Date(timeIntervalSince1970: 1_700_000_500)
+
+        let first = result([
+            empty("one/a.txt", created: early),
+            empty("one/b.txt", created: late),
+        ])
+        let second = result([
+            empty("two/b.txt", created: late),
+            empty("two/a.txt", created: early),
+        ])
+
+        let comparison = compare(first, second)
+
+        XCTAssertEqual(
+            comparison.moved.map { [$0.old.path, $0.new.path] },
+            [
+                ["one/a.txt", "two/a.txt"],
+                ["one/b.txt", "two/b.txt"],
+            ])
+        XCTAssertTrue(comparison.added.isEmpty)
+        XCTAssertTrue(comparison.removed.isEmpty)
+    }
+
+    func testEmptyFilesCreatedAtDifferentTimesAreNotMoved() {
+        let first = result([
+            empty("one/a.txt", created: Date(timeIntervalSince1970: 1_700_000_000))
+        ])
+        let second = result([
+            empty("two/a.txt", created: Date(timeIntervalSince1970: 1_700_000_500))
+        ])
+
+        let comparison = compare(first, second)
+
+        XCTAssertTrue(comparison.moved.isEmpty)
+        XCTAssertEqual(comparison.removed.map(\.path), ["one/a.txt"])
+        XCTAssertEqual(comparison.added.map(\.path), ["two/a.txt"])
+    }
+
+    func testEmptyFilesWithoutCreationDatesStillPair() {
+        let first = result([empty("one/a.txt", created: nil)])
+        let second = result([empty("two/a.txt", created: nil)])
+
+        let comparison = compare(first, second)
+
+        XCTAssertEqual(comparison.moved.count, 1)
+    }
+
+    func testAnEmptyFileWithNoCreationDateDoesNotPairWithADatedOne() {
+        let dated = result([
+            empty("one/a.txt", created: Date(timeIntervalSince1970: 1_700_000_000))
+        ])
+        let undated = result([empty("two/a.txt", created: nil)])
+
+        let forwards = compare(dated, undated)
+        let backwards = compare(undated, dated)
+
+        for comparison in [forwards, backwards] {
+            XCTAssertTrue(comparison.moved.isEmpty)
+            XCTAssertEqual(comparison.removed.count, 1)
+            XCTAssertEqual(comparison.added.count, 1)
+        }
+    }
+
+    func testAnEmptyFilePairsWithAMatchingDateRatherThanAnUndatedOne() {
+        let first = result([
+            empty("one/a.txt", created: Date(timeIntervalSince1970: 1_700_000_000))
+        ])
+        let second = result([
+            empty("two/none.txt", created: nil),
+            empty("two/a.txt", created: Date(timeIntervalSince1970: 1_700_000_000)),
+        ])
+
+        let comparison = compare(first, second)
+
+        XCTAssertEqual(
+            comparison.moved.map { [$0.old.path, $0.new.path] },
+            [["one/a.txt", "two/a.txt"]])
+        XCTAssertEqual(comparison.added.map(\.path), ["two/none.txt"])
+        XCTAssertTrue(comparison.removed.isEmpty)
+    }
+
+    func testAnUndatedEmptyFileDoesNotTakeADatedMatch() {
+        let created = Date(timeIntervalSince1970: 1_700_000_000)
+
+        let first = result([
+            empty("one/x.txt", created: nil),
+            empty("one/y.txt", created: created),
+        ])
+        let second = result([empty("two/y.txt", created: created)])
+
+        let comparison = compare(first, second)
+
+        XCTAssertEqual(
+            comparison.moved.map { [$0.old.path, $0.new.path] },
+            [["one/y.txt", "two/y.txt"]])
+        XCTAssertEqual(comparison.removed.map(\.path), ["one/x.txt"])
+        XCTAssertTrue(comparison.added.isEmpty)
+    }
+
+    func testZeroSizeFailuresPairByCreationDateToo() {
+        let early = Date(timeIntervalSince1970: 1_700_000_000)
+        let late = Date(timeIntervalSince1970: 1_700_000_500)
+
+        let first = result([
+            ChecksumEntry(
+                path: "one/a.bin",
+                outcome: .failure(.cannotOpen),
+                size: 0,
+                created: early),
+            ChecksumEntry(
+                path: "one/b.bin",
+                outcome: .failure(.cannotOpen),
+                size: 0,
+                created: late),
+        ])
+        let second = result([
+            ChecksumEntry(
+                path: "two/b.bin",
+                outcome: .failure(.cannotOpen),
+                size: 0,
+                created: late),
+            ChecksumEntry(
+                path: "two/a.bin",
+                outcome: .failure(.cannotOpen),
+                size: 0,
+                created: early),
+        ])
+
+        let comparison = compare(first, second)
+
+        XCTAssertEqual(
+            comparison.moved.map { [$0.old.path, $0.new.path] },
+            [
+                ["one/a.bin", "two/a.bin"],
+                ["one/b.bin", "two/b.bin"],
+            ])
+        XCTAssertTrue(comparison.removed.isEmpty)
+        XCTAssertTrue(comparison.added.isEmpty)
+    }
+
+    func testEmptyFileCreationDatesCompareAtSecondResolution() {
+        let first = result([
+            empty("one/a.txt", created: Date(timeIntervalSince1970: 1_700_000_000.9))
+        ])
+        let second = result([
+            empty("two/a.txt", created: Date(timeIntervalSince1970: 1_700_000_000.2))
+        ])
+
+        let comparison = compare(first, second)
+
+        XCTAssertEqual(comparison.moved.count, 1)
+    }
+
+    func testCreationDatesAreIgnoredForFilesWithContent() {
+        let first = result([
+            ChecksumEntry(
+                path: "one/a.txt",
+                outcome: .digest("aa"),
+                size: 1,
+                created: Date(timeIntervalSince1970: 1_700_000_000))
+        ])
+        let second = result([
+            ChecksumEntry(
+                path: "two/a.txt",
+                outcome: .digest("aa"),
+                size: 1,
+                created: Date(timeIntervalSince1970: 1_700_000_500))
+        ])
+
+        let comparison = compare(first, second)
+
+        XCTAssertEqual(comparison.moved.count, 1)
     }
 
     func testFailuresPairByCodeAndSize() {

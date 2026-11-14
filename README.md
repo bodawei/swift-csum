@@ -129,6 +129,10 @@ swift run csum-cli compare -u old.csum.csv /Volumes/Backup/Documents
 - Because matching is on the path relative to each side's root, a folder that has moved
   since its checksums were taken compares as unchanged rather than as all-moved. That is
   the case the whole file format is designed around.
+- Rows with no content to match on — empty files, and failure rows that record a size
+  of zero — are paired as moved or renamed by checksum, size, and creation date together;
+  a row with no recorded creation date only pairs with another one that records none. Two
+  empty files made at different times show as removed and added rather than as a move.
 
 Errors go to stderr with a non-zero exit code.
 

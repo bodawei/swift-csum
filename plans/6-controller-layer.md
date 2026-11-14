@@ -255,8 +255,12 @@ public struct CsumController: Sendable {
 The engine keeps today's matching rules: unchanged first (same root-relative path, same
 checksum, same size), leftovers paired by checksum + size and split into renamed (same
 parent directory) or moved, leftovers after that added or removed, each section sorted
-by its output path. That logic is carried over from `CsvCompare` as-is; it has been
-exercised very little, so treat it as unproven until the tests below pin it down.
+by its output path. An entry of size zero has no content to tell it apart from any other
+zero-size entry, so its creation date joins checksum and size in the pairing key; the date
+is compared as the whole-second text a `.csum.csv` records, and an entry that records no
+date pairs only with another that records none. That logic is carried over from
+`CsvCompare`, except for the creation date; it has been exercised very little, so treat it
+as unproven until the tests below pin it down.
 
 ## Text formats
 
@@ -460,6 +464,10 @@ One small tree per section, plus one combined tree exercising all six at once:
   removed, moved, renamed, and changed sections are all empty;
 - two byte-identical files in one source pair deterministically with two byte-identical
   files in the other, run repeatedly — the pairing must not depend on dictionary order;
+- empty files pair by creation date: a zero-size entry whose date matches takes its pair
+  even when an undated one is listed first, a zero-size entry with a different date is
+  removed plus added rather than moved, and a zero-size entry with no date pairs only with
+  another one that has none;
 - a `.csum.csv` written with `-a sha1` compared against a live folder yields unchanged
   entries: the live side is checksummed with the file's recorded sha1, not with the
   controller's configured algorithm;

@@ -41,24 +41,23 @@ enum ComparisonEngine {
             }
         }
 
-        var pool: [String: [Int]] = [:]
-
-        for index in remaining.sorted() {
-            pool[key(for: second.entries[index]), default: []].append(index)
-        }
+        var pool = Dictionary(
+            grouping: remaining.sorted(),
+            by: { pairingKey(for: second.entries[$0]) }
+        ).mapValues { Bucket(indices: $0) }
 
         var removed: [ChecksumEntry] = []
 
         for entry in unmatched {
-            let poolKey = key(for: entry)
+            let poolKey = pairingKey(for: entry)
 
-            guard var candidates = pool[poolKey], let index = candidates.first else {
+            guard var bucket = pool[poolKey], !bucket.isEmpty else {
                 removed.append(entry)
                 continue
             }
 
-            candidates.removeFirst()
-            pool[poolKey] = candidates.isEmpty ? nil : candidates
+            let index = bucket.take()
+            pool[poolKey] = bucket
             remaining.remove(index)
 
             let pair = MatchedEntry(old: entry, new: second.entries[index])
@@ -86,8 +85,31 @@ enum ComparisonEngine {
         )
     }
 
-    private static func key(for entry: ChecksumEntry) -> String {
-        "\(EntryRowCodec.outcomeText(for: entry.outcome))\u{1F}\(entry.size)"
+    private struct Bucket {
+        let indices: [Int]
+        var next = 0
+
+        var isEmpty: Bool {
+            next == indices.count
+        }
+
+        mutating func take() -> Int {
+            defer {
+                next += 1
+            }
+
+            return indices[next]
+        }
+    }
+
+    private static func pairingKey(for entry: ChecksumEntry) -> String {
+        let content = "\(EntryRowCodec.outcomeText(for: entry.outcome))\u{1F}\(entry.size)"
+
+        guard entry.size == 0 else {
+            return content
+        }
+
+        return content + "\u{1F}" + EntryRowCodec.timestampText(for: entry.created)
     }
 
     private static func parentDirectory(of path: String) -> String {
