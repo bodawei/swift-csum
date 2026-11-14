@@ -44,13 +44,13 @@ enum ComparisonEngine {
         var pool: [String: [Int]] = [:]
 
         for index in remaining.sorted() {
-            pool[key(for: second.entries[index]), default: []].append(index)
+            pool[contentKey(for: second.entries[index]), default: []].append(index)
         }
 
         var removed: [ChecksumEntry] = []
 
         for entry in unmatched {
-            let poolKey = key(for: entry)
+            let poolKey = contentKey(for: entry)
 
             guard var candidates = pool[poolKey], let index = candidates.first else {
                 removed.append(entry)
@@ -86,8 +86,22 @@ enum ComparisonEngine {
         )
     }
 
-    private static func key(for entry: ChecksumEntry) -> String {
-        "\(EntryRowCodec.outcomeText(for: entry.outcome))\u{1F}\(entry.size)"
+    private static func contentKey(for entry: ChecksumEntry) -> String {
+        let content = "\(EntryRowCodec.outcomeText(for: entry.outcome))\u{1F}\(entry.size)"
+
+        guard entry.size == 0 else {
+            return content
+        }
+
+        return content + "\u{1F}" + timestamp(for: entry.created)
+    }
+
+    private static func timestamp(for date: Date?) -> String {
+        guard let date else {
+            return ""
+        }
+
+        return String(Int64(date.timeIntervalSince1970))
     }
 
     private static func parentDirectory(of path: String) -> String {
