@@ -44,23 +44,20 @@ enum ComparisonEngine {
         var pool: [String: [Int]] = [:]
 
         for index in remaining.sorted() {
-            pool[contentKey(for: second.entries[index]), default: []].append(index)
+            pool[pairingKey(for: second.entries[index]), default: []].append(index)
         }
 
         var removed: [ChecksumEntry] = []
 
         for entry in unmatched {
-            let poolKey = contentKey(for: entry)
+            let poolKey = pairingKey(for: entry)
 
-            guard var candidates = pool[poolKey],
-                let position = candidatePosition(
-                    for: entry, among: candidates, in: second.entries)
-            else {
+            guard var candidates = pool[poolKey], let index = candidates.first else {
                 removed.append(entry)
                 continue
             }
 
-            let index = candidates.remove(at: position)
+            candidates.removeFirst()
             pool[poolKey] = candidates.isEmpty ? nil : candidates
             remaining.remove(index)
 
@@ -89,24 +86,14 @@ enum ComparisonEngine {
         )
     }
 
-    private static func contentKey(for entry: ChecksumEntry) -> String {
-        "\(EntryRowCodec.outcomeText(for: entry.outcome))\u{1F}\(entry.size)"
-    }
+    private static func pairingKey(for entry: ChecksumEntry) -> String {
+        let content = "\(EntryRowCodec.outcomeText(for: entry.outcome))\u{1F}\(entry.size)"
 
-    private static func candidatePosition(
-        for entry: ChecksumEntry,
-        among candidates: [Int],
-        in entries: [ChecksumEntry]
-    ) -> Int? {
         guard entry.size == 0 else {
-            return candidates.isEmpty ? nil : 0
+            return content
         }
 
-        let stamp = EntryRowCodec.timestampText(for: entry.created)
-
-        return candidates.firstIndex {
-            EntryRowCodec.timestampText(for: entries[$0].created) == stamp
-        }
+        return content + "\u{1F}" + EntryRowCodec.timestampText(for: entry.created)
     }
 
     private static func parentDirectory(of path: String) -> String {
