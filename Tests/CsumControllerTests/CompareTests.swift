@@ -143,7 +143,7 @@ final class CompareTests: XCTestCase {
         XCTAssertTrue(comparison.removed.isEmpty)
     }
 
-    func testASavedFileWithoutCreationDatesStillPairsEmptyMoves() throws {
+    func testASavedFileWithoutCreationDatesDoesNotPairEmptyMoves() throws {
         let first = try TempTree()
         let second = try TempTree()
         defer {
@@ -166,9 +166,9 @@ final class CompareTests: XCTestCase {
 
         let comparison = try controller().compare(first: file, second: second.url)
 
-        XCTAssertEqual(comparison.moved.count, 1)
-        XCTAssertTrue(comparison.removed.isEmpty)
-        XCTAssertTrue(comparison.added.isEmpty)
+        XCTAssertTrue(comparison.moved.isEmpty)
+        XCTAssertEqual(comparison.removed.count, 1)
+        XCTAssertEqual(comparison.added.count, 1)
     }
 
     func testMetadataRecordsBothSources() throws {

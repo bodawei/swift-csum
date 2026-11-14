@@ -263,19 +263,23 @@ final class ComparisonEngineTests: XCTestCase {
         XCTAssertEqual(comparison.moved.count, 1)
     }
 
-    func testEmptyFilesWithOneMissingCreationDateStillPair() {
+    func testAnEmptyFileWithNoCreationDateDoesNotPairWithADatedOne() {
         let dated = result([
             empty("one/a.txt", created: Date(timeIntervalSince1970: 1_700_000_000))
         ])
         let undated = result([empty("two/a.txt", created: nil)])
 
-        XCTAssertEqual(compare(dated, undated).moved.count, 1)
-        XCTAssertEqual(compare(undated, dated).moved.count, 1)
-        XCTAssertTrue(compare(dated, undated).removed.isEmpty)
-        XCTAssertTrue(compare(dated, undated).added.isEmpty)
+        let forwards = compare(dated, undated)
+        let backwards = compare(undated, dated)
+
+        for comparison in [forwards, backwards] {
+            XCTAssertTrue(comparison.moved.isEmpty)
+            XCTAssertEqual(comparison.removed.count, 1)
+            XCTAssertEqual(comparison.added.count, 1)
+        }
     }
 
-    func testEmptyFilesPreferAMatchingCreationDateOverAMissingOne() {
+    func testAnEmptyFilePairsWithAMatchingDateRatherThanAnUndatedOne() {
         let first = result([
             empty("one/a.txt", created: Date(timeIntervalSince1970: 1_700_000_000))
         ])

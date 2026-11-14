@@ -98,17 +98,15 @@ enum ComparisonEngine {
         among candidates: [Int],
         in entries: [ChecksumEntry]
     ) -> Int? {
-        guard entry.size == 0, let created = entry.created else {
+        guard entry.size == 0 else {
             return candidates.isEmpty ? nil : 0
         }
 
-        let stamp = EntryRowCodec.timestampText(for: created)
+        let stamp = EntryRowCodec.timestampText(for: entry.created)
 
-        let dated = candidates.firstIndex {
-            entries[$0].created.map { EntryRowCodec.timestampText(for: $0) == stamp } ?? false
+        return candidates.firstIndex {
+            EntryRowCodec.timestampText(for: entries[$0].created) == stamp
         }
-
-        return dated ?? candidates.firstIndex { entries[$0].created == nil }
     }
 
     private static func parentDirectory(of path: String) -> String {
