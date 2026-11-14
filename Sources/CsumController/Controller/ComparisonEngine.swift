@@ -102,15 +102,13 @@ enum ComparisonEngine {
             return candidates.isEmpty ? nil : 0
         }
 
+        let stamp = EntryRowCodec.timestampText(for: created)
+
         let dated = candidates.firstIndex {
-            entries[$0].created.map { seconds(of: $0) == seconds(of: created) } ?? false
+            entries[$0].created.map { EntryRowCodec.timestampText(for: $0) == stamp } ?? false
         }
 
         return dated ?? candidates.firstIndex { entries[$0].created == nil }
-    }
-
-    private static func seconds(of date: Date) -> Int64 {
-        Int64(date.timeIntervalSince1970)
     }
 
     private static func parentDirectory(of path: String) -> String {

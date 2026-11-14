@@ -115,7 +115,7 @@ enum EntryRowCodec {
         return .digest(text)
     }
 
-    private static func timestampText(for date: Date?) -> String {
+    static func timestampText(for date: Date?) -> String {
         guard let date else {
             return ""
         }
