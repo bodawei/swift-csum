@@ -130,8 +130,8 @@ swift run csum-cli compare -u old.csum.csv /Volumes/Backup/Documents
   since its checksums were taken compares as unchanged rather than as all-moved. That is
   the case the whole file format is designed around.
 - Empty files have no content to match on, so moved and renamed pair them by checksum,
-  size, and creation date together. Two empty files made at different times show as
-  removed and added rather than as a move.
+  size, and creation date together, treating a missing creation date as unknown. Two
+  empty files made at different times show as removed and added rather than as a move.
 
 Errors go to stderr with a non-zero exit code.
 

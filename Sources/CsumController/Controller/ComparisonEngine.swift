@@ -52,12 +52,15 @@ enum ComparisonEngine {
         for entry in unmatched {
             let poolKey = contentKey(for: entry)
 
-            guard var candidates = pool[poolKey], let index = candidates.first else {
+            guard var candidates = pool[poolKey],
+                let position = candidatePosition(
+                    for: entry, among: candidates, in: second.entries)
+            else {
                 removed.append(entry)
                 continue
             }
 
-            candidates.removeFirst()
+            let index = candidates.remove(at: position)
             pool[poolKey] = candidates.isEmpty ? nil : candidates
             remaining.remove(index)
 
@@ -87,21 +90,27 @@ enum ComparisonEngine {
     }
 
     private static func contentKey(for entry: ChecksumEntry) -> String {
-        let content = "\(EntryRowCodec.outcomeText(for: entry.outcome))\u{1F}\(entry.size)"
-
-        guard entry.size == 0 else {
-            return content
-        }
-
-        return content + "\u{1F}" + timestamp(for: entry.created)
+        "\(EntryRowCodec.outcomeText(for: entry.outcome))\u{1F}\(entry.size)"
     }
 
-    private static func timestamp(for date: Date?) -> String {
-        guard let date else {
-            return ""
+    private static func candidatePosition(
+        for entry: ChecksumEntry,
+        among candidates: [Int],
+        in entries: [ChecksumEntry]
+    ) -> Int? {
+        guard entry.size == 0, let created = entry.created else {
+            return candidates.isEmpty ? nil : 0
         }
 
-        return String(Int64(date.timeIntervalSince1970))
+        let dated = candidates.firstIndex {
+            entries[$0].created.map { seconds(of: $0) == seconds(of: created) } ?? false
+        }
+
+        return dated ?? candidates.firstIndex { entries[$0].created == nil }
+    }
+
+    private static func seconds(of date: Date) -> Int64 {
+        Int64(date.timeIntervalSince1970)
     }
 
     private static func parentDirectory(of path: String) -> String {

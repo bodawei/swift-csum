@@ -143,6 +143,34 @@ final class CompareTests: XCTestCase {
         XCTAssertTrue(comparison.removed.isEmpty)
     }
 
+    func testASavedFileWithoutCreationDatesStillPairsEmptyMoves() throws {
+        let first = try TempTree()
+        let second = try TempTree()
+        defer {
+            first.remove()
+            second.remove()
+        }
+
+        try first.file("old/a.txt", contents: Data())
+        try second.file("new/a.txt", contents: Data())
+
+        let saved = try controller().calculateChecksums(at: first.url)
+        let undated = ChecksumResult(
+            metadata: saved.metadata,
+            entries: saved.entries.map {
+                ChecksumEntry(path: $0.path, outcome: $0.outcome, size: $0.size)
+            }
+        )
+        let file = output.url.appendingPathComponent("undated.csum.csv")
+        try Data(ChecksumFileCodec.render(undated).utf8).write(to: file)
+
+        let comparison = try controller().compare(first: file, second: second.url)
+
+        XCTAssertEqual(comparison.moved.count, 1)
+        XCTAssertTrue(comparison.removed.isEmpty)
+        XCTAssertTrue(comparison.added.isEmpty)
+    }
+
     func testMetadataRecordsBothSources() throws {
         let saved = try saveChecksums(of: tree.url, as: "saved.csum.csv", algorithm: .sha256)
 
